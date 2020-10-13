@@ -8,4 +8,12 @@ public class Map {
         this.name = name;
         this.continents = continents;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Continent> getContinents() {
+        return continents;
+    }
 }
