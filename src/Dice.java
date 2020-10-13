@@ -1,5 +1,10 @@
 import java.util.Random;
 
+/**
+ * This class represents the dice used by players.
+ *
+ *
+ */
 public class Dice {
     private Random random;
 
@@ -24,14 +29,14 @@ public class Dice {
             // either throw an error if this is an error or just ignore, not sure.
         }
         else if (size > 1) {
-            for (int i = 2; i < size; i++) {
-                int temp = results[i];
-                int j = i - 1;
-                while (j > 0 && results[j] > temp) {
-                    results[j + 1] = results[j];
-                    j--;
+            for (int j = 1; j < size; j++) {
+                int temp = results[j];
+                int i = j - 1;
+                while ((i > -1) && (results[i] < temp) ) {
+                    results[i + 1] = results[i];
+                    i--;
                 }
-                results[j + 1] = temp;
+                results[i + 1] = temp;
             }
         }
         return results;
