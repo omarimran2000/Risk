@@ -1,5 +1,10 @@
 import java.util.Random;
 
+/**
+ * This class represents the dice used by players.
+ *
+ *
+ */
 public class Dice {
     private Random random;
 
