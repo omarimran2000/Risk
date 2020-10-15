@@ -13,11 +13,10 @@ public class Map {
     /**
      *
      * @param name of the map
-     * @param continents the continents on the map
      */
-    public Map(String name, ArrayList<Continent> continents) {
+    public Map(String name) {
         this.name = name;
-        this.continents = continents;
+        this.continents = new ArrayList<>();
     }
 
     /**
@@ -34,5 +33,13 @@ public class Map {
      */
     public ArrayList<Continent> getContinents() {
         return continents;
+    }
+
+    /**
+     * Add to continents
+     */
+    public void addContinents(Continent c)
+    {
+        continents.add(c);
     }
 }

@@ -1,6 +1,8 @@
-//import org.json.simple.*;
-//import org.json.simple.parser.*;
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
 import java.io.FileReader;
+import java.io.IOException;
 
 
 public class Game {
@@ -9,7 +11,7 @@ public class Game {
 
     public Game ()
     {
-
+        theMap = new Map("Global");
     }
 
     /**
@@ -32,14 +34,31 @@ public class Game {
         if (offence > defence) return attacker;
         return defender;
     }
-    private void loadMap(String JSONfile)
-    {
+    private void loadMap(String JSONfile) throws IOException, ParseException {
+        JSONParser jsonParser = new JSONParser();
+        FileReader fileReader = new FileReader(JSONfile);
+        Object e = jsonParser.parse(fileReader);
+
+        JSONObject mapObject = new JSONObject();
+        mapObject = (JSONObject) e;
+
+        JSONObject continents = (JSONObject) mapObject.get("continents");
+        //System.out.println(continents.get("Europe"));
+
+        for (int i=0;i<continents.keySet().size();i++)
+        {
+            String continentName = (String) continents.keySet().toArray()[i];
+            JSONObject continentKeys = (JSONObject) continents.get(continentName);
+            long longPoints = (long) continentKeys.get("points");
+            int pointsInt = (int) longPoints;
+            theMap.addContinents(new Continent(continentName,pointsInt));
+        }
 
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException, ParseException {
 
         Game game = new Game();
-        game.loadMap("../example.json");
+        game.loadMap("example.json");
 
     }
 }
