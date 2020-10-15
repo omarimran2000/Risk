@@ -1,0 +1,27 @@
+{
+
+	"Europe": {
+		"Spain":[
+		"France","Germany"
+		],
+		"France":[
+		"Spain"],
+		"Germany":[
+		"Canada","Spain"]
+
+	},
+
+	"North America":
+	{
+
+		"Canada":[
+		"Germany","USA"
+		],
+		"USA":[
+		"Canada"
+		]
+	}
+
+
+
+}
