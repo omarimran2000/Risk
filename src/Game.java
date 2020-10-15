@@ -1,6 +1,14 @@
+//import org.json.simple.*;
+//import org.json.simple.parser.*;
+import java.io.FileReader;
+
+
 public class Game {
 
-    public static void main(String[] args){
+    private Map theMap;
+
+    public Game ()
+    {
 
     }
 
@@ -18,10 +26,20 @@ public class Game {
         int defence = 0;
         for (int i = 0; i < numOfDice; i++) // sums the highest rolls together per player
         {
-            offence += attacker.getDice()[i]; //access the die number saved at position i
-            defence += defence.getDice().[i];
+       //     offence += attacker.getDice()[i]; //access the die number saved at position i
+         //   defence += defence.getDice().[i];
         }
         if (offence > defence) return attacker;
         return defender;
+    }
+    private void loadMap(String JSONfile)
+    {
+
+    }
+    public static void main(String[] args){
+
+        Game game = new Game();
+        game.loadMap("../example.json");
+
     }
 }
