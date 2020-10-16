@@ -19,16 +19,11 @@ public class Territory {
      *
      * @param name name of the territory
      * @param continent the continent the territory is located
-     * @param neighbourTerritories the adjacent territories
-     * @param currentPlayer the player who controls the territory
-     * @param currentArmies the army on the territory
      */
-    public Territory(String name, Continent continent, ArrayList<Territory> neighbourTerritories, Player currentPlayer, Army currentArmies) {
+    public Territory(String name, Continent continent) {
         this.name = name;
         this.continent = continent;
-        this.neighbourTerritories = neighbourTerritories;
-        this.currentPlayer = currentPlayer;
-        this.currentArmies = currentArmies;
+        neighbourTerritories = new ArrayList<>();
     }
 
     /**
@@ -57,6 +52,13 @@ public class Territory {
     public ArrayList<Territory> getNeighbourTerritories() {
         return neighbourTerritories;
     }
+
+    /**
+     * Add neighbouring territories
+     *
+     * @param t  the territory
+     */
+    public void addNeighbour(Territory t){neighbourTerritories.add(t); }
 
     /**
      * Getter function for current player

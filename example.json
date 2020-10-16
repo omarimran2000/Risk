@@ -1,27 +1,32 @@
 {
+	"continents":{
 
-	"Europe": {
-		"Spain":[
-		"France","Germany"
-		],
-		"France":[
-		"Spain"],
-		"Germany":[
-		"Canada","Spain"]
+		"Europe": {
+			"territories":{
+				"Spain":[
+				"France","Germany"
+				],
+				"France":[
+				"Spain"],
+				"Germany":[
+				"Canada","Spain"]
+				},
+			"points":2
 
-	},
+		},
 
-	"North America":
-	{
+		"North America":
+		{
+			"territories":{
+				"Canada":[
+				"Germany","USA"
+				],
+				"USA":[
+				"Canada"
+				]
+			},
+			"points":2
+		}
 
-		"Canada":[
-		"Germany","USA"
-		],
-		"USA":[
-		"Canada"
-		]
 	}
-
-
-
 }

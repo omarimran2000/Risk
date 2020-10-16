@@ -17,12 +17,11 @@ public class Continent {
      * Default constructor
      *
      * @param name the name of the continent
-     * @param territories the territories located in the continent
      * @param continentPoint the amount of extra soldiers a player gets for holding the continent
      */
-    public Continent(String name, ArrayList<Territory> territories, int continentPoint) {
+    public Continent(String name, int continentPoint) {
         this.name = name;
-        this.territories = territories;
+        this.territories = new ArrayList<>();
         this.continentPoint = continentPoint;
     }
 
@@ -50,6 +49,12 @@ public class Continent {
     public int getContinentPoint() {
         return continentPoint;
     }
+
+    /**
+     * Add to territories
+     * @param t the territory
+     */
+    public void addTerritories(Territory t){territories.add(t);}
 
     /**
      * Checks to see if a player has all the territories in the continent
