@@ -37,6 +37,8 @@ public class Map {
 
     /**
      * Add to continents
+     *
+     * @param c  the continent
      */
     public void addContinents(Continent c)
     {

@@ -52,6 +52,7 @@ public class Continent {
 
     /**
      * Add to territories
+     * @param t the territory
      */
     public void addTerritories(Territory t){territories.add(t);}
 

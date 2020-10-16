@@ -34,6 +34,13 @@ public class Game {
         if (offence > defence) return attacker;
         return defender;
     }
+
+    /**
+     * Loading a map from a JSON file
+     * @param JSONfile the filepath
+     * @throws IOException
+     * @throws ParseException
+     */
     private void loadMap(String JSONfile) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         FileReader fileReader = new FileReader(JSONfile);
@@ -42,19 +49,29 @@ public class Game {
         JSONObject mapObject = new JSONObject();
         mapObject = (JSONObject) e;
 
-        JSONObject continents = (JSONObject) mapObject.get("continents");
-        //System.out.println(continents.get("Europe"));
+        JSONObject continents = (JSONObject) mapObject.get("continents"); //getting all the continent keys
 
-        for (int i=0;i<continents.keySet().size();i++)
+        for (int i = 0; i < continents.keySet().size(); i++)
         {
+            //adding continents to map
             String continentName = (String) continents.keySet().toArray()[i];
             JSONObject continentKeys = (JSONObject) continents.get(continentName);
             long longPoints = (long) continentKeys.get("points");
             int pointsInt = (int) longPoints;
-            theMap.addContinents(new Continent(continentName,pointsInt));
-        }
+            theMap.addContinents(new Continent(continentName, pointsInt));
 
+            //adding territories to continents
+            JSONObject territories = (JSONObject) continentKeys.get("territories");
+
+            for (int j = 0; j < territories.keySet().size(); j++)
+            {
+                String territoryName = (String) territories.keySet().toArray()[j];
+                theMap.getContinents().get(i).addTerritories(new Territory(territoryName, theMap.getContinents().get(i)));
+            }
+
+        }
     }
+
     public static void main(String[] args) throws IOException, ParseException {
 
         Game game = new Game();
