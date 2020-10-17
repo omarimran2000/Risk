@@ -127,7 +127,7 @@ public class Game {
 
     public static void main(String[] args) throws IOException, ParseException {
         Game game = new Game();
-        game.loadMap("example.json");
+        game.loadMap("map.json");
         System.out.println("Map done loading");
         // initalize players and add into list of players
         game.initializeDefaultArmy();
