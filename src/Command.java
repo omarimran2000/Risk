@@ -1,3 +1,8 @@
+/**
+ * @author Erica Oliver
+ * @version Oct 17, 2020
+ */
+
 public class Command {
     private static final String[] commands = { "print", "attack", "deploy", "help", "fortify"};
     private String command;
