@@ -121,7 +121,7 @@ public class Game {
             }
         }
         for (int i = 0; !territories.isEmpty(); i++) {
-            players.get(i%4).addTerritory(territories.get(random.nextInt(territories.size())));
+            players.get(i%4).addTerritory(territories.remove(random.nextInt(territories.size())));
         }
     }
 
