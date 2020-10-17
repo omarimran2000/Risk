@@ -98,7 +98,8 @@ public class Game {
                        originalTerritory = t;
                     }
                 }
-                JSONArray adjacentTerritories = (JSONArray) territories.get(originalTerritoryName); //gets all adjacent territory names from JSON file
+                JSONObject territoriesKeys = (JSONObject) territories.get(originalTerritoryName); //gets all the keys from territories file
+                JSONArray adjacentTerritories = (JSONArray) territoriesKeys.get("adjacent");
 
                 for (int k=0;k<adjacentTerritories.size();k++)  //iterates through JSON array of adjacent territories
                 {
