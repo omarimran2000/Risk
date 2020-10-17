@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * dice rolls, continents, and territories.
  *
  * @author Wintana Yosief
- * @version October 15, 2020
+ * @version October 17, 2020
  *
  */
 public class Player {
@@ -83,12 +83,48 @@ public class Player {
     }
 
     /**
+     * Adds a continent to a player's list
+     *
+     * @param c The continent to be added
+     */
+    public void addContinent(Continent c){
+        continents.add(c);
+    }
+
+    /**
+     * Removes a continent from the player's list
+     *
+     * @param c The continent that the player has lost
+     */
+    public void removeContinent(Continent c) {
+        for (Continent continent : continents) {
+            if (continent == c) {
+                continents.remove(continent);
+
+            }
+        }
+    }
+
+    /**
      * Adds a territory to the list of continents that player possesses
      *
      * @param t The territory that the play now owns
      */
     public void addTerritory(Territory t) {
         territories.add(t);
+    }
+
+    /**
+     * Removes a territory from the player's list
+     *
+     * @param t The territory the player has lost
+     */
+    public void removeTerritory(Territory t) {
+        for (Territory territory : territories) {
+            if (t == territory) {
+                territories.remove(territory);
+            }
+        }
     }
     /**
      * Gets the territories the player owns
@@ -185,8 +221,8 @@ public class Player {
     {
         List<Troop> troops = army.getTroops();
         int count = 0;
-        while(count < numOfTroops){
-            for(Troop troop: troops) {
+        while(count < numOfTroops) {
+            for (Troop troop : troops) {
                 Territory loc = troop.getLocation();
                 if (loc == removedTerritory) {
                     troop.setDeployed(false);
@@ -194,10 +230,8 @@ public class Player {
                     count += 1;
                 }
             }
-
         }
     }
-
 }
 
 
