@@ -147,15 +147,16 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         System.out.println("How many players are playing? Enter a number between 2-6");
         numberOfPlayers = scanner.nextInt();
-        if (numberOfPlayers>=2 && numberOfPlayers<=6) {
-            for (int i = 0; i < numberOfPlayers-1; i++) {
+        if (numberOfPlayers>=2 && numberOfPlayers<=6)
+        {
+            for (int i = 0; i < numberOfPlayers; i++)
+            {
                 System.out.print("Player name: ");
-                Player player = new Player(scanner.nextLine());
+                String name = scanner.next();
+                Player player = new Player(name);
                 System.out.println(player.getName());
                 addPlayer(player);
-
             }
         }
-
     }
 }
