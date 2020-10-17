@@ -3,13 +3,15 @@
 
 		"Europe": {
 			"territories":{
-				"Spain":[
-				"France","Germany"
-				],
-				"France":[
-				"Spain"],
-				"Germany":[
-				"Canada","Spain"]
+				"Spain":{"adjacent":
+				["France","Germany"]
+				},
+				"France":{"adjacent":
+				["Spain"]
+				},
+				"Germany":{"adjacent":
+				["Canada","Spain"]
+				}
 				},
 			"points":2
 
@@ -18,12 +20,12 @@
 		"North America":
 		{
 			"territories":{
-				"Canada":[
-				"Germany","USA"
-				],
-				"USA":[
-				"Canada"
-				]
+				"Canada":{"adjacent":
+				["Germany","USA"]
+				},
+				"USA":{"adjacent":
+				["Canada"]
+				}
 			},
 			"points":2
 		}

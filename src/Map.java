@@ -44,4 +44,22 @@ public class Map {
     {
         continents.add(c);
     }
+
+    /**
+     *
+     */
+    public Territory findTerritory(String name)
+    {
+        for(Continent c:continents)
+        {
+            for (Territory t: c.getTerritories())
+            {
+                if((t.getName().equals(name)))
+                {
+                    return  t;
+                }
+            }
+        }
+        return null;
+    }
 }

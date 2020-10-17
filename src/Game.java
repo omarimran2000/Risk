@@ -10,7 +10,6 @@ public class Game {
 
     private Map theMap;
 
-
     public Game ()
     {
         theMap = new Map("Global");
@@ -30,10 +29,8 @@ public class Game {
         int defence = 0;
         for (int i = 0; i < numOfDice; i++) // sums the highest rolls together per player
         {
-
             offence += attacker.getDice()[i]; //access the die number saved at position i
             defence += defender.getDice()[i];
-
         }
         if (offence > defence) return attacker;
         return defender;

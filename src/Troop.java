@@ -1,4 +1,3 @@
-
 /**
  * Troop class for each member of a player's army
  * @author Wintana Yosief
@@ -12,11 +11,10 @@ public class Troop {
     /**
      * Creates a troop
      * Initially, a troop member has no deployment
-     *
      */
     public Troop() {
-       this.deployed = false;
-       this.location = null;
+        this.deployed = false;
+        this.location = null;
 
 
     }
@@ -24,10 +22,10 @@ public class Troop {
     /**
      * Determines whether a troop has been
      * deployed
+     *
      * @param deployed True, if deployed, false otherwise
      */
-    public void setDeployed(Boolean deployed)
-    {
+    public void setDeployed(Boolean deployed) {
         this.deployed = deployed;
 
     }
@@ -37,7 +35,7 @@ public class Troop {
      *
      * @return The troop's current territory
      */
-    public Territory getLocation(){
+    public Territory getLocation() {
         return location;
     }
 
@@ -46,15 +44,16 @@ public class Troop {
      *
      * @param newLocation The new location of troop
      */
-    public void setLocation(Territory newLocation){
+    public void setLocation(Territory newLocation) {
         location = newLocation;
     }
 
     /**
      * Determines whether a troop has been deployed
+     *
      * @return True, if deployed, false otherwise
      */
-    public boolean isDeployed(){
+    public boolean isDeployed() {
         return deployed;
     }
 }
