@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import java.util.Scanner;
+
 
 public class Game {
 
     private Map theMap;
-    private List<Player> players;
+    private static List<Player> players;
 
     public Game ()
     {
@@ -123,11 +125,35 @@ public class Game {
         }
     }
 
+    public static void addPlayer(Player player){
+        players.add(player);
+    }
+
+    public static int numberOfPlayers;
+
+    public int getNumberOfPlayers(){
+        return numberOfPlayers;
+    }
+
     public static void main(String[] args) throws IOException, ParseException {
         Game game = new Game();
         game.loadMap("map.json");
         System.out.println("Map done loading");
-        // initalize players and add into list of players
-        game.initializeDefaultArmy();
+        // initialize players and add into list of players
+        //game.initializeDefaultArmy();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("How many players are playing? Enter a number between 2-6");
+        numberOfPlayers = scanner.nextInt();
+        if (numberOfPlayers>=2 && numberOfPlayers<=6) {
+            for (int i = 0; i < numberOfPlayers-1; i++) {
+                System.out.print("Player name: ");
+                Player player = new Player(scanner.nextLine());
+                System.out.println(player.getName());
+                addPlayer(player);
+
+            }
+        }
+
     }
 }
