@@ -72,9 +72,10 @@
             "Alberta",
             "Central America"
           ]
-        },
-        "points": 5
+        }
       },
+        "points": 5
+    },
       "South America": {
         "territories": {
           "Argentina": {
@@ -365,4 +366,4 @@
       }
     }
   }
-}
+
