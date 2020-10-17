@@ -83,6 +83,14 @@ public class Player {
     }
 
     /**
+     * Adds a territory to the list of continents that player possesses
+     *
+     * @param t The territory that the play now owns
+     */
+    public void addTerritory(Territory t) {
+        territories.add(t);
+    }
+    /**
      * Gets the territories the player owns
      *
      * @return An ArrayList of territories owned by the player

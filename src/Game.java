@@ -4,16 +4,19 @@ import org.json.simple.parser.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 
 public class Game {
 
     private Map theMap;
+    private List<Player> players;
 
     public Game ()
     {
         theMap = new Map("Global");
-
+        players = new ArrayList<>();
     }
 
     /**
@@ -104,11 +107,29 @@ public class Game {
 
     }
 
-    public static void main(String[] args) throws IOException, ParseException {
+    /**
+     * This method is used to initialize which player possess which territory.
+     */
+    public void initializeDefaultArmy() {
+        Stack<Territory>territories = new Stack<>();
+        for(Continent c : theMap.continents) {
+            for(Territory t : c.getTerritories()) {
+                territories.push(t);
+            }
+        }
+        for (int i = 0; !territories.empty(); i++) {
+            players.get(i).addTerritory(territories.pop());
+            if (i == players.size() - 1) {
+                i = 0;
+            }
+        }
+    }
 
+    public static void main(String[] args) throws IOException, ParseException {
         Game game = new Game();
         game.loadMap("example.json");
         System.out.println("Map done loading");
-
+        // initalize players and add into list of players
+        game.initializeDefaultArmy();
     }
 }
