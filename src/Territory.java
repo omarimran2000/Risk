@@ -91,4 +91,22 @@ public class Territory {
     public void setCurrentArmies(Army currentArmies) {
         this.currentArmies = currentArmies;
     }
+
+    /**
+     *
+     */
+    public void printTerritory()
+    {
+        System.out.println("Territory: "+name);
+    }
+    /**
+     *
+     */
+    public void printAdjacentTerritories()
+    {
+        for(Territory t:neighbourTerritories)
+        {
+            t.printTerritory();
+        }
+    }
 }
