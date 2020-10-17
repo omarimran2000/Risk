@@ -135,7 +135,12 @@ public class Game {
             }
         }
         for (int i = 0; !territories.isEmpty(); i++) {
-            players.get(i%numberOfPlayers).addTerritory(territories.remove(random.nextInt(territories.size())));
+            Territory tempTerritory = territories.remove(random.nextInt(territories.size()));
+            Player tempPlayer = players.get(i%numberOfPlayers);
+
+            tempPlayer.addTerritory(tempTerritory);
+            tempTerritory.setCurrentPlayer(tempPlayer);
+
         }
     }
 
@@ -162,7 +167,7 @@ public class Game {
 
         // setup the army placements
         game.initializeDefaultArmy();
-
+        System.out.println(2);
         // ready to begin playing
         //game.play();
 
