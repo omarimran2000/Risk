@@ -144,6 +144,30 @@ public class Game {
         }
     }
 
+    /**
+     *
+     * @param numberOfPlayers
+     */
+    public void setArmies(int numberOfPlayers)
+    {
+        int[] arr_num_Armies = new int[]{50,35,30,25,20};
+        int num_armies = arr_num_Armies[numberOfPlayers-2];
+
+        for(Player p:players)       //puts one army in every territory owned by player
+        {
+            for (Territory t:p.getTerritories())
+            {
+                p.deploy(1,t);
+            }
+        }
+    }
+    /**
+     *
+     * @param args
+     * @throws IOException
+     * @throws ParseException
+     */
+
     public static void main(String[] args) throws IOException, ParseException {
         Game game = new Game();
         game.loadMap("map.json");

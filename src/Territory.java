@@ -13,7 +13,6 @@ public class Territory {
     private Continent continent;
     private ArrayList<Territory> neighbourTerritories;
     private Player currentPlayer;
-    private Army currentArmies;
 
     /**
      *
@@ -74,22 +73,6 @@ public class Territory {
      */
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
-    }
-
-    /**
-     * Getter function for armies
-     * @return the army
-     */
-    public Army getCurrentArmies() {
-        return currentArmies;
-    }
-
-    /**
-     * Setter function for the armies
-     * @param currentArmies setting the new armies
-     */
-    public void setCurrentArmies(Army currentArmies) {
-        this.currentArmies = currentArmies;
     }
 
     /**
