@@ -153,13 +153,32 @@ public class Game {
     {
         int[] arr_num_Armies = new int[]{50,35,30,25,20};
         int num_armies = arr_num_Armies[numberOfPlayers-2];
+        Random random = new Random();
 
-        for(Player p:players)       //puts one army in every territory owned by player
+        for(Player p:players)
         {
-            for (Territory t:p.getTerritories())
+            int armiesCount = num_armies;
+            for (Territory t:p.getTerritories()) //puts one army in every territory owned by player
             {
+                p.getArmy().addTroop(new Troop());
                 p.deploy(1,t);
+                armiesCount--;
             }
+
+            for(int i=0;(i<p.getTerritories().size());i++)  //distributes rest of the troops
+            {
+                int tempTroopCount = random.nextInt(armiesCount);
+
+                for(int j=1;j<(tempTroopCount+1);j++)
+                {
+                    p.getArmy().addTroop(new Troop());
+                }
+                p.deploy(tempTroopCount,p.territories.get(i));
+                armiesCount = armiesCount-tempTroopCount;
+
+            }
+
+
         }
     }
     /**
@@ -198,7 +217,8 @@ public class Game {
 
         // setup the army placements
         game.initializeDefaultArmy();
-        System.out.println(2);
+        game.setArmies(numberOfPlayers);
+
         // ready to begin playing
         game.play();
 
