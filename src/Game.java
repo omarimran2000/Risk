@@ -15,6 +15,7 @@ public class Game {
     private Map theMap;
     private static List<Player> players;
     private static int numberOfPlayers;
+    private static Scanner scanner = new Scanner(System.in);
 
     public Game ()
     {
@@ -173,18 +174,24 @@ public class Game {
         game.loadMap("map.json");
         System.out.println("Map done loading");
 
-        Scanner scanner = new Scanner(System.in);
         System.out.println("How many players are playing? Enter a number between 2-6");
         numberOfPlayers = scanner.nextInt();
+
+        while (!(numberOfPlayers>=2 && numberOfPlayers<=6)){
+            System.out.println("Please enter a number between 2-6");
+            scanner.next();
+
+        }
+        // if a valid number of player is inputted
         // get and print every player's name and adds them to players
-        if (numberOfPlayers>=2 && numberOfPlayers<=6)
         {
             for (int i = 0; i < numberOfPlayers; i++)
             {
                 System.out.print("Player name: ");
                 String name = scanner.next();
                 Player player = new Player(name);
-                System.out.println(player.getName());
+                player.setActive(true);
+                System.out.println(player.getName() + " added.");
                 addPlayer(player);
             }
         }
@@ -193,21 +200,59 @@ public class Game {
         game.initializeDefaultArmy();
         System.out.println(2);
         // ready to begin playing
-        //game.play();
+        game.play();
 
     }
 
-    /*
+
     public void play(){
         for (int i = 0; i < numberOfPlayers-1; i++)
         {
-            System.out.println("It is now " + players.get(i).getName() + "'s turn");
-            System.out.println("You have " + "" + " troops to deploy. Where would you like to deploy them?");
+            Player player = players.get(i);
+            if (player.isActive()) {
+                System.out.println("It is now " + player.getName() + "'s turn");
+                deploy(player);
 
-            // return to first player
-            if (i == numberOfPlayers-1){
-                i = 0;
+
+                // return to first player
+                if (i == numberOfPlayers - 1) {
+                    i = 0;
+                }
             }
         }
-    }*/
+    }
+
+    public int getNumberOfTroops(Player player){
+        int numberOfTerritories = player.territories.size();
+        int continentBonusPoints = 0; // find out if player has any continents and how much each is worth
+
+        for (Continent continent : player.getContinents()) {
+            continentBonusPoints += continent.getContinentPoint();
+        }
+        return numberOfTerritories/3 + continentBonusPoints;
+    }
+
+    public void deploy(Player player){
+
+        int deployTroops = getNumberOfTroops(player);
+        while (deployTroops > 0) {
+            System.out.println("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
+
+            String t = scanner.next();
+            Territory territory = theMap.findTerritory(t);
+            if (!(player.getTerritories().contains(territory))) {
+                System.out.println("Cannot deploy here. Pick another territory. ");
+            } else {
+                System.out.println("How many would you like to deploy? ");
+                int x = scanner.nextInt();
+                if (x <= deployTroops && (deployTroops - x) >= 0) {
+                    player.deploy(x, territory);
+                } else {
+                    System.out.println("Please choose a number between " + 1 + "-" + deployTroops);
+                    deployTroops -= x;
+                }
+            }
+        }
+    }
+
 }
