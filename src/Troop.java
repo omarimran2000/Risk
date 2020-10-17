@@ -56,9 +56,4 @@ public class Troop {
     public boolean isDeployed(){
         return deployed;
     }
-
-
-
-
-
 }
