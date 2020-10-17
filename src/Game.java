@@ -45,8 +45,6 @@ public class Game {
      */
     private void loadMap(String JSONfile) throws IOException, ParseException
     {
-        ArrayList<Territory> allTerritories = new ArrayList<>();
-
         JSONParser jsonParser = new JSONParser();
         FileReader fileReader = new FileReader(JSONfile);
         Object e = jsonParser.parse(fileReader);
@@ -73,7 +71,6 @@ public class Game {
                 String territoryName = (String) territories.keySet().toArray()[j];
                 Territory temp = new Territory(territoryName, theMap.getContinents().get(i));
                 theMap.getContinents().get(i).addTerritories(temp);
-                allTerritories.add(temp);
             }
         }
         /*
@@ -89,28 +86,15 @@ public class Game {
             for (int j = 0; j < territories.keySet().size(); j++)  //iterates through all the territories in JSON file again
             {
                 String originalTerritoryName = (String) territories.keySet().toArray()[j]; //gets name of territory that needs adjacent territories
-                Territory originalTerritory = null;
+                Territory originalTerritory = theMap.findTerritory(originalTerritoryName);
 
-                for (Territory t:allTerritories)                    //iterate through all the territories to find match territory object
-                {
-                    if (t.getName().equals(originalTerritoryName))  //finds territory object corresponding to territory name in JSON file
-                    {
-                       originalTerritory = t;
-                    }
-                }
-                JSONArray adjacentTerritories = (JSONArray) territories.get(originalTerritoryName); //gets all adjacent territory names from JSON file
+                JSONObject territoriesKeys = (JSONObject) territories.get(originalTerritoryName); //gets all the keys from territories file
+                JSONArray adjacentTerritories = (JSONArray) territoriesKeys.get("adjacent");
 
                 for (int k=0;k<adjacentTerritories.size();k++)  //iterates through JSON array of adjacent territories
                 {
                     String adjacentTerritoryName = (String) adjacentTerritories.get(k); //gets adjacent territory name
-                    Territory adjacentTerritory =null;
-                    for(Territory t:allTerritories)
-                    {
-                        if (t.getName().equals(adjacentTerritoryName))
-                        {
-                            adjacentTerritory = t;    //finds adjacent territory object
-                        }
-                    }
+                    Territory adjacentTerritory = theMap.findTerritory(adjacentTerritoryName);
                     originalTerritory.addNeighbour(adjacentTerritory);  //adds adjacent territory to ArrayList
                 }
             }
