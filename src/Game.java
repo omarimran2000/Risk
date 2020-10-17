@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
+import java.util.Random;
 
 
 public class Game {
@@ -111,17 +111,15 @@ public class Game {
      * This method is used to initialize which player possess which territory.
      */
     public void initializeDefaultArmy() {
-        Stack<Territory>territories = new Stack<>();
+        List<Territory>territories = new ArrayList<>();
+        Random random = new Random();
         for(Continent c : theMap.continents) {
             for(Territory t : c.getTerritories()) {
-                territories.push(t);
+                territories.add(t);
             }
         }
-        for (int i = 0; !territories.empty(); i++) {
-            players.get(i).addTerritory(territories.pop());
-            if (i == players.size() - 1) {
-                i = 0;
-            }
+        for (int i = 0; !territories.isEmpty(); i++) {
+            players.get(i%4).addTerritory(territories.get(random.nextInt(territories.size())));
         }
     }
 
