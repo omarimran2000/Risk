@@ -1,0 +1,369 @@
+{
+  "continents": {
+    "North America": {
+      "territories": {
+        "Alaska": {
+          "adjacent": [
+            "Kamchatka",
+            "Northwest Territories",
+            "Alberta"
+          ]
+        },
+        "Alberta": {
+          "adjacent": [
+            "Alaska",
+            "Northwest Territories",
+            "Ontario",
+            "Western United States"
+          ]
+        },
+        "Central America": {
+          "adjacent": [
+            "Eastern United States",
+            "Western United States",
+            "Venezuela"
+          ]
+        },
+        "Eastern United States": {
+          "adjacent": [
+            "Western United States",
+            "Ontario",
+            "Quebec",
+            "Central America"
+          ]
+        },
+        "Greenland": {
+          "adjacent": [
+            "Northwest Territories",
+            "Ontario",
+            "Quebec",
+            "Iceland"
+          ]
+        },
+        "Northwest Territories": {
+          "adjacent": [
+            "Alaska",
+            "Alberta",
+            "Ontario",
+            "Greenland"
+          ]
+        },
+        "Ontario": {
+          "adjacent": [
+            "Quebec",
+            "Alberta",
+            "Northwest Territories",
+            "Eastern United States",
+            "Western United States",
+            "Greenland"
+          ]
+        },
+        "Quebec": {
+          "adjacent": [
+            "Ontario",
+            "Greenland",
+            "Eastern United States"
+          ]
+        },
+        "Western United States": {
+          "adjacent": [
+            "Eastern United States",
+            "Ontario",
+            "Alberta",
+            "Central America"
+          ]
+        }
+      },
+        "points": 5
+    },
+      "South America": {
+        "territories": {
+          "Argentina": {
+            "adjacent": [
+              "Brazil",
+              "Peru"
+            ]
+          },
+          "Brazil": {
+            "adjacent": [
+              "Argentina",
+              "Peru",
+              "Venezuela",
+              "North Africa"
+            ]
+          },
+          "Peru": {
+            "adjacent": [
+              "Brazil",
+              "Argentina",
+              "Venezuela"
+            ]
+          },
+          "Venezuela": {
+            "adjacent": [
+              "Brazil",
+              "Peru",
+              "Central America"
+            ]
+          }
+        },
+        "points": 2
+      },
+      "Europe": {
+        "territories": {
+          "Great Britain": {
+            "adjacent": [
+              "Iceland",
+              "Scandinavia",
+              "Northern Europe",
+              "Western Europe"
+            ]
+          },
+          "Iceland": {
+            "adjacent": [
+              "Great Britain",
+              "Scandinavia",
+              "Greenland"
+            ]
+          },
+          "Northern Europe": {
+            "adjacent": [
+              "Great Britain",
+              "Scandinavia",
+              "Western Europe",
+              "Southern Europe",
+              "Ukraine"
+            ]
+          },
+          "Scandinavia": {
+            "adjacent": [
+              "Iceland",
+              "Great Britain",
+              "Northern Europe",
+              "Ukraine"
+            ]
+          },
+          "Southern Europe": {
+            "adjacent": [
+              "Western Europe",
+              "Northern Europe",
+              "Ukraine",
+              "North Africa",
+              "Egypt",
+              "Middle East"
+            ]
+          },
+          "Ukraine": {
+            "adjacent": [
+              "Scandinavia",
+              "Northern Europe",
+              "Southern Europe",
+              "Afghanistan",
+              "Middle East",
+              "Ural"
+            ]
+          },
+          "Western Europe": {
+            "adjacent": [
+              "Great Britain",
+              "Northern Europe",
+              "Southern Europe",
+              "North Africa"
+            ]
+          }
+        },
+        "points": 5
+      },
+      "Africa": {
+        "territories": {
+          "Congo": {
+            "adjacent": [
+              "East Africa",
+              "North Africa",
+              "South Africa"
+            ]
+          },
+          "East Africa": {
+            "adjacent": [
+              "Congo",
+              "Egypt",
+              "Madagascar",
+              "North Africa",
+              "South Africa",
+              "Middle East"
+            ]
+          },
+          "Egypt": {
+            "adjacent": [
+              "East Africa",
+              "North Africa",
+              "Southern Europe",
+              "Middle East"
+            ]
+          },
+          "Madagascar": {
+            "adjacent": [
+              "East Africa",
+              "South Africa"
+            ]
+          },
+          "North Africa": {
+            "adjacent": [
+              "Congo",
+              "East Africa",
+              "Egypt",
+              "Southern Europe",
+              "Western Europe",
+              "Brazil"
+            ]
+          },
+          "South Africa": {
+            "adjacent": [
+              "Congo",
+              "East Africa",
+              "Madagascar"
+            ]
+          }
+        },
+        "points": 3
+      },
+      "Asia": {
+        "territories": {
+          "Afghanistan": {
+            "adjacent": [
+              "China",
+              "India",
+              "Middle East",
+              "Ural",
+              "Ukraine"
+            ]
+          },
+          "China": {
+            "adjacent": [
+              "Afghanistan",
+              "India",
+              "Mongolia",
+              "Siam",
+              "Siberia",
+              "Ural"
+            ]
+          },
+          "India": {
+            "adjacent": [
+              "Afghanistan",
+              "China",
+              "Middle East",
+              "Siam"
+            ]
+          },
+          "Irkutsk": {
+            "adjacent": [
+              "Kamchatka",
+              "Mongolia",
+              "Yakutsk",
+              "Siberia"
+            ]
+          },
+          "Japan": {
+            "adjacent": [
+              "Kamchatka",
+              "Mongolia"
+            ]
+          },
+          "Kamchatka": {
+            "adjacent": [
+              "Japan",
+              "Irkutsk",
+              "Mongolia",
+              "Yakutsk",
+              "Alaska"
+            ]
+          },
+          "Middle East": {
+            "adjacent": [
+              "Afghanistan",
+              "India",
+              "Southern Europe",
+              "Ukraine",
+              "East Africa",
+              "Egypt"
+            ]
+          },
+          "Mongolia": {
+            "adjacent": [
+              "Irkutsk",
+              "Japan",
+              "Kamchatka",
+              "China",
+              "Afghanistan"
+            ]
+          },
+          "Siam": {
+            "adjacent": [
+              "China",
+              "India",
+              "Indonesia"
+            ]
+          },
+          "Siberia": {
+            "adjacent": [
+              "Irkutsk",
+              "China",
+              "Mongolia",
+              "Ural",
+              "Yakutsk"
+            ]
+          },
+          "Ural": {
+            "adjacent": [
+              "Afghanistan",
+              "China",
+              "Siberia",
+              "Ukraine"
+            ]
+          },
+          "Yakutsk": {
+            "adjacent": [
+              "Irkutsk",
+              "Kamchatka",
+              "Siberia"
+            ]
+          }
+        },
+        "points": 7
+      },
+      "Australia": {
+        "territories": {
+          "Eastern Australia": {
+            "adjacent": [
+              "New Guinea",
+              "Western Australia"
+            ]
+          },
+          "Indonesia": {
+            "adjacent": [
+              "New Guinea",
+              "Western Australia",
+              "Siam"
+            ]
+          },
+          "New Guinea": {
+            "adjacent": [
+              "Eastern Australia",
+              "Indonesia",
+              "Western Australia"
+            ]
+          },
+          "Western Australia": {
+            "adjacent": [
+              "Eastern Australia",
+              "Indonesia",
+              "New Guinea"
+            ]
+          }
+        },
+        "points": 2
+      }
+    }
+  }
+

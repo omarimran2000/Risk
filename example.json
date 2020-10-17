@@ -19,7 +19,8 @@
 
 		"North America":
 		{
-			"territories":{
+			"territories":
+			{
 				"Canada":{"adjacent":
 				["Germany","USA"]
 				},
