@@ -14,11 +14,25 @@ public class Game {
 
     private Map theMap;
     private static List<Player> players;
+    private static int numberOfPlayers;
 
     public Game ()
     {
         theMap = new Map("Global");
         players = new ArrayList<>();
+    }
+
+    /**
+     * Add a Player to players list
+     * @param player
+     */
+    public static void addPlayer(Player player){
+        players.add(player);
+    }
+
+
+    public int getNumberOfPlayers(){
+        return numberOfPlayers;
     }
 
     /**
@@ -125,26 +139,15 @@ public class Game {
         }
     }
 
-    public static void addPlayer(Player player){
-        players.add(player);
-    }
-
-    public static int numberOfPlayers;
-
-    public int getNumberOfPlayers(){
-        return numberOfPlayers;
-    }
-
     public static void main(String[] args) throws IOException, ParseException {
         Game game = new Game();
         game.loadMap("map.json");
         System.out.println("Map done loading");
-        // initialize players and add into list of players
-        //game.initializeDefaultArmy();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("How many players are playing? Enter a number between 2-6");
         numberOfPlayers = scanner.nextInt();
+        // get and print every player's name and adds them to players
         if (numberOfPlayers>=2 && numberOfPlayers<=6)
         {
             for (int i = 0; i < numberOfPlayers; i++)
@@ -156,5 +159,26 @@ public class Game {
                 addPlayer(player);
             }
         }
+
+        // setup the army placements
+        game.initializeDefaultArmy();
+
+        // ready to begin playing
+        //game.play();
+
     }
+
+    /*
+    public void play(){
+        for (int i = 0; i < numberOfPlayers-1; i++)
+        {
+            System.out.println("It is now " + players.get(i).getName() + "'s turn");
+            System.out.println("You have " + "" + " troops to deploy. Where would you like to deploy them?");
+
+            // return to first player
+            if (i == numberOfPlayers-1){
+                i = 0;
+            }
+        }
+    }*/
 }
