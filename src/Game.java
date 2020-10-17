@@ -2,6 +2,7 @@ public class Game {
 
     public static void main(String[] args){
 
+
     }
 
     /**
@@ -19,7 +20,7 @@ public class Game {
         for (int i = 0; i < numOfDice; i++) // sums the highest rolls together per player
         {
             offence += attacker.getDice()[i]; //access the die number saved at position i
-            defence += defence.getDice().[i];
+            defence += defender.getDice()[i];
         }
         if (offence > defence) return attacker;
         return defender;
