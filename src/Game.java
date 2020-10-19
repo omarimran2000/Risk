@@ -1,6 +1,7 @@
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
+import javax.swing.text.Style;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -227,34 +228,56 @@ public class Game {
     }
 
 
-    public void play(){
-        for (int i = 0; i < numberOfPlayers-1; i++)
-        {
-            Player player = players.get(i);
-            if (player.isActive()) {
-                System.out.println("It is now " + player.getName() + "'s turn");
-                deploy(player);
+    public void play() {
+        while (true) { // infinite loop that will end once all players are inactive
+            for (int i = 0; i < numberOfPlayers - 1; i++) {
+                Player player = players.get(i);
+                if (player.isActive()) {
+                    System.out.println("It is now " + player.getName() + "'s turn");
+                    printPlayer(player);
 
+                    deploy(player);
 
-                // return to first player
-                if (i == numberOfPlayers - 1) {
-                    i = 0;
+                    // after deploy phase and before attack phase
+                    System.out.println("Would you like to move to attack phase to pass your turn to the next player?");
+                    System.out.println("Type 'attack' or 'pass'.");
+                    while (!(scanner.next().equals("attack") | scanner.next().equals("pass"))) {
+                        System.out.println("Type 'attack' or 'pass'.");
+                    }
+                    if (scanner.next().equals("pass")) break; // end the turn
+                    //else if (scanner.next().equals("attack")){ attack(); }
+
+                    // return to first player
+                    if (i == numberOfPlayers - 1) {
+                        i = 0;
+                    }
                 }
             }
         }
     }
 
-    public int getNumberOfTroops(Player player){
+    /**
+     * Gets the number of troops to be deployed in the deploy phase at the beginning of each turn
+     * You get a minimum of 3 troops or the number of territories owned/3 + any continents bonus points
+     *
+     * @param player The current player
+     * @return The number of troops to be deployed
+     */
+    private int getNumberOfTroops(Player player){
         int numberOfTerritories = player.territories.size();
         int continentBonusPoints = 0; // find out if player has any continents and how much each is worth
 
         for (Continent continent : player.getContinents()) {
             continentBonusPoints += continent.getContinentPoint();
         }
-        return numberOfTerritories/3 + continentBonusPoints;
+        return Math.max(numberOfTerritories / 3 + continentBonusPoints, 3);
     }
 
-    public void deploy(Player player){
+    /**
+     * The deploy phase
+     * @param player The current player
+     */
+    private void deploy(Player player){
 
         int deployTroops = getNumberOfTroops(player);
         while (deployTroops > 0) {
@@ -277,4 +300,80 @@ public class Game {
         }
     }
 
+    /**
+     * Prints a smaller overview for a specific player at the beginning of their turn including
+     * the territories and continents that they own
+     */
+    private void printPlayer(Player player){
+        System.out.println("You are occupying the following territories:");
+        for (Territory t : player.getTerritories()){
+            //int troops = ??;
+            System.out.println(t + " with " + troops + " troops.");
+        }
+        if (!player.getContinents().isEmpty()) {
+            int count = 0;
+            System.out.println("You occupy the following continents: ");
+            for (Continent c : player.getContinents()){
+                if (count < player.getContinents().size()) {
+                    System.out.print(c + ", ");
+                }
+                else {
+                    System.out.println(c);
+                }
+                count ++;
+            }
+        }
+    }
+
+    /**
+     * Prints a view of the whole board including all territories, who owns them and how many troops
+     * plus any player that owns whole continents and any inactive players
+     */
+    private void printGame(){
+        // print all territories, who owns them and how many troops are in each
+        for (Continent c : theMap.getContinents()) {
+            for (Territory t : c.getTerritories()) {
+                Player player = t.getCurrentPlayer();
+                //int troops = player.getArmy().getTroops().size();
+                System.out.println(t + " is owned by " + player + " and there are " + troops + " troops.");
+            }
+        }
+        // print all players that own continents
+        for (Player p : players){
+            if (!p.getContinents().isEmpty()){
+                int count = 0;
+                System.out.print(p + " is in possession of: ");
+                for (Continent c : p.getContinents()){
+                    if (count < p.getContinents().size()) {
+                        System.out.print(c + ", ");
+                    }
+                    else {
+                        System.out.println(c);
+                    }
+                    count ++;
+                }
+            }
+            // print any inactive players
+            if (!p.isActive()) {
+                System.out.println(p + " is out of the game.");
+            }
+        }
+    }
+
+    /**
+     * Checks if there are any active players - if there is only
+     * 1 active player then they have conquered the entire map
+     *
+     * @return true if there is still at least 2 active players
+     */
+    private boolean playersActive(){
+        int x = 0;
+        for (Player p : players){
+            if (p.isActive()){
+                x++;
+                if (x == 2) return true;
+            }
+        }
+        return false;
+    }
 }
