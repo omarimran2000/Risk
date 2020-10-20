@@ -291,6 +291,9 @@ public class Game {
                 System.out.println("How many would you like to deploy? ");
                 int x = scanner.nextInt();
                 if (x <= deployTroops && (deployTroops - x) >= 0) {
+                    for (int i = 0; i <= deployTroops; i++) {
+                        player.getArmy().addTroop(new Troop());
+                    }
                     player.deploy(x, territory);
                 } else {
                     System.out.println("Please choose a number between " + 1 + "-" + deployTroops);
