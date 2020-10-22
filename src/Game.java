@@ -299,64 +299,78 @@ public class Game {
         }
     }
 
+    /**
+     * Attacking phase
+     *
+     * @param player The attacking player
+     *
+     */
     private void attack(Player player){
         printPlayer(player);
+        List<Territory> territories = player.getTerritories();
+
         System.out.println("From which of your territories would you like to attack from?");
         String t = scanner.next();
         Territory attackFrom = theMap.findTerritory(t);
-        List<Territory> territories = player.getTerritories();
-        if(!(territories.contains(attackFrom))){
-            System.out.println("You cannot attack from here. Please pick a territory you have armies in");
-        } else {
-           System.out.println("You can attack any of the following territories");
-           attackFrom.printAdjacentTerritories();
-           // good idea to print # of armies in each territory as well....
-           System.out.print("From which of these neighbouring territories would you like to attack?");
-           t = scanner.next();
-           Territory attack = theMap.findTerritory(t);
-           ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
-           if(!(neighbours.contains(attack))){
-               System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
-           } else {
-               System.out.println("With how many armies would you like to attack?");
-               int armies = scanner.nextInt();
-               int playerArmies = player.findTroops(attackFrom);
-               if(armies >= playerArmies || armies <= 0){
-                   System.out.println("You cannot attack with those many armies");
-                   System.out.println("Please enter a number between " + "1 - " + String.valueOf(playerArmies-1));
-               } else {
-                   int numDice = 0;
-                   if(armies > 3){
-                       numDice = 3;
-                   } else {
-                       numDice = armies;
-                   }
-                   player.attack(numDice, armies, attackFrom, attack);
-                   Player defender = attack.getCurrentPlayer();
-                   // call defend()
-                   Player winner = checkWinner(player, defender, numDice);
-                   if(winner.getName().equals(player.getName())){
-                       //winner.addTerritory(attack);
-                       defender.removeTroops(armies, attack);
-                       if(defender.findTroops(attack) == 0){
-                           defender.removeTerritory(attack);
-                           player.addTerritory(attack);
-                           if(defender.getTerritories().size() == 0){
-                               defender.setActive(false);
-                           }
-                           boolean control = attack.getContinent().getControl(player);
-                           if(control) {
-                               player.addContinent(attack.getContinent());
 
-                           }
-                       }
-                   } else {
-                       player.removeTroops(armies, attack);
-                   }
-               }
-           }
+        while(!(territories.contains(attackFrom))) {
+            System.out.println("You cannot attack from here. Please pick a territory you have armies in");
+            t = scanner.next();
+            attackFrom = theMap.findTerritory(t);
         }
 
+        System.out.println("You can attack any of the following territories: ");
+        attackFrom.printAdjacentTerritories();
+        System.out.print("Which territory would you like to attack?");
+        t = scanner.next();
+        Territory attack = theMap.findTerritory(t);
+        ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
+
+        while(!(neighbours.contains(attack))) {
+            System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
+            t = scanner.next();
+            attack = theMap.findTerritory(t);
+        }
+
+        System.out.println("With how many armies would you like to attack?");
+        int armies = scanner.nextInt();
+        int legalArmies = player.findTroops(attackFrom) - 1;
+
+        while(armies > legalArmies || armies <= 0) {
+            System.out.println("You cannot attack with those many armies");
+            System.out.println("Please enter a number between " + "1 - " + legalArmies);
+            armies = scanner.nextInt();
+        }
+
+        int numDice;
+        if(armies > 3){
+            numDice = 3;
+        } else {
+            numDice = armies;
+        }
+        player.attack(numDice, armies, attackFrom, attack);
+        Player defender = attack.getCurrentPlayer();
+        // call defend()
+
+        Player winner = checkWinner(player, defender, numDice);
+        if(winner.getName().equals(player.getName())){
+
+            defender.removeTroops(2, attack);
+            if(defender.findTroops(attack) == 0){
+                defender.removeTerritory(attack);
+                player.addTerritory(attack);
+                if(defender.getTerritories().size() == 0){
+                    defender.setActive(false);
+                }
+                boolean control = attack.getContinent().getControl(player);
+                if(control) {
+                    player.addContinent(attack.getContinent());
+
+                }
+            }
+        } else {
+            player.removeTroops(2, attack);
+        }
     }
 
     /**
