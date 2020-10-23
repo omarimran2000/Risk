@@ -1,3 +1,16 @@
+/**
+ * The main class for RISK where the map is loaded
+ * and the players can perform actions through the
+ * terminal
+ *
+ * @author Erica Oliver
+ * @author Wintana Yosief
+ * @author Santhosh Pradeepan
+ * @author Omar Imran
+ *
+ * @version October 23 2020
+ */
+
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -280,17 +293,19 @@ public class Game {
 
         int deployTroops = getNumberOfTroops(player);
         while (deployTroops > 0) {
-            System.out.println("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
 
-            String t = scanner.next();
+            System.out.println("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
+            scanner.nextLine();
+            String t = scanner.nextLine();
             Territory territory = theMap.findTerritory(t);
+
             if (!(player.getTerritories().contains(territory))) {
                 System.out.println("Cannot deploy here. Pick another territory. ");
             } else {
                 System.out.println("How many would you like to deploy? ");
                 int x = scanner.nextInt();
                 if (x <= deployTroops && (deployTroops - x) >= 0) {
-                    for (int i = 0; i < deployTroops; i++) {
+                    for (int i = 0; i < x; i++) {
                         player.getArmy().addTroop(new Troop());
                     }
                     deployTroops -= x;
@@ -316,6 +331,14 @@ public class Game {
         String t = scanner.next();
         Territory attackFrom = theMap.findTerritory(t);
 
+        while(player.findTroops(attackFrom)<2)
+        {
+            System.out.println("Territory must have more than 1 troop to attack from");
+            t = scanner.next();
+            attackFrom = theMap.findTerritory(t);
+
+        }
+
         while(!(territories.contains(attackFrom))) {
             System.out.println("You cannot attack from here. Please pick a territory you have armies in");
             t = scanner.next();
@@ -324,7 +347,7 @@ public class Game {
 
         System.out.println("You can attack any of the following territories: ");
         attackFrom.printAdjacentTerritories();
-        System.out.print("Which territory would you like to attack?");
+        System.out.println("Which territory would you like to attack?");
         t = scanner.next();
         Territory attack = theMap.findTerritory(t);
         ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
@@ -339,7 +362,7 @@ public class Game {
         int armies = scanner.nextInt();
         int legalArmies = player.findTroops(attackFrom) - 1;
 
-        while(armies > legalArmies || armies <= 0) {
+        while(armies > legalArmies || armies <= 2) {
             System.out.println("You cannot attack with those many armies");
             System.out.println("Please enter a number between " + "1 - " + legalArmies);
             armies = scanner.nextInt();

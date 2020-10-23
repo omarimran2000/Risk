@@ -54,7 +54,7 @@ public class Map {
         {
             for (Territory t: c.getTerritories())
             {
-                if((t.getName().equals(name)))
+                if((t.getName().toLowerCase().equals(name.toLowerCase())))
                 {
                     return  t;
                 }
