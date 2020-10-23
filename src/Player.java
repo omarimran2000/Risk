@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -232,6 +233,20 @@ public class Player {
             }
         }
     }
+
+    public int findTroops(Territory t){
+        List<Troop> troops = army.getTroops();
+        int count = 0;
+        for(Troop troop : troops){
+            if(troop.getLocation() == t){
+                count += 1;
+            }
+        }
+        return count;
+
+    }
+
 }
+
 
 
