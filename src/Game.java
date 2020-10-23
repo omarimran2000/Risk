@@ -293,10 +293,11 @@ public class Game {
                     for (int i = 0; i <= deployTroops; i++) {
                         player.getArmy().addTroop(new Troop());
                     }
+                    deployTroops -= x;
                     player.deploy(x, territory);
                 } else {
                     System.out.println("Please choose a number between " + 1 + "-" + deployTroops);
-                    deployTroops -= x;
+
                 }
             }
         }
@@ -383,8 +384,8 @@ public class Game {
     private void printPlayer(Player player){
         System.out.println("You are occupying the following territories:");
         for (Territory t : player.getTerritories()){
-            //int troops = ??;
-            System.out.println(t + " with " + troops + " troops.");
+            int troops = player.findTroops(t);
+            System.out.println(t.getName() + " with " + troops + " troops.");
         }
         if (!player.getContinents().isEmpty()) {
             int count = 0;
@@ -410,7 +411,7 @@ public class Game {
         for (Continent c : theMap.getContinents()) {
             for (Territory t : c.getTerritories()) {
                 Player player = t.getCurrentPlayer();
-                //int troops = player.getArmy().getTroops().size();
+                int troops = player.findTroops(t);
                 System.out.println(t + " is owned by " + player + " and there are " + troops + " troops.");
             }
         }
