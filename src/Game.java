@@ -193,14 +193,14 @@ public class Game {
     public static void main(String[] args) throws IOException, ParseException {
         Game game = new Game();
         game.loadMap("map.json");
-        System.out.println("Map done loading");
+        System.out.println("Map done loading"); //remember to remove this
 
         System.out.println("How many players are playing? Enter a number between 2-6");
         numberOfPlayers = scanner.nextInt();
 
         while (!(numberOfPlayers>=2 && numberOfPlayers<=6)){
             System.out.println("Please enter a number between 2-6");
-            scanner.next();
+            numberOfPlayers = scanner.nextInt();
 
         }
         // if a valid number of player is inputted
@@ -228,28 +228,28 @@ public class Game {
 
 
     public void play() {
-        while (true) { // infinite loop that will end once all players are inactive
-            for (int i = 0; i < numberOfPlayers - 1; i++) {
-                Player player = players.get(i);
-                if (player.isActive()) {
-                    System.out.println("It is now " + player.getName() + "'s turn");
-                    printPlayer(player);
+        String response;
+        for (int i = 0; playersActive(); i++) { // infinite loop that will end once all players are inactive
+            Player player = players.get(i % numberOfPlayers);
+            if (player.isActive()) {
+                System.out.println("It is now " + player.getName() + "'s turn.");
+                printPlayer(player);
 
-                    deploy(player);
+                deploy(player);
 
-                    // after deploy phase and before attack phase
-                    System.out.println("Would you like to move to attack phase to pass your turn to the next player?");
+                // after deploy phase and before attack phase
+                System.out.println("Would you like to move to attack phase to pass your turn to the next player?");
+                System.out.println("Type 'attack' or 'pass'.");
+                response = scanner.next();
+                while (!(response.equals("attack") | response.equals("pass"))) {
                     System.out.println("Type 'attack' or 'pass'.");
-                    while (!(scanner.next().equals("attack") | scanner.next().equals("pass"))) {
-                        System.out.println("Type 'attack' or 'pass'.");
-                    }
-                    if (scanner.next().equals("pass")) break; // end the turn
-                    //else if (scanner.next().equals("attack")){ attack(); }
-
-                    // return to first player
-                    if (i == numberOfPlayers - 1) {
-                        i = 0;
-                    }
+                    response = scanner.next();
+                }
+                if (response.equals("attack")) {
+                    attack(player);
+                }
+                else if (response.equals("pass")) {
+                    //add a statement confirming they don't want to attack
                 }
             }
         }
@@ -290,14 +290,13 @@ public class Game {
                 System.out.println("How many would you like to deploy? ");
                 int x = scanner.nextInt();
                 if (x <= deployTroops && (deployTroops - x) >= 0) {
-                    for (int i = 0; i <= deployTroops; i++) {
+                    for (int i = 0; i < deployTroops; i++) {
                         player.getArmy().addTroop(new Troop());
                     }
                     deployTroops -= x;
                     player.deploy(x, territory);
                 } else {
                     System.out.println("Please choose a number between " + 1 + "-" + deployTroops);
-
                 }
             }
         }
