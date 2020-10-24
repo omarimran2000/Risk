@@ -13,13 +13,13 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    String name;
-    boolean active;
-    Dice die;
-    int [] diceRolls;
-    Army army;
-    List<Continent> continents;
-    List<Territory> territories;
+    private String name;
+    private boolean active;
+    private Dice die;
+    private int [] diceRolls;
+    private Army army;
+    private List<Continent> continents;
+    private List<Territory> territories;
 
 
     /**

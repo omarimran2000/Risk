@@ -160,7 +160,7 @@ public class Game {
     public void initializeDefaultArmy() {
         List<Territory> territories = new ArrayList<>();
         Random random = new Random();
-        for (Continent c : theMap.continents) {
+        for (Continent c : theMap.getContinents()) {
             for (Territory t : c.getTerritories()) {
                 territories.add(t);
             }
@@ -195,10 +195,10 @@ public class Game {
             {
                 int index = random.nextInt(p.getTerritories().size());
                 p.getArmy().addTroop(new Troop());
-                p.deploy(1, p.territories.get(index));
+                p.deploy(1, p.getTerritories().get(index));
                 armiesCount--;
             }
-            for(Continent c:theMap.continents)
+            for(Continent c:theMap.getContinents())
             {
                 if(c.getControl(p))
                 {
@@ -255,7 +255,7 @@ public class Game {
      * @return The number of troops to be deployed
      */
     private int getNumberOfTroops(Player player) {
-        int numberOfTerritories = player.territories.size();
+        int numberOfTerritories = player.getTerritories().size();
         int continentBonusPoints = 0; // find out if player has any continents and how much each is worth
 
         for (Continent continent : player.getContinents()) {
