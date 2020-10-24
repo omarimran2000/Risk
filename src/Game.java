@@ -198,6 +198,13 @@ public class Game {
                 p.deploy(1, p.territories.get(index));
                 armiesCount--;
             }
+            for(Continent c:theMap.continents)
+            {
+                if(c.getControl(p))
+                {
+                    p.addContinent(c);
+                }
+            }
         }
     }
 
@@ -355,25 +362,31 @@ public class Game {
 
         }
 
-        int x = 1;
+        int x = attackFrom.getNeighbourTerritories().size()-1;
         for (Territory territory : attackFrom.getNeighbourTerritories()) {
             if (!(territory.getCurrentPlayer() == player)) {
                 break;
             }
-            else if (x == attackFrom.getNeighbourTerritories().size())
+            else if (x == 0)
             {
                 System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
                 t = scanner.nextLine();
                 attackFrom = theMap.findTerritory(t);
             }
+            x--;
         }
-
 
         System.out.println("You can attack any of the following territories: ");
         attackFrom.printAdjacentTerritories();
         System.out.println("Which territory would you like to attack?");
         t = scanner.nextLine();
         Territory attack = theMap.findTerritory(t);
+        while(attack==null)
+        {
+            System.out.println("Please enter a valid territory");
+            t = scanner.nextLine();
+            attack = theMap.findTerritory(t);
+        }
         while(attack.getCurrentPlayer().equals(player))
         {
             System.out.println("You own this territory!");
