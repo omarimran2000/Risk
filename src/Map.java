@@ -7,8 +7,8 @@
 import java.util.ArrayList;
 
 public class Map {
-    String name;
-    ArrayList<Continent> continents;
+    private String name;
+    private ArrayList<Continent> continents;
 
     /**
      *
