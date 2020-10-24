@@ -16,6 +16,7 @@ import org.json.simple.parser.*;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -232,7 +233,13 @@ public class Game {
                         response = scanner.next();
                     }
                     if (response.equals("attack")) {
-                        attack(player);
+                        if(canAttack(player)){
+                            attack(player);
+                        } else {
+                            System.out.println("You do not have enough troops to attack.");
+                        }
+
+
                     } else if (response.equals("pass")) {
                         response = "";
                         break;
@@ -313,7 +320,6 @@ public class Game {
         Territory attackFrom = null, attack = null;
         while(!attackFromChosen) {
 
-
             System.out.println("Which of your territories would you like to attack from?");
             t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
@@ -338,17 +344,17 @@ public class Game {
 
 
 
-                int x = attackFrom.getNeighbourTerritories().size() - 1;
-                for (Territory territory : attackFrom.getNeighbourTerritories()) {
-                    if (!(territory.getCurrentPlayer() == player)) {
+            int x = attackFrom.getNeighbourTerritories().size() - 1;
+            for (Territory territory : attackFrom.getNeighbourTerritories()) {
+                if (!(territory.getCurrentPlayer() == player)) {
                         attackFromChosen = true;
                         break;
-                    } else if (x == 0) {
-                        System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
+                } else if (x == 0) {
+                    System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
 
-                    }
-                    x--;
                 }
+                x--;
+            }
 
         }
 
@@ -476,6 +482,7 @@ public class Game {
      */
     private boolean playersActive(){
         int x = 0;
+
         for (Player p : players){
             if (p.isActive()){
                 x++;
@@ -484,6 +491,25 @@ public class Game {
         }
         return false;
     }
+
+    public boolean canAttack(Player player) {
+        List<Territory> territories = player.getTerritories();
+        for (Territory t : territories) {
+            if (player.findTroops(t) > 1){
+                List<Territory> neighbours = t.getNeighbourTerritories();
+                for(Territory terr: neighbours){
+                    if(!(territories.contains(terr))){
+                        return true;
+                    }
+                }
+
+
+            }
+        }
+        return false;
+
+    }
+
 
     /**
      * @param args
