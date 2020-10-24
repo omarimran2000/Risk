@@ -192,7 +192,7 @@ public class Player {
         int count = 0;
         while (count < numberOfTroops) {
             for (Troop troop : troops) {
-                if (troop.getLocation() == oldTerritory) {
+                if (troop.getLocation() == oldTerritory && count < numberOfTroops ) {
                     troop.setLocation(newTerritory);
                     count += 1;
                 }
