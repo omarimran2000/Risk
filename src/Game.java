@@ -352,12 +352,12 @@ public class Game {
             System.out.println("Territory must have more than 1 troop to attack from");
             t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
-
         }
 
         int x = 1;
         for (Territory territory : attackFrom.getNeighbourTerritories()) {
-            if (!(territory.getCurrentPlayer() == player)) {
+            if (territory.getCurrentPlayer() != player) { // player does not own one of the neighbouring territories
+                x++;
                 break;
             }
             else if (x == attackFrom.getNeighbourTerritories().size())
@@ -374,6 +374,11 @@ public class Game {
         System.out.println("Which territory would you like to attack?");
         t = scanner.nextLine();
         Territory attack = theMap.findTerritory(t);
+        while (attack == null) { // there was a typo or something so ask for input again
+            System.out.println("Which territory would you like to attack?");
+            t = scanner.nextLine();
+            attack = theMap.findTerritory(t);
+        }
         while(attack.getCurrentPlayer().equals(player))
         {
             System.out.println("You own this territory!");
@@ -409,7 +414,6 @@ public class Game {
             numDefendDice = 2;
         }
         defender.rollDice(numDefendDice);
-        // call defend()
 
         if (checkWinner(player, defender, numDefendDice, attack, attackFrom)) {
             int numMoveTroops = 0;
