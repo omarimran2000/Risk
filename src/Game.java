@@ -227,7 +227,7 @@ public class Game {
                     System.out.println("Would you like to attack or pass your turn to the next player?");
                     System.out.println("Type 'attack' or 'pass'.");
                     response = scanner.next();
-                    while (!(response.equals("attack") | response.equals("pass"))) {
+                    while (!(response.equals("attack") | response.equals("pass") | response.equals("help"))) {
                         System.out.println("Type 'attack' or 'pass'.");
                         response = scanner.next();
                     }
@@ -237,6 +237,9 @@ public class Game {
                         response = "";
                         break;
                         //add a statement confirming they don't want to attack
+                    } else if (response.equals("help")) {
+                        printGame();
+                        continue;
                     }
                 }
             }
