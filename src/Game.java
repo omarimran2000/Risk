@@ -225,25 +225,31 @@ public class Game {
 
                 // after deploy phase and before attack phase
                 while (!response.equals("pass")) {
-                    System.out.println("Would you like to attack or pass your turn to the next player?");
-                    System.out.println("Type 'attack' or 'pass'.");
-                    response = scanner.next();
-                    while (!(response.equals("attack") | response.equals("pass"))) {
+                    if (canAttack(player)) {
+                        System.out.println("Would you like to attack or pass your turn to the next player?");
                         System.out.println("Type 'attack' or 'pass'.");
                         response = scanner.next();
+                    } else {
+                        System.out.println("You do not have enough troops to attack.");
+                        break;
+                    }
+
+                    while (!(response.equals("attack") | response.equals("pass"))) {
+                            System.out.println("Type 'attack' or 'pass'.");
+                            response = scanner.next();
                     }
                     if (response.equals("attack")) {
-                        if(canAttack(player)){
+                        if (canAttack(player)) {
                             attack(player);
                         } else {
                             System.out.println("You do not have enough troops to attack.");
+                            break;
                         }
 
-
                     } else if (response.equals("pass")) {
-                        response = "";
-                        break;
-                        //add a statement confirming they don't want to attack
+                            response = "";
+                            break;
+                            //add a statement confirming they don't want to attack
                     }
                 }
             }
