@@ -16,6 +16,7 @@ import org.json.simple.parser.*;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -224,19 +225,31 @@ public class Game {
 
                 // after deploy phase and before attack phase
                 while (!response.equals("pass")) {
-                    System.out.println("Would you like to attack or pass your turn to the next player?");
-                    System.out.println("Type 'attack' or 'pass'.");
-                    response = scanner.next();
-                    while (!(response.equals("attack") | response.equals("pass"))) {
+                    if (canAttack(player)) {
+                        System.out.println("Would you like to attack or pass your turn to the next player?");
                         System.out.println("Type 'attack' or 'pass'.");
                         response = scanner.next();
+                    } else {
+                        System.out.println("You do not have enough troops to attack.");
+                        break;
+                    }
+
+                    while (!(response.equals("attack") | response.equals("pass"))) {
+                            System.out.println("Type 'attack' or 'pass'.");
+                            response = scanner.next();
                     }
                     if (response.equals("attack")) {
-                        attack(player);
+                        if (canAttack(player)) {
+                            attack(player);
+                        } else {
+                            System.out.println("You do not have enough troops to attack.");
+                            break;
+                        }
+
                     } else if (response.equals("pass")) {
-                        response = "";
-                        break;
-                        //add a statement confirming they don't want to attack
+                            response = "";
+                            break;
+                            //add a statement confirming they don't want to attack
                     }
                 }
             }
@@ -313,7 +326,6 @@ public class Game {
         Territory attackFrom = null, attack = null;
         while(!attackFromChosen) {
 
-
             System.out.println("Which of your territories would you like to attack from?");
             t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
@@ -338,17 +350,17 @@ public class Game {
 
 
 
-                int x = attackFrom.getNeighbourTerritories().size() - 1;
-                for (Territory territory : attackFrom.getNeighbourTerritories()) {
-                    if (!(territory.getCurrentPlayer() == player)) {
+            int x = attackFrom.getNeighbourTerritories().size() - 1;
+            for (Territory territory : attackFrom.getNeighbourTerritories()) {
+                if (!(territory.getCurrentPlayer() == player)) {
                         attackFromChosen = true;
                         break;
-                    } else if (x == 0) {
-                        System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
+                } else if (x == 0) {
+                    System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
 
-                    }
-                    x--;
                 }
+                x--;
+            }
 
         }
 
@@ -476,6 +488,7 @@ public class Game {
      */
     private boolean playersActive(){
         int x = 0;
+
         for (Player p : players){
             if (p.isActive()){
                 x++;
@@ -484,6 +497,25 @@ public class Game {
         }
         return false;
     }
+
+    public boolean canAttack(Player player) {
+        List<Territory> territories = player.getTerritories();
+        for (Territory t : territories) {
+            if (player.findTroops(t) > 1){
+                List<Territory> neighbours = t.getNeighbourTerritories();
+                for(Territory terr: neighbours){
+                    if(!(territories.contains(terr))){
+                        return true;
+                    }
+                }
+
+
+            }
+        }
+        return false;
+
+    }
+
 
     /**
      * @param args
