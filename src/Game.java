@@ -235,7 +235,7 @@ public class Game {
                 String name = scanner.next();
                 Player player = new Player(name);
                 player.setActive(true);
-                System.out.println(player.getName() + " added.");
+                System.out.println(player.getName() + " added");
                 addPlayer(player);
             }
         }
@@ -362,13 +362,12 @@ public class Game {
 
         }
 
-        int x = attackFrom.getNeighbourTerritories().size()-1;
+
+        int x = attackFrom.getNeighbourTerritories().size() - 1;
         for (Territory territory : attackFrom.getNeighbourTerritories()) {
             if (!(territory.getCurrentPlayer() == player)) {
                 break;
-            }
-            else if (x == 0)
-            {
+            } else if (x == 0) {
                 System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
                 t = scanner.nextLine();
                 attackFrom = theMap.findTerritory(t);
@@ -422,9 +421,12 @@ public class Game {
             numDefendDice = 2;
         }
         defender.rollDice(numDefendDice);
-        // call defend()
 
-        if (checkWinner(player, defender, numDefendDice, attack, attackFrom)) {
+        int num = 0;
+        if (numDefendDice>numDice) num = numDice;
+        else num = numDefendDice;
+
+        if (checkWinner(player, defender, num, attack, attackFrom)) {
             int numMoveTroops = 0;
             legalArmies = player.findTroops(attackFrom);
             while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
