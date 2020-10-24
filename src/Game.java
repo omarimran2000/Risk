@@ -191,22 +191,13 @@ public class Game {
                 p.deploy(1, t);
                 armiesCount--;
             }
-
-            for (int i = 0; (i < p.getTerritories().size()); i++)  //distributes rest of the troops
+            while(armiesCount!=0)
             {
-                if (armiesCount != 0) {
-                    int tempTroopCount = random.nextInt(armiesCount) + 1;
-
-                    for (int j = 1; j < (tempTroopCount + 1); j++) {
-                        p.getArmy().addTroop(new Troop());
-                    }
-                    p.deploy(tempTroopCount, p.territories.get(i));
-                    armiesCount = armiesCount - tempTroopCount;
-                }
-
+                int index = random.nextInt(p.getTerritories().size());
+                p.getArmy().addTroop(new Troop());
+                p.deploy(1, p.territories.get(index));
+                armiesCount--;
             }
-
-
         }
     }
 
