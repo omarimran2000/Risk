@@ -78,6 +78,7 @@ public class Game {
         }
         if (defender.findTroops(territory) == 0) {
             defender.removeTerritory(territory);
+            territory.setCurrentPlayer(attacker);
             if(defender.getTerritories().size() == 0){
                 System.out.println(defender.getName() + " has no more territories and is now out of the game.");
                 defender.setActive(false);
@@ -368,6 +369,12 @@ public class Game {
         System.out.println("Which territory would you like to attack?");
         t = scanner.nextLine();
         Territory attack = theMap.findTerritory(t);
+        while(attack.getCurrentPlayer().equals(player))
+        {
+            System.out.println("You own this territory!");
+            t = scanner.nextLine();
+            attack = theMap.findTerritory(t);
+        }
         ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
 
         while (!(neighbours.contains(attack))) {

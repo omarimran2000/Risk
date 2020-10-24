@@ -44,12 +44,7 @@ public class Army {
      */
     public void removeTroop(Troop removeTroop)
     {
-        List<Troop> troops = getTroops();
-        for(Troop troop: troops){
-            if(troop == removeTroop){
-                troops.remove(removeTroop);
-            }
-        }
+        troops.remove(removeTroop);
 
     }
 

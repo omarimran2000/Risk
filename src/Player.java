@@ -1,3 +1,4 @@
+import javax.swing.tree.TreeCellRenderer;
 import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
@@ -98,12 +99,14 @@ public class Player {
      * @param c The continent that the player has lost
      */
     public void removeContinent(Continent c) {
+        Continent removeContinent = null;
         for (Continent continent : continents) {
             if (continent == c) {
-                continents.remove(continent);
-
+                removeContinent = c;
+                break;
             }
         }
+        continents.remove(removeContinent);
     }
 
     /**
@@ -121,14 +124,17 @@ public class Player {
      * @param t The territory the player has lost
      */
     public void removeTerritory(Territory t) {
+        Territory deletedTerritory =null;
         for (Territory territory : territories) {
             if (t == territory) {
                 if(territory.getContinent().getControl(this)) {
                     removeContinent(territory.getContinent());
                 }
-                territories.remove(territory);
+                deletedTerritory = t;
+                break;
             }
         }
+        territories.remove(deletedTerritory);
     }
     /**
      * Gets the territories the player owns
@@ -226,16 +232,19 @@ public class Player {
     public void removeTroops(int numOfTroops, Territory removedTerritory)
     {
         List<Troop> troops = army.getTroops();
+        Troop deletedTroop = null;
         int count = 0;
         while(count < numOfTroops) {
             for (Troop troop : troops) {
                 Territory loc = troop.getLocation();
                 if (loc == removedTerritory) {
                     troop.setDeployed(false);
-                    army.removeTroop(troop);
+                    deletedTroop = troop;
                     count += 1;
+                    break;
                 }
             }
+            army.removeTroop(deletedTroop);
         }
     }
 
