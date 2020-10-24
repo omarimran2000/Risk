@@ -75,7 +75,6 @@ public class Game {
                 attacker.removeTroops(1, attackFrom);
                 System.out.println(attacker.getName() + " loses one troop.");
             }
-
         }
         if (defender.findTroops(territory) == 0) {
             defender.removeTerritory(territory);
@@ -245,7 +244,6 @@ public class Game {
                             System.out.println("You do not have enough troops to attack.");
                             break;
                         }
-
                     } else if (response.equals("pass")) {
                         response = "";
                         break;
@@ -347,11 +345,7 @@ public class Game {
             } if (player.findTroops(attackFrom) < 2) {
                 System.out.println("Territory must have more than 1 troop to attack from");
                 continue;
-
-
             }
-
-
 
             int x = attackFrom.getNeighbourTerritories().size() - 1;
             for (Territory territory : attackFrom.getNeighbourTerritories()) {
@@ -360,11 +354,9 @@ public class Game {
                         break;
                 } else if (x == 0) {
                     System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
-
                 }
                 x--;
             }
-
         }
 
         System.out.println("You can attack any of the following territories: ");
@@ -512,12 +504,9 @@ public class Game {
                         return true;
                     }
                 }
-
-
             }
         }
         return false;
-
     }
 
 
