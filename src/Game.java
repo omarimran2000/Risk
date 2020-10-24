@@ -422,11 +422,8 @@ public class Game {
         }
         defender.rollDice(numDefendDice);
 
-        int num = 0;
-        if (numDefendDice>numDice) num = numDice;
-        else num = numDefendDice;
-
-        if (checkWinner(player, defender, num, attack, attackFrom)) {
+        if (defender.findTroops(attack) == 1 || numDice == 1) numDefendDice = 1;
+        if (checkWinner(player, defender, numDefendDice, attack, attackFrom)) {
             int numMoveTroops = 0;
             legalArmies = player.findTroops(attackFrom);
             while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
