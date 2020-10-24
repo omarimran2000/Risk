@@ -15,6 +15,7 @@ public class Territory {
     private Player currentPlayer;
 
     /**
+     * Constructor for Territory class
      *
      * @param name name of the territory
      * @param continent the continent the territory is located
@@ -36,16 +37,16 @@ public class Territory {
 
     /**
      * Getter function for continent
+     *
      * @return continent
      */
-
     public Continent getContinent() {
         return continent;
     }
 
     /**
-     *
      * Getter function for neighbouring territories
+     *
      * @return territories
      */
     public ArrayList<Territory> getNeighbourTerritories() {
@@ -61,6 +62,7 @@ public class Territory {
 
     /**
      * Getter function for current player
+     *
      * @return the player
      */
     public Player getCurrentPlayer() {
@@ -69,6 +71,7 @@ public class Territory {
 
     /**
      * Setter function for current player
+     *
      * @param currentPlayer the player who controls the territory
      */
     public void setCurrentPlayer(Player currentPlayer) {
@@ -76,20 +79,35 @@ public class Territory {
     }
 
     /**
-     *
+     * prints territory's name
      */
     public void printTerritory()
     {
         System.out.println("Territory: "+name);
     }
+
     /**
-     *
+     * prints all adjacent territories
      */
     public void printAdjacentTerritories()
     {
         for(Territory t:neighbourTerritories)
         {
             t.printTerritory();
+        }
+    }
+
+    /**
+     * prints all adjacent territories that aren't owned by a specific player
+     *
+     * @param player the specific player
+     */
+    public void printAdjacentTerritories(Player player) {
+        for(Territory t:neighbourTerritories)
+        {
+            if (t.currentPlayer != player) {
+                t.printTerritory();
+            }
         }
     }
 }

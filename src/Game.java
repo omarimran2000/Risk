@@ -209,47 +209,6 @@ public class Game {
     }
 
     /**
-     * @param args
-     * @throws IOException
-     * @throws ParseException
-     */
-
-    public static void main(String[] args) throws IOException, ParseException {
-        Game game = new Game();
-        game.loadMap("map.json");
-        System.out.println("Map done loading"); //remember to remove this
-
-        System.out.println("How many players are playing? Enter a number between 2-6");
-        numberOfPlayers = scanner.nextInt();
-
-        while (!(numberOfPlayers >= 2 && numberOfPlayers <= 6)) {
-            System.out.println("Please enter a number between 2-6");
-            numberOfPlayers = scanner.nextInt();
-
-        }
-        // if a valid number of player is inputted
-        // get and print every player's name and adds them to players
-        {
-            for (int i = 0; i < numberOfPlayers; i++) {
-                System.out.print("Player name: ");
-                String name = scanner.next();
-                Player player = new Player(name);
-                player.setActive(true);
-                System.out.println(player.getName() + " added");
-                addPlayer(player);
-            }
-        }
-
-        // setup the army placements
-        game.initializeDefaultArmy();
-        game.setArmies(numberOfPlayers);
-
-        // ready to begin playing
-        game.play();
-
-    }
-
-    /**
      * plays the game
      */
     public void play() {
@@ -318,7 +277,11 @@ public class Game {
 
             if (!(player.getTerritories().contains(territory))) {
                 System.out.println("Cannot deploy here. Pick another territory. ");
-            } else {
+            }
+            else if (deployTroops == 1) {
+                player.deploy(deployTroops, territory);
+            }
+            else {
                 System.out.println("How many would you like to deploy? ");
                 int x = scanner.nextInt();
                 scanner.nextLine();
@@ -346,8 +309,8 @@ public class Game {
         List<Territory> territories = player.getTerritories();
         scanner.nextLine();
         String t;
-        boolean attackFromChosen = false;
-        Territory attackFrom = null;
+        boolean attackFromChosen = false, attackChosen = false;
+        Territory attackFrom = null, attack = null;
         while(!attackFromChosen) {
 
 
@@ -390,28 +353,30 @@ public class Game {
         }
 
         System.out.println("You can attack any of the following territories: ");
-        attackFrom.printAdjacentTerritories();
-        System.out.println("Which territory would you like to attack?");
-        t = scanner.nextLine();
-        Territory attack = theMap.findTerritory(t);
-        while(attack==null)
-        {
-            System.out.println("Please enter a valid territory");
+        attackFrom.printAdjacentTerritories(player);
+        while(!attackChosen) {
+            System.out.println("Which territory would you like to attack?");
             t = scanner.nextLine();
             attack = theMap.findTerritory(t);
-        }
-        while(attack.getCurrentPlayer().equals(player))
-        {
-            System.out.println("You own this territory!");
-            t = scanner.nextLine();
-            attack = theMap.findTerritory(t);
-        }
-        ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
+            if(attack==null)
+            {
+                System.out.println("Please enter a valid territory");
+                continue;
+            }
+            else if(attack.getCurrentPlayer().equals(player))
+            {
+                System.out.println("You own this territory!");
+                continue;
+            }
+            ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
 
-        while (!(neighbours.contains(attack))) {
-            System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
-            t = scanner.nextLine();
-            attack = theMap.findTerritory(t);
+            if(!(neighbours.contains(attack))) {
+                System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
+                continue;
+            }
+            attackChosen = true;
+
+
         }
         legalArmies = player.findTroops(attackFrom) - 1;
         if (legalArmies == 1) {
@@ -518,5 +483,45 @@ public class Game {
             }
         }
         return false;
+    }
+
+    /**
+     * @param args
+     * @throws IOException
+     * @throws ParseException
+     */
+    public static void main(String[] args) throws IOException, ParseException {
+        Game game = new Game();
+        game.loadMap("map.json");
+        System.out.println("Map done loading"); //remember to remove this
+
+        System.out.println("How many players are playing? Enter a number between 2-6");
+        numberOfPlayers = scanner.nextInt();
+
+        while (!(numberOfPlayers >= 2 && numberOfPlayers <= 6)) {
+            System.out.println("Please enter a number between 2-6");
+            numberOfPlayers = scanner.nextInt();
+
+        }
+        // if a valid number of player is inputted
+        // get and print every player's name and adds them to players
+        {
+            for (int i = 0; i < numberOfPlayers; i++) {
+                System.out.print("Player name: ");
+                String name = scanner.next();
+                Player player = new Player(name);
+                player.setActive(true);
+                System.out.println(player.getName() + " added");
+                addPlayer(player);
+            }
+        }
+
+        // setup the army placements
+        game.initializeDefaultArmy();
+        game.setArmies(numberOfPlayers);
+
+        // ready to begin playing
+        game.play();
+
     }
 }
