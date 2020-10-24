@@ -198,6 +198,13 @@ public class Game {
                 p.deploy(1, p.territories.get(index));
                 armiesCount--;
             }
+            for(Continent c:theMap.continents)
+            {
+                if(c.getControl(p))
+                {
+                    p.addContinent(c);
+                }
+            }
         }
     }
 
@@ -228,7 +235,7 @@ public class Game {
                 String name = scanner.next();
                 Player player = new Player(name);
                 player.setActive(true);
-                System.out.println(player.getName() + " added.");
+                System.out.println(player.getName() + " added");
                 addPlayer(player);
             }
         }
@@ -338,114 +345,114 @@ public class Game {
         int numDice = 0, legalArmies, numDefendDice;
         List<Territory> territories = player.getTerritories();
         scanner.nextLine();
-        String t;
-        Territory attackFrom = null;
-        boolean chooseAttackFrom = false;
-        while (!chooseAttackFrom) {
-            System.out.println("Which of your territories would you like to attack from?");
+        System.out.println("Which of your territories would you like to attack from?");
+        String t = scanner.nextLine();
+        Territory attackFrom = theMap.findTerritory(t);
+
+        while (!(territories.contains(attackFrom))) {
+            System.out.println("You cannot attack from here. Please pick a territory you have armies in");
+            t = scanner.nextLine();
+            attackFrom = theMap.findTerritory(t);
+        }
+
+        while (player.findTroops(attackFrom) < 2) {
+            System.out.println("Territory must have more than 1 troop to attack from");
             t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
 
-            if (!(territories.contains(attackFrom))) {
-                System.out.println("You cannot attack from here. Please pick a territory you have armies in");
-                continue;
-            }
-
-            if (player.findTroops(attackFrom) < 2) {
-                System.out.println("Territory must have more than 1 troop to attack from");
-                continue;
-
-            }
-
-
-            for (Territory territory : attackFrom.getNeighbourTerritories()) {
-                if (!(territory.getCurrentPlayer() == player)) {
-                    chooseAttackFrom = true;
-                    break;
-
-
-                }
-
-            }
-            if(!chooseAttackFrom) {
-
-                System.out.println("You own all neighbouring territories.");
-            }
         }
 
-            System.out.println("You can attack any of the following territories: ");
-            attackFrom.printAdjacentTerritories();
-            System.out.println("Which territory would you like to attack?");
+
+        int x = attackFrom.getNeighbourTerritories().size() - 1;
+        for (Territory territory : attackFrom.getNeighbourTerritories()) {
+            if (!(territory.getCurrentPlayer() == player)) {
+                break;
+            } else if (x == 0) {
+                System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
+                t = scanner.nextLine();
+                attackFrom = theMap.findTerritory(t);
+            }
+            x--;
+        }
+
+        System.out.println("You can attack any of the following territories: ");
+        attackFrom.printAdjacentTerritories();
+        System.out.println("Which territory would you like to attack?");
+        t = scanner.nextLine();
+        Territory attack = theMap.findTerritory(t);
+        while(attack==null)
+        {
+            System.out.println("Please enter a valid territory");
             t = scanner.nextLine();
-            Territory attack = theMap.findTerritory(t);
-            while (attack.getCurrentPlayer().equals(player)) {
-                System.out.println("You own this territory!");
-                t = scanner.nextLine();
-                attack = theMap.findTerritory(t);
-            }
-            ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
+            attack = theMap.findTerritory(t);
+        }
+        while(attack.getCurrentPlayer().equals(player))
+        {
+            System.out.println("You own this territory!");
+            t = scanner.nextLine();
+            attack = theMap.findTerritory(t);
+        }
+        ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
 
-            while (!(neighbours.contains(attack))) {
-                System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
-                t = scanner.nextLine();
-                attack = theMap.findTerritory(t);
+        while (!(neighbours.contains(attack))) {
+            System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
+            t = scanner.nextLine();
+            attack = theMap.findTerritory(t);
+        }
+        legalArmies = player.findTroops(attackFrom) - 1;
+        if (legalArmies == 1) {
+            numDice = 1;
+        } else if (legalArmies == 2) {
+            while (numDice < 1 || numDice > 2) {
+                System.out.println("How many dice would you like to roll? (1-2)");
+                numDice = scanner.nextInt();
             }
-            legalArmies = player.findTroops(attackFrom) - 1;
-            if (legalArmies == 1) {
-                numDice = 1;
-            } else if (legalArmies == 2) {
-                while (numDice < 1 || numDice > 2) {
-                    System.out.println("How many dice would you like to roll? (1-2)");
-                    numDice = scanner.nextInt();
-                }
-            } else {
-                while (numDice < 1 || numDice > 3) {
-                    System.out.println("How many dice would you like to roll? (1-3)");
-                    numDice = scanner.nextInt();
-                }
-            }
-            player.rollDice(numDice);
-            Player defender = attack.getCurrentPlayer();
-            if (defender.findTroops(attack) == 1) {
-                numDefendDice = 1;
-            } else {
-                numDefendDice = 2;
-            }
-            defender.rollDice(numDefendDice);
-            // call defend()
-
-            if (checkWinner(player, defender, numDefendDice, attack, attackFrom)) {
-                int numMoveTroops = 0;
-                legalArmies = player.findTroops(attackFrom);
-                while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
-                    System.out.println("How many troops would you like to move to " + attack.getName() + "? (1-" + (legalArmies - 1) + ")");
-                    numMoveTroops = scanner.nextInt();
-                }
-                player.attackWin(numMoveTroops, attackFrom, attack);
+        } else {
+            while (numDice < 1 || numDice > 3) {
+                System.out.println("How many dice would you like to roll? (1-3)");
+                numDice = scanner.nextInt();
             }
         }
+        player.rollDice(numDice);
+        Player defender = attack.getCurrentPlayer();
+        if (defender.findTroops(attack) == 1) {
+            numDefendDice = 1;
+        } else {
+            numDefendDice = 2;
+        }
+        defender.rollDice(numDefendDice);
 
-
-        /**
-         * Prints a smaller overview for a specific player at the beginning of their turn including
-         * the territories and continents that they own
-         *
-         * @param player the player to be printed
-         */
-        private void printPlayer (Player player){
-            System.out.println("You are occupying the following territories:");
-            for (Territory t : player.getTerritories()) {
-                int troops = player.findTroops(t);
-                System.out.println(t.getName() + " with " + troops + " troops.");
+        if (defender.findTroops(attack) == 1 || numDice == 1) numDefendDice = 1;
+        if (checkWinner(player, defender, numDefendDice, attack, attackFrom)) {
+            int numMoveTroops = 0;
+            legalArmies = player.findTroops(attackFrom);
+            while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
+                System.out.println("How many troops would you like to move to " + attack.getName() + "? (1-" + (legalArmies - 1) + ")");
+                numMoveTroops = scanner.nextInt();
             }
-            if (!player.getContinents().isEmpty()) {
-                System.out.println("You occupy the following continents: ");
-                for (Continent c : player.getContinents()) {
-                    System.out.println(c.getName());
-                }
+            player.attackWin(numMoveTroops, attackFrom, attack);
+        }
+    }
+
+    /**
+     * Prints a smaller overview for a specific player at the beginning of their turn including
+     * the territories and continents that they own
+     *
+     * @param player the player to be printed
+     */
+    private void printPlayer(Player player){
+        System.out.println("You are occupying the following territories:");
+        for (Territory t : player.getTerritories()){
+            int troops = player.findTroops(t);
+            System.out.println(t.getName() + " with " + troops + " troops.");
+        }
+        if (!player.getContinents().isEmpty()) {
+            System.out.println("You occupy the following continents: ");
+            for (Continent c : player.getContinents()){
+                System.out.println(c.getName());
             }
         }
-
+    }
 
     /**
      * Prints a view of the whole board including all territories, who owns them and how many troops
