@@ -16,6 +16,7 @@ import org.json.simple.parser.*;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -224,15 +225,27 @@ public class Game {
 
                 // after deploy phase and before attack phase
                 while (!response.equals("pass")) {
-                    System.out.println("Would you like to attack or pass your turn to the next player?");
-                    System.out.println("Type 'attack' or 'pass'.");
-                    response = scanner.next();
-                    while (!(response.equals("attack") | response.equals("pass") | response.equals("help"))) {
+                    if (canAttack(player)) {
+                        System.out.println("Would you like to attack or pass your turn to the next player?");
                         System.out.println("Type 'attack' or 'pass'.");
                         response = scanner.next();
+                    } else {
+                        System.out.println("You do not have enough troops to attack.");
+                        break;
+                    }
+
+                    while (!(response.equals("attack") | response.equals("pass") | response.equals("help"))) {
+                            System.out.println("Type 'attack' or 'pass'.");
+                            response = scanner.next();
                     }
                     if (response.equals("attack")) {
-                        attack(player);
+                        if (canAttack(player)) {
+                            attack(player);
+                        } else {
+                            System.out.println("You do not have enough troops to attack.");
+                            break;
+                        }
+
                     } else if (response.equals("pass")) {
                         response = "";
                         break;
@@ -334,18 +347,24 @@ public class Game {
             } if (player.findTroops(attackFrom) < 2) {
                 System.out.println("Territory must have more than 1 troop to attack from");
                 continue;
+
+
             }
+
+
 
             int x = attackFrom.getNeighbourTerritories().size() - 1;
             for (Territory territory : attackFrom.getNeighbourTerritories()) {
                 if (!(territory.getCurrentPlayer() == player)) {
-                    attackFromChosen = true;
-                    break;
+                        attackFromChosen = true;
+                        break;
                 } else if (x == 0) {
                     System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
+
                 }
                 x--;
             }
+
         }
 
         System.out.println("You can attack any of the following territories: ");
@@ -483,6 +502,25 @@ public class Game {
         return false;
     }
 
+    public boolean canAttack(Player player) {
+        List<Territory> territories = player.getTerritories();
+        for (Territory t : territories) {
+            if (player.findTroops(t) > 1){
+                List<Territory> neighbours = t.getNeighbourTerritories();
+                for(Territory terr: neighbours){
+                    if(!(territories.contains(terr))){
+                        return true;
+                    }
+                }
+
+
+            }
+        }
+        return false;
+
+    }
+
+
     /**
      * @param args
      * @throws IOException
@@ -513,6 +551,7 @@ public class Game {
                 addPlayer(player);
             }
         }
+
         // setup the army placements
         game.initializeDefaultArmy();
         game.setArmies(numberOfPlayers);
