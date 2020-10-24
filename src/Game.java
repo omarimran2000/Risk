@@ -238,12 +238,10 @@ public class Game {
                             response = scanner.next();
                     }
                     if (response.equals("attack")) {
-                        if (canAttack(player)) {
+                       
                             attack(player);
-                        } else {
-                            System.out.println("You do not have enough troops to attack.");
-                            break;
-                        }
+                            
+                        
                     } else if (response.equals("pass")) {
                         response = "";
                         break;
