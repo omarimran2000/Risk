@@ -275,7 +275,10 @@ public class Game {
             String t = scanner.nextLine();
             Territory territory = theMap.findTerritory(t);
 
-            if (!(player.getTerritories().contains(territory))) {
+            if (t.equals("help")){
+                printGame();
+            }
+            else if (!(player.getTerritories().contains(territory))) {
                 System.out.println("Cannot deploy here. Pick another territory. ");
             }
             else if (deployTroops == 1) {
@@ -312,44 +315,34 @@ public class Game {
         boolean attackFromChosen = false, attackChosen = false;
         Territory attackFrom = null, attack = null;
         while(!attackFromChosen) {
-
-
             System.out.println("Which of your territories would you like to attack from?");
             t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
 
-            if(attackFrom == null){
+            if (t.equals("help")) {
+                printGame();
+                continue;
+            } if(attackFrom == null){
                 System.out.println("This territory does not exist.");
                 continue;
-            }
-
-            if (!(territories.contains(attackFrom))) {
+            } if (!(territories.contains(attackFrom))) {
                 System.out.println("You cannot attack from here. Please pick a territory you have armies in");
                 continue;
-
-            }
-
-            if (player.findTroops(attackFrom) < 2) {
+            } if (player.findTroops(attackFrom) < 2) {
                 System.out.println("Territory must have more than 1 troop to attack from");
                 continue;
-
-
             }
 
-
-
-                int x = attackFrom.getNeighbourTerritories().size() - 1;
-                for (Territory territory : attackFrom.getNeighbourTerritories()) {
-                    if (!(territory.getCurrentPlayer() == player)) {
-                        attackFromChosen = true;
-                        break;
-                    } else if (x == 0) {
-                        System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
-
-                    }
-                    x--;
+            int x = attackFrom.getNeighbourTerritories().size() - 1;
+            for (Territory territory : attackFrom.getNeighbourTerritories()) {
+                if (!(territory.getCurrentPlayer() == player)) {
+                    attackFromChosen = true;
+                    break;
+                } else if (x == 0) {
+                    System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
                 }
-
+                x--;
+            }
         }
 
         System.out.println("You can attack any of the following territories: ");
@@ -358,6 +351,10 @@ public class Game {
             System.out.println("Which territory would you like to attack?");
             t = scanner.nextLine();
             attack = theMap.findTerritory(t);
+            if (t.equals("help")) {
+                printGame();
+                continue;
+            }
             if(attack==null)
             {
                 System.out.println("Please enter a valid territory");
@@ -375,8 +372,6 @@ public class Game {
                 continue;
             }
             attackChosen = true;
-
-
         }
         legalArmies = player.findTroops(attackFrom) - 1;
         if (legalArmies == 1) {
@@ -443,7 +438,7 @@ public class Game {
             for (Territory t : c.getTerritories()) {
                 Player player = t.getCurrentPlayer();
                 int troops = player.findTroops(t);
-                System.out.println(t + " is owned by " + player + " and there are " + troops + " troops.");
+                System.out.println(t.getName() + " is owned by " + player.getName() + " and there are " + troops + " troops.");
             }
         }
         // print all players that own continents
@@ -453,10 +448,10 @@ public class Game {
                 System.out.print(p + " is in possession of: ");
                 for (Continent c : p.getContinents()){
                     if (count < p.getContinents().size()) {
-                        System.out.print(c + ", ");
+                        System.out.print(c.getName() + ", ");
                     }
                     else {
-                        System.out.println(c);
+                        System.out.println(c.getName());
                     }
                     count ++;
                 }
@@ -493,8 +488,8 @@ public class Game {
     public static void main(String[] args) throws IOException, ParseException {
         Game game = new Game();
         game.loadMap("map.json");
-        System.out.println("Map done loading"); //remember to remove this
 
+        System.out.println("Welcome to RISK! Build your army, attack enemy territories, and take over the world");
         System.out.println("How many players are playing? Enter a number between 2-6");
         numberOfPlayers = scanner.nextInt();
 
@@ -515,13 +510,13 @@ public class Game {
                 addPlayer(player);
             }
         }
-
         // setup the army placements
         game.initializeDefaultArmy();
         game.setArmies(numberOfPlayers);
 
+        System.out.println("Ready to start the game");
+        System.out.println("Type 'help' at any point to print an overview of the entire board");
         // ready to begin playing
         game.play();
-
     }
 }
