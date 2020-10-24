@@ -347,9 +347,15 @@ public class Game {
         int numDice = 0, legalArmies, numDefendDice;
         List<Territory> territories = player.getTerritories();
         scanner.nextLine();
-        System.out.println("From which of your territories would you like to attack from?");
+        System.out.println("Which of your territories would you like to attack from?");
         String t = scanner.nextLine();
         Territory attackFrom = theMap.findTerritory(t);
+
+        while (!(territories.contains(attackFrom))) {
+            System.out.println("You cannot attack from here. Please pick a territory you have armies in");
+            t = scanner.nextLine();
+            attackFrom = theMap.findTerritory(t);
+        }
 
         while (player.findTroops(attackFrom) < 2) {
             System.out.println("Territory must have more than 1 troop to attack from");
@@ -358,11 +364,19 @@ public class Game {
 
         }
 
-        while (!(territories.contains(attackFrom))) {
-            System.out.println("You cannot attack from here. Please pick a territory you have armies in");
-            t = scanner.nextLine();
-            attackFrom = theMap.findTerritory(t);
+        int x = 1;
+        for (Territory territory : attackFrom.getNeighbourTerritories()) {
+            if (!(territory.getCurrentPlayer() == player)) {
+                break;
+            }
+            else if (x == attackFrom.getNeighbourTerritories().size())
+            {
+                System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
+                t = scanner.nextLine();
+                attackFrom = theMap.findTerritory(t);
+            }
         }
+
 
         System.out.println("You can attack any of the following territories: ");
         attackFrom.printAdjacentTerritories();
@@ -430,16 +444,9 @@ public class Game {
             System.out.println(t.getName() + " with " + troops + " troops.");
         }
         if (!player.getContinents().isEmpty()) {
-            int count = 0;
             System.out.println("You occupy the following continents: ");
             for (Continent c : player.getContinents()){
-                if (count < player.getContinents().size()) {
-                    System.out.print(c + ", ");
-                }
-                else {
-                    System.out.println(c);
-                }
-                count ++;
+                System.out.println(c.getName());
             }
         }
     }
