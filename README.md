@@ -1,4 +1,5 @@
 # *RISK* Milestone 1
+[](Risk_logo.jpg)
 ## Authors
 - Erica Oliver
 - Omar Imran 
