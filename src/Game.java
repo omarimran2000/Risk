@@ -345,34 +345,48 @@ public class Game {
         int numDice = 0, legalArmies, numDefendDice;
         List<Territory> territories = player.getTerritories();
         scanner.nextLine();
-        System.out.println("Which of your territories would you like to attack from?");
-        String t = scanner.nextLine();
-        Territory attackFrom = theMap.findTerritory(t);
+        String t;
+        boolean attackFromChosen = false;
+        Territory attackFrom = null;
+        while(!attackFromChosen) {
 
-        while (!(territories.contains(attackFrom))) {
-            System.out.println("You cannot attack from here. Please pick a territory you have armies in");
-            t = scanner.nextLine();
-            attackFrom = theMap.findTerritory(t);
-        }
 
-        while (player.findTroops(attackFrom) < 2) {
-            System.out.println("Territory must have more than 1 troop to attack from");
+            System.out.println("Which of your territories would you like to attack from?");
             t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
 
-        }
-
-
-        int x = attackFrom.getNeighbourTerritories().size() - 1;
-        for (Territory territory : attackFrom.getNeighbourTerritories()) {
-            if (!(territory.getCurrentPlayer() == player)) {
-                break;
-            } else if (x == 0) {
-                System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
-                t = scanner.nextLine();
-                attackFrom = theMap.findTerritory(t);
+            if(attackFrom == null){
+                System.out.println("This territory does not exist.");
+                continue;
             }
-            x--;
+
+            if (!(territories.contains(attackFrom))) {
+                System.out.println("You cannot attack from here. Please pick a territory you have armies in");
+                continue;
+
+            }
+
+            if (player.findTroops(attackFrom) < 2) {
+                System.out.println("Territory must have more than 1 troop to attack from");
+                continue;
+
+
+            }
+
+
+
+                int x = attackFrom.getNeighbourTerritories().size() - 1;
+                for (Territory territory : attackFrom.getNeighbourTerritories()) {
+                    if (!(territory.getCurrentPlayer() == player)) {
+                        attackFromChosen = true;
+                        break;
+                    } else if (x == 0) {
+                        System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
+
+                    }
+                    x--;
+                }
+
         }
 
         System.out.println("You can attack any of the following territories: ");
