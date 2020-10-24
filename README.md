@@ -4,7 +4,7 @@
 - Omar Imran 
 - Santhosh Pradeepan 
 - Wintana Yosief
- ###Description 
+ ### Description 
 This is the first milestone for the game *RISK*. The rules followed in this game can be found [here.](https://en.wikipedia.org/wiki/Risk_(game))
  The initial 
 milestone is a console based implementation of the game. The game takes players 
