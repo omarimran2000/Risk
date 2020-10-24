@@ -30,56 +30,72 @@ public class Game {
     private static int numberOfPlayers;
     private static Scanner scanner = new Scanner(System.in);
 
-    public Game ()
-    {
+    public Game() {
         theMap = new Map("Global");
         players = new ArrayList<>();
     }
 
     /**
      * Add a Player to players list
-     * @param player
+     *
+     * @param player the player to be added
      */
-    public static void addPlayer(Player player){
+    public static void addPlayer(Player player) {
         players.add(player);
     }
 
 
-    public int getNumberOfPlayers(){
+    public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
     /**
-     * This method is used to determine if a raid was successful or not. If the defender successfully fend off the attacker's attack,
-     * this method returns the defender, otherwise it returns the attacker
+     * This method is used to determine if a raid was successful or not. Each loser of a die roll will lose a troop and
+     * if the defender no longer has any troops, return true
      *
-     * @param attacker the player that is initiating the raid
-     * @param defender the player that is defending
-     * @param numOfDice the number of dice that are being rolled
-     * @return the player that survives the attack
+     * @param attacker   the player that is initiating the raid
+     * @param defender   the player that is defending
+     * @param numOfDice  the number of dice that are being rolled
+     * @param territory  the territory that is being attacked
+     * @param attackFrom the territory the attacker is attacking from
+     * @return false if defender survives the attack, true otherwise
      */
-    private Player checkWinner(Player attacker, Player defender, int numOfDice) {
+    private boolean checkWinner(Player attacker, Player defender, int numOfDice, Territory territory, Territory attackFrom) {
         int offence = 0;
         int defence = 0;
-        for (int i = 0; i < numOfDice; i++) // sums the highest rolls together per player
-        {
+        for (int i = 0; i < numOfDice; i++) {
 
-            offence += attacker.getDice()[i]; //access the die number saved at position i
-            defence += defender.getDice()[i];
+            offence = attacker.getDice()[i]; //access the die number saved at position i
+            defence = defender.getDice()[i];
+            if (offence > defence) {
+                defender.removeTroops(1, territory);
+                System.out.println(defender.getName() + " loses one troop.");
+            } else {
+                attacker.removeTroops(1, attackFrom);
+                System.out.println(attacker.getName() + " loses one troop.");
+            }
+
         }
-        if (offence > defence) return attacker;
-        return defender;
+        if (defender.findTroops(territory) == 0) {
+            defender.removeTerritory(territory);
+            if(defender.getTerritories().size() == 0){
+                System.out.println(defender.getName() + " has no more territories and is now out of the game.");
+                defender.setActive(false);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
      * Loading a map from a JSON file given the specific keys where structure is
      * {continent:{territory:[adjacent territories],points:int}}
+     *
      * @param JSONfile the filepath
      * @throws IOException
      * @throws ParseException
      */
-    private void loadMap(String JSONfile) throws IOException, ParseException
-    {
+    private void loadMap(String JSONfile) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         FileReader fileReader = new FileReader(JSONfile);
         Object e = jsonParser.parse(fileReader);
@@ -126,7 +142,7 @@ public class Game {
                 JSONObject territoriesKeys = (JSONObject) territories.get(originalTerritoryName); //gets all the keys from territories file
                 JSONArray adjacentTerritories = (JSONArray) territoriesKeys.get("adjacent");
 
-                for (int k=0;k<adjacentTerritories.size();k++)  //iterates through JSON array of adjacent territories
+                for (int k = 0; k < adjacentTerritories.size(); k++)  //iterates through JSON array of adjacent territories
                 {
                     String adjacentTerritoryName = (String) adjacentTerritories.get(k); //gets adjacent territory name
                     Territory adjacentTerritory = theMap.findTerritory(adjacentTerritoryName);
@@ -141,16 +157,16 @@ public class Game {
      * This method is used to initialize which player possess which territory.
      */
     public void initializeDefaultArmy() {
-        List<Territory>territories = new ArrayList<>();
+        List<Territory> territories = new ArrayList<>();
         Random random = new Random();
-        for(Continent c : theMap.continents) {
-            for(Territory t : c.getTerritories()) {
+        for (Continent c : theMap.continents) {
+            for (Territory t : c.getTerritories()) {
                 territories.add(t);
             }
         }
         for (int i = 0; !territories.isEmpty(); i++) {
             Territory tempTerritory = territories.remove(random.nextInt(territories.size()));
-            Player tempPlayer = players.get(i%numberOfPlayers);
+            Player tempPlayer = players.get(i % numberOfPlayers);
 
             tempPlayer.addTerritory(tempTerritory);
             tempTerritory.setCurrentPlayer(tempPlayer);
@@ -159,29 +175,25 @@ public class Game {
     }
 
     /**
-     *
      * @param numberOfPlayers
      */
-    public void setArmies(int numberOfPlayers)
-    {
-        int[] arr_num_Armies = new int[]{50,35,30,25,20};
-        int num_armies = arr_num_Armies[numberOfPlayers-2];
+    public void setArmies(int numberOfPlayers) {
+        int[] arr_num_Armies = new int[]{50, 35, 30, 25, 20};
+        int num_armies = arr_num_Armies[numberOfPlayers - 2];
         Random random = new Random();
 
-        for(Player p:players)
-        {
+        for (Player p : players) {
             int armiesCount = num_armies;
-            for (Territory t:p.getTerritories()) //puts one army in every territory owned by player
+            for (Territory t : p.getTerritories()) //puts one army in every territory owned by player
             {
                 p.getArmy().addTroop(new Troop());
-                p.deploy(1,t);
+                p.deploy(1, t);
                 armiesCount--;
             }
 
-            for(int i=0;(i<p.getTerritories().size());i++)  //distributes rest of the troops
+            for (int i = 0; (i < p.getTerritories().size()); i++)  //distributes rest of the troops
             {
-                if(armiesCount!=0)
-                {
+                if (armiesCount != 0) {
                     int tempTroopCount = random.nextInt(armiesCount) + 1;
 
                     for (int j = 1; j < (tempTroopCount + 1); j++) {
@@ -196,8 +208,8 @@ public class Game {
 
         }
     }
+
     /**
-     *
      * @param args
      * @throws IOException
      * @throws ParseException
@@ -211,7 +223,7 @@ public class Game {
         System.out.println("How many players are playing? Enter a number between 2-6");
         numberOfPlayers = scanner.nextInt();
 
-        while (!(numberOfPlayers>=2 && numberOfPlayers<=6)){
+        while (!(numberOfPlayers >= 2 && numberOfPlayers <= 6)) {
             System.out.println("Please enter a number between 2-6");
             numberOfPlayers = scanner.nextInt();
 
@@ -219,8 +231,7 @@ public class Game {
         // if a valid number of player is inputted
         // get and print every player's name and adds them to players
         {
-            for (int i = 0; i < numberOfPlayers; i++)
-            {
+            for (int i = 0; i < numberOfPlayers; i++) {
                 System.out.print("Player name: ");
                 String name = scanner.next();
                 Player player = new Player(name);
@@ -239,11 +250,14 @@ public class Game {
 
     }
 
-
+    /**
+     * plays the game
+     */
     public void play() {
-        String response;
+        String response = "";
+        Player player = null;
         for (int i = 0; playersActive(); i++) { // infinite loop that will end once all players are inactive
-            Player player = players.get(i % numberOfPlayers);
+            player = players.get(i % numberOfPlayers);
             if (player.isActive()) {
                 System.out.println("It is now " + player.getName() + "'s turn.");
                 printPlayer(player);
@@ -251,21 +265,25 @@ public class Game {
                 deploy(player);
 
                 // after deploy phase and before attack phase
-                System.out.println("Would you like to move to attack phase to pass your turn to the next player?");
-                System.out.println("Type 'attack' or 'pass'.");
-                response = scanner.next();
-                while (!(response.equals("attack") | response.equals("pass"))) {
+                while (!response.equals("pass")) {
+                    System.out.println("Would you like to attack or pass your turn to the next player?");
                     System.out.println("Type 'attack' or 'pass'.");
                     response = scanner.next();
-                }
-                if (response.equals("attack")) {
-                    attack(player);
-                }
-                else if (response.equals("pass")) {
-                    //add a statement confirming they don't want to attack
+                    while (!(response.equals("attack") | response.equals("pass"))) {
+                        System.out.println("Type 'attack' or 'pass'.");
+                        response = scanner.next();
+                    }
+                    if (response.equals("attack")) {
+                        attack(player);
+                    } else if (response.equals("pass")) {
+                        response = "";
+                        break;
+                        //add a statement confirming they don't want to attack
+                    }
                 }
             }
         }
+        System.out.println("Congratulations! " + player.getName() + " is the winner!");
     }
 
     /**
@@ -275,7 +293,7 @@ public class Game {
      * @param player The current player
      * @return The number of troops to be deployed
      */
-    private int getNumberOfTroops(Player player){
+    private int getNumberOfTroops(Player player) {
         int numberOfTerritories = player.territories.size();
         int continentBonusPoints = 0; // find out if player has any continents and how much each is worth
 
@@ -287,15 +305,15 @@ public class Game {
 
     /**
      * The deploy phase
+     *
      * @param player The current player
      */
-    private void deploy(Player player){
-
+    private void deploy(Player player) {
+        scanner.nextLine();
         int deployTroops = getNumberOfTroops(player);
         while (deployTroops > 0) {
 
             System.out.println("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
-            scanner.nextLine();
             String t = scanner.nextLine();
             Territory territory = theMap.findTerritory(t);
 
@@ -304,6 +322,7 @@ public class Game {
             } else {
                 System.out.println("How many would you like to deploy? ");
                 int x = scanner.nextInt();
+                scanner.nextLine();
                 if (x <= deployTroops && (deployTroops - x) >= 0) {
                     for (int i = 0; i < x; i++) {
                         player.getArmy().addTroop(new Troop());
@@ -321,87 +340,81 @@ public class Game {
      * Attacking phase
      *
      * @param player The attacking player
-     *
      */
-    private void attack(Player player){
+    private void attack(Player player) {
         printPlayer(player);
+        int numDice = 0, legalArmies, numDefendDice;
         List<Territory> territories = player.getTerritories();
-
+        scanner.nextLine();
         System.out.println("From which of your territories would you like to attack from?");
-        String t = scanner.next();
+        String t = scanner.nextLine();
         Territory attackFrom = theMap.findTerritory(t);
 
-        while(player.findTroops(attackFrom)<2)
-        {
+        while (player.findTroops(attackFrom) < 2) {
             System.out.println("Territory must have more than 1 troop to attack from");
-            t = scanner.next();
+            t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
 
         }
 
-        while(!(territories.contains(attackFrom))) {
+        while (!(territories.contains(attackFrom))) {
             System.out.println("You cannot attack from here. Please pick a territory you have armies in");
-            t = scanner.next();
+            t = scanner.nextLine();
             attackFrom = theMap.findTerritory(t);
         }
 
         System.out.println("You can attack any of the following territories: ");
         attackFrom.printAdjacentTerritories();
         System.out.println("Which territory would you like to attack?");
-        t = scanner.next();
+        t = scanner.nextLine();
         Territory attack = theMap.findTerritory(t);
         ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
 
-        while(!(neighbours.contains(attack))) {
+        while (!(neighbours.contains(attack))) {
             System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
-            t = scanner.next();
+            t = scanner.nextLine();
             attack = theMap.findTerritory(t);
         }
-
-        System.out.println("With how many armies would you like to attack?");
-        int armies = scanner.nextInt();
-        int legalArmies = player.findTroops(attackFrom) - 1;
-
-        while(armies > legalArmies || armies <= 2) {
-            System.out.println("You cannot attack with those many armies");
-            System.out.println("Please enter a number between " + "1 - " + legalArmies);
-            armies = scanner.nextInt();
-        }
-
-        int numDice;
-        if(armies > 3){
-            numDice = 3;
-        } else {
-            numDice = armies;
-        }
-        player.attack(numDice, armies, attackFrom, attack);
-        Player defender = attack.getCurrentPlayer();
-        // call defend()
-
-        Player winner = checkWinner(player, defender, numDice);
-        if(winner.getName().equals(player.getName())){
-
-            defender.removeTroops(2, attack);
-            if(defender.findTroops(attack) == 0){
-                defender.removeTerritory(attack);
-                player.addTerritory(attack);
-                if(defender.getTerritories().size() == 0){
-                    defender.setActive(false);
-                }
-                boolean control = attack.getContinent().getControl(player);
-                if(control) {
-                    player.addContinent(attack.getContinent());
-
-                }
+        legalArmies = player.findTroops(attackFrom) - 1;
+        if (legalArmies == 1) {
+            numDice = 1;
+        } else if (legalArmies == 2) {
+            while (numDice < 1 || numDice > 2) {
+                System.out.println("How many dice would you like to roll? (1-2)");
+                numDice = scanner.nextInt();
             }
         } else {
-            player.removeTroops(2, attack);
+            while (numDice < 1 || numDice > 3) {
+                System.out.println("How many dice would you like to roll? (1-3)");
+                numDice = scanner.nextInt();
+            }
+        }
+        player.rollDice(numDice);
+        Player defender = attack.getCurrentPlayer();
+        if (defender.findTroops(attack) == 1) {
+            numDefendDice = 1;
+        } else {
+            numDefendDice = 2;
+        }
+        defender.rollDice(numDefendDice);
+        // call defend()
+
+        if (checkWinner(player, defender, numDefendDice, attack, attackFrom)) {
+            int numMoveTroops = 0;
+            legalArmies = player.findTroops(attackFrom);
+            while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
+                System.out.println("How many troops would you like to move to " + attack.getName() + "? (1-" + (legalArmies - 1) + ")");
+                numMoveTroops = scanner.nextInt();
+            }
+            player.attackWin(numMoveTroops, attackFrom, attack);
         }
     }
 
     /**
      * Prints a smaller overview for a specific player at the beginning of their turn including
      * the territories and continents that they own
+     *
+     * @param player the player to be printed
      */
     private void printPlayer(Player player){
         System.out.println("You are occupying the following territories:");
