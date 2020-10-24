@@ -123,6 +123,9 @@ public class Player {
     public void removeTerritory(Territory t) {
         for (Territory territory : territories) {
             if (t == territory) {
+                if(territory.getContinent().getControl(this)) {
+                    removeContinent(territory.getContinent());
+                }
                 territories.remove(territory);
             }
         }
@@ -138,7 +141,17 @@ public class Player {
     }
 
     /**
+     * Rolls multiple dice
+     *
+     * @param numOfDice the number of dice to roll
+     */
+    public void rollDice(int numOfDice) {
+        diceRolls = die.rollDice(numOfDice);
+    }
+
+    /**
      * Gets the player's dice rolls sorted greatest to smallest in value
+     *
      * @return An array of sorted integers representing the dice rolls
      */
     public int [] getDice()
@@ -147,32 +160,24 @@ public class Player {
     }
 
     /**
-     * Player attacks another territory
+     * Player successfully attacks another territory
      *
-     * @param numOfDice The number of dice rolled by the attacker
      * @param numOfTroops The number of attacking troops
      * @param oldTerritory The territory you are attacking from
      * @param attackingTerritory The territory you are attacking
      */
-    public void attack(int numOfDice, int numOfTroops, Territory oldTerritory, Territory attackingTerritory)
+    public void attackWin(int numOfTroops, Territory oldTerritory, Territory attackingTerritory)
     {
+        addTerritory(attackingTerritory);
+        if(attackingTerritory.getContinent().getControl(this)) {
+            addContinent(attackingTerritory.getContinent());
+        }
         move(numOfTroops, oldTerritory, attackingTerritory);
-        diceRolls = die.rollDice(numOfDice);
-    }
-
-    /**
-     * Player defends against an attack
-     *
-     * @param numOfDice The number of dice rolled by the defender
-     *
-     */
-    public void defend(int numOfDice)
-    {
-        diceRolls = die.rollDice(numOfDice);
     }
 
     /**
      * Moves troop(s) from their old territory into a new one
+     *
      * @param numberOfTroops The number of troops being moved
      * @param newTerritory The territory where the troops are being moved to
      */
