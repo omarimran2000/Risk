@@ -14,8 +14,7 @@
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,8 +97,17 @@ public class Game {
      */
     private void loadMap(String JSONfile) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
-        FileReader fileReader = new FileReader(JSONfile);
-        Object e = jsonParser.parse(fileReader);
+        Object e =null;
+        try  //for JAR file
+        {
+            InputStream in = getClass().getResourceAsStream("/"+JSONfile);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            e = jsonParser.parse(reader);
+        }
+        catch(Exception ex) {  //for IDE
+              FileReader fileReader = new FileReader(JSONfile);
+              e = jsonParser.parse(fileReader);
+        }
 
         JSONObject mapObject = new JSONObject();
         mapObject = (JSONObject) e;
