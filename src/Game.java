@@ -8,14 +8,13 @@
  * @author Santhosh Pradeepan
  * @author Omar Imran
  *
- * @version October 23 2020
+ * @version October 25 2020
  */
 
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -184,7 +183,9 @@ public class Game {
     }
 
     /**
-     * @param numberOfPlayers
+     * Randomly allocates armies into territories
+     *
+     * @param numberOfPlayers The number of players
      */
     public void setArmies(int numberOfPlayers) {
         int[] arr_num_Armies = new int[]{50, 35, 30, 25, 20};
@@ -217,7 +218,7 @@ public class Game {
     }
 
     /**
-     * plays the game
+     * Plays the game
      */
     public void play() {
         String response = "";
@@ -228,33 +229,34 @@ public class Game {
                 System.out.println("It is now " + player.getName() + "'s turn.");
                 printPlayer(player);
 
+
                 deploy(player);
+
 
                 // after deploy phase and before attack phase
                 while (!response.equals("pass")) {
-                    if (canAttack(player)) {
+
                         System.out.println("Would you like to attack or pass your turn to the next player?");
                         System.out.println("Type 'attack' or 'pass'.");
                         response = scanner.next();
-                    } else {
-                        System.out.println("You do not have enough troops to attack.");
-                        break;
-                    }
 
                     while (!(response.equals("attack") | response.equals("pass") | response.equals("help"))) {
                             System.out.println("Type 'attack' or 'pass'.");
                             response = scanner.next();
                     }
                     if (response.equals("attack")) {
-                       
+                        if(canAttack(player)) {
                             attack(player);
-                            
-                        
+                        } else {
+                            System.out.println("You do not have enough troops to attack.");
+                            break;
+
+                        }
                     } else if (response.equals("pass")) {
                         response = "";
                         break;
                         //add a statement confirming they don't want to attack
-                    } else if (response.equals("help")) {
+                    } else  {
                         printGame();
                         continue;
                     }
@@ -287,6 +289,7 @@ public class Game {
      * @param player The current player
      */
     private void deploy(Player player) {
+
         scanner.nextLine();
         int deployTroops = getNumberOfTroops(player);
         while (deployTroops > 0) {
@@ -465,7 +468,7 @@ public class Game {
         for (Player p : players){
             if (!p.getContinents().isEmpty()){
                 int count = 0;
-                System.out.print(p + " is in possession of: ");
+                System.out.print(p.getName() + " is in possession of: ");
                 for (Continent c : p.getContinents()){
                     if (count < p.getContinents().size()) {
                         System.out.print(c.getName() + ", ");
@@ -478,7 +481,7 @@ public class Game {
             }
             // print any inactive players
             if (!p.isActive()) {
-                System.out.println(p + " is out of the game.");
+                System.out.println(p.getName() + " is out of the game.");
             }
         }
     }
@@ -500,10 +503,18 @@ public class Game {
         return false;
     }
 
+    /**
+     * Checks if a player has enough troops to attack
+     *
+     * @param player The player wanting to attack
+     * @return True, if player can attack, false otherwise
+     */
     public boolean canAttack(Player player) {
         List<Territory> territories = player.getTerritories();
         for (Territory t : territories) {
             if (player.findTroops(t) > 1){
+
+                // iterates through neighbour's of t
                 List<Territory> neighbours = t.getNeighbourTerritories();
                 for(Territory terr: neighbours){
                     if(!(territories.contains(terr))){
