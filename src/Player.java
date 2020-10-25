@@ -247,6 +247,13 @@ public class Player {
         }
     }
 
+    /**
+     * Finds the number of troops a player has in a
+     * certain territory
+     * @param t The territory to find troops in
+     *
+     * @return The number of troops in the territory
+     */
     public int findTroops(Territory t){
         List<Troop> troops = army.getTroops();
         int count = 0;

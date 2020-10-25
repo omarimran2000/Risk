@@ -1,5 +1,6 @@
 /**
  * Troop class for each member of a player's army
+ *
  * @author Wintana Yosief
  * @version  October 15, 2020
  */
@@ -25,7 +26,7 @@ public class Troop {
      *
      * @param deployed True, if deployed, false otherwise
      */
-    public void setDeployed(Boolean deployed) {
+    public void setDeployed(boolean deployed) {
         this.deployed = deployed;
 
     }

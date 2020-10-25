@@ -4,6 +4,10 @@ import java.util.List;
 /**
  * Army class representing each player's
  * army
+ *
+ * @version October 23, 2020
+ *
+ * @author Wintana Yosief
  */
 public class Army {
 

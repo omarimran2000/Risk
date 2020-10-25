@@ -46,6 +46,11 @@ public class Map {
     }
 
     /**
+     * Finds the territory on the map
+     * specified by its name
+     *
+     * @param name The name of the territory
+     * @return the territory
      *
      */
     public Territory findTerritory(String name)
