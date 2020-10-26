@@ -22,14 +22,14 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-public class Game {
+public class GameModel {
 
     private Map theMap;
     private static List<Player> players;
     private static int numberOfPlayers;
     private static Scanner scanner = new Scanner(System.in);
 
-    public Game() {
+    public GameModel() {
         theMap = new Map("Global");
         players = new ArrayList<>();
     }
@@ -533,7 +533,7 @@ public class Game {
      * @throws ParseException
      */
     public static void main(String[] args) throws IOException, ParseException {
-        Game game = new Game();
+        GameModel game = new GameModel();
         game.loadMap("map.json");
 
         System.out.println("Welcome to RISK! Build your army, attack enemy territories, and take over the world");
