@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Map {
     private String name;
     private ArrayList<Continent> continents;
+    private String filePath;
 
     /**
      *
@@ -66,5 +67,13 @@ public class Map {
             }
         }
         return null;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }

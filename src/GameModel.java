@@ -28,6 +28,7 @@ public class GameModel {
     private static List<Player> players;
     private static int numberOfPlayers;
     private static Scanner scanner = new Scanner(System.in);
+    private GameView view;
 
     public GameModel() {
         theMap = new Map("Global");
@@ -48,6 +49,14 @@ public class GameModel {
         return numberOfPlayers;
     }
 
+    public Map getTheMap() {
+        return theMap;
+    }
+
+    public void setView(GameView view)
+    {
+        this.view = view;
+    }
     /**
      * This method is used to determine if a raid was successful or not. Each loser of a die roll will lose a troop and
      * if the defender no longer has any troops, return true
@@ -94,7 +103,7 @@ public class GameModel {
      * @throws IOException
      * @throws ParseException
      */
-    private void loadMap(String JSONfile) throws IOException, ParseException {
+    public void loadMap(String JSONfile) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         Object e =null;
         try  //for JAR file
@@ -112,6 +121,7 @@ public class GameModel {
         mapObject = (JSONObject) e;
 
         JSONObject continents = (JSONObject) mapObject.get("continents"); //getting all the continent keys
+        theMap.setFilePath((String) mapObject.get("filepath"));
 
         for (int i = 0; i < continents.keySet().size(); i++)  //adding all continents and associated territories
         {
