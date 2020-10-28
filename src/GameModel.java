@@ -339,14 +339,15 @@ public class GameModel {
      *
      * @param player The attacking player
      */
-    private void attack(Player player) {
+    private void attack(Player player,Territory attackFrom,Territory attack,int numDice) {
         printPlayer(player);
-        int numDice = 0, legalArmies, numDefendDice;
+        int legalArmies, numDefendDice;
         List<Territory> territories = player.getTerritories();
-        scanner.nextLine();
-        String t;
-        boolean attackFromChosen = false, attackChosen = false;
-        Territory attackFrom = null, attack = null;
+        //scanner.nextLine();
+      //  String t;
+   //     boolean attackFromChosen = false, attackChosen = false;
+   //     Territory attackFrom = null, attack = null;
+        /*
         while(!attackFromChosen) {
             System.out.println("Which of your territories would you like to attack from?");
             t = scanner.nextLine();
@@ -376,6 +377,8 @@ public class GameModel {
                 }
                 x--;
             }
+
+
         }
 
         System.out.println("You can attack any of the following territories: ");
@@ -406,6 +409,7 @@ public class GameModel {
             }
             attackChosen = true;
         }
+
         legalArmies = player.findTroops(attackFrom) - 1;
         if (legalArmies == 1) {
             numDice = 1;
@@ -420,6 +424,8 @@ public class GameModel {
                 numDice = scanner.nextInt();
             }
         }
+
+         */
         player.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
         if (defender.findTroops(attack) == 1) {
