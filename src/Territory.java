@@ -14,7 +14,6 @@ public class Territory {
     private Continent continent;
     private ArrayList<Territory> neighbourTerritories;
     private Player currentPlayer;
-    private JButton territoryButton;
 
     /**
      * Constructor for Territory class
