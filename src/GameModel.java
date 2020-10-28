@@ -29,6 +29,7 @@ public class GameModel {
     private static int numberOfPlayers;
     private static Scanner scanner = new Scanner(System.in);
     private GameView view;
+    private Player currentPlayer;
 
     public GameModel() {
         theMap = new Map("Global");
@@ -232,15 +233,14 @@ public class GameModel {
      */
     public void play() {
         String response = "";
-        Player player = null;
         for (int i = 0; playersActive(); i++) { // infinite loop that will end once all players are inactive
-            player = players.get(i % numberOfPlayers);
-            if (player.isActive()) {
-                System.out.println("It is now " + player.getName() + "'s turn.");
-                printPlayer(player);
+            currentPlayer = players.get(i % numberOfPlayers);
+            if (currentPlayer.isActive()) {
+                System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
+                printPlayer(currentPlayer);
 
 
-                deploy(player);
+                deploy();
 
 
                 // after deploy phase and before attack phase
@@ -255,8 +255,8 @@ public class GameModel {
                             response = scanner.next();
                     }
                     if (response.equals("attack")) {
-                        if(canAttack(player)) {
-                            attack(player);
+                        if(canAttack(currentPlayer)) {
+                            //attack(player);
                         } else {
                             System.out.println("You do not have enough troops to attack.");
                             break;
@@ -273,7 +273,7 @@ public class GameModel {
                 }
             }
         }
-        System.out.println("Congratulations! " + player.getName() + " is the winner!");
+        System.out.println("Congratulations! " + currentPlayer.getName() + " is the winner!");
     }
 
     /**
@@ -296,12 +296,11 @@ public class GameModel {
     /**
      * The deploy phase
      *
-     * @param player The current player
      */
-    private void deploy(Player player) {
+    private void deploy() {
 
         scanner.nextLine();
-        int deployTroops = getNumberOfTroops(player);
+        int deployTroops = getNumberOfTroops(currentPlayer);
         while (deployTroops > 0) {
 
             System.out.println("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
@@ -311,11 +310,11 @@ public class GameModel {
             if (t.equals("help")){
                 printGame();
             }
-            else if (!(player.getTerritories().contains(territory))) {
+            else if (!(currentPlayer.getTerritories().contains(territory))) {
                 System.out.println("Cannot deploy here. Pick another territory. ");
             }
             else if (deployTroops == 1) {
-                player.deploy(deployTroops, territory);
+                currentPlayer.deploy(deployTroops, territory);
             }
             else {
                 System.out.println("How many would you like to deploy? ");
@@ -323,10 +322,10 @@ public class GameModel {
                 scanner.nextLine();
                 if (x <= deployTroops && (deployTroops - x) >= 0) {
                     for (int i = 0; i < x; i++) {
-                        player.getArmy().addTroop(new Troop());
+                        currentPlayer.getArmy().addTroop(new Troop());
                     }
                     deployTroops -= x;
-                    player.deploy(x, territory);
+                    currentPlayer.deploy(x, territory);
                 } else {
                     System.out.println("Please choose a number between " + 1 + "-" + deployTroops);
                 }
@@ -337,12 +336,14 @@ public class GameModel {
     /**
      * Attacking phase
      *
-     * @param player The attacking player
+     * @param attackFrom the Territory the player is attacking from
+     * @param attack the Terrritory the player is attacking
+     * @param numDice the number of dice the attacker is using
      */
-    private void attack(Player player,Territory attackFrom,Territory attack,int numDice) {
-        printPlayer(player);
+    public void attack(Territory attackFrom,Territory attack,int numDice) {
+        //printPlayer(currentPlayer);
         int legalArmies, numDefendDice;
-        List<Territory> territories = player.getTerritories();
+        //List<Territory> territories = currentPlayer.getTerritories();
         //scanner.nextLine();
       //  String t;
    //     boolean attackFromChosen = false, attackChosen = false;
@@ -426,26 +427,32 @@ public class GameModel {
         }
 
          */
-        player.rollDice(numDice);
+        currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
-        if (defender.findTroops(attack) == 1) {
+        if (defender.findTroops(attack) == 1 || numDice == 1) {
             numDefendDice = 1;
         } else {
             numDefendDice = 2;
         }
         defender.rollDice(numDefendDice);
 
-        if (defender.findTroops(attack) == 1 || numDice == 1) numDefendDice = 1;
-        if (checkWinner(player, defender, numDefendDice, attack, attackFrom)) {
+        if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
             int numMoveTroops = 0;
-            legalArmies = player.findTroops(attackFrom);
+            legalArmies = currentPlayer.findTroops(attackFrom);
             while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
                 System.out.println("How many troops would you like to move to " + attack.getName() + "? (1-" + (legalArmies - 1) + ")");
                 numMoveTroops = scanner.nextInt();
             }
-            player.attackWin(numMoveTroops, attackFrom, attack);
+            currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
         }
     }
+
+    /**
+     * method used to get the current player
+     *
+     * @return the current player
+     */
+    public Player getPlayer() { return currentPlayer; }
 
     /**
      * Prints a smaller overview for a specific player at the beginning of their turn including

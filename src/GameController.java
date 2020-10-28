@@ -26,6 +26,7 @@ public class GameController implements ActionListener {
                     Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
                     Territory attackToTerritory = (Territory) view.getAttackToList().getSelectedValue();
                     int numDice = (int) view.getNumDice().getValue();
+                    model.attack(attackFromTerritory, attackToTerritory, numDice);
 
                 }catch(Exception ex){
 

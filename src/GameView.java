@@ -15,13 +15,16 @@ public class GameView extends JFrame {
     private JButton passButton;
     private JButton deployButton;
     private JSpinner numDice;
+    private Container contentPane;
 
     public GameView() throws IOException, ParseException {
+        //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setIconImage(icon.getImage());
         model = new GameModel();
         model.setView(this);
+        contentPane = getContentPane();
         setUpMap();
 
         attackFromList = new JList();
@@ -44,7 +47,7 @@ public class GameView extends JFrame {
 
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.JSON");
-        this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
+        contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
     }
 
     public JList getAttackFromList() {
