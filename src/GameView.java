@@ -13,6 +13,8 @@ public class GameView extends JFrame {
     private JList attackToList;
     private JButton attackButton;
     private JButton passButton;
+    private JButton deployButton;
+    private JSpinner numDice;
 
     public GameView() throws IOException, ParseException {
         super("Risk Game");
@@ -30,6 +32,11 @@ public class GameView extends JFrame {
 
         passButton = new JButton("PASS");
         passButton.addActionListener(new GameController(model,this));
+
+        deployButton = new JButton("DEPLOY");
+        deployButton.addActionListener(new GameController(model,this));
+
+        numDice = new JSpinner();
 
         setVisible(true);
         setSize(800,800);
@@ -54,6 +61,14 @@ public class GameView extends JFrame {
 
     public JButton getPassButton() {
         return passButton;
+    }
+
+    public JButton getDeployButton() {
+        return deployButton;
+    }
+
+    public JSpinner getNumDice() {
+        return numDice;
     }
 
     public static void main(String[] args) throws IOException, ParseException {
