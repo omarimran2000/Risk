@@ -5,6 +5,7 @@
  * @date October 13 2020
  */
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Territory {
@@ -13,6 +14,7 @@ public class Territory {
     private Continent continent;
     private ArrayList<Territory> neighbourTerritories;
     private Player currentPlayer;
+    private JButton territoryButton;
 
     /**
      * Constructor for Territory class
@@ -24,6 +26,8 @@ public class Territory {
         this.name = name;
         this.continent = continent;
         neighbourTerritories = new ArrayList<>();
+        //this.territoryButton = new JButton(this.name);
+
     }
 
     /**
