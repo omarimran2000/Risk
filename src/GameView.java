@@ -12,6 +12,7 @@ public class GameView extends JFrame {
     private JList attackFromList;
     private JList attackToList;
     private JButton attackButton;
+    private JButton passButton;
 
     public GameView() throws IOException, ParseException {
         super("Risk Game");
@@ -26,6 +27,9 @@ public class GameView extends JFrame {
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(new GameController(model,this));
+
+        passButton = new JButton("PASS");
+        passButton.addActionListener(new GameController(model,this));
 
         setVisible(true);
         setSize(800,800);
@@ -46,6 +50,10 @@ public class GameView extends JFrame {
 
     public JButton getAttackButton() {
         return attackButton;
+    }
+
+    public JButton getPassButton() {
+        return passButton;
     }
 
     public static void main(String[] args) throws IOException, ParseException {

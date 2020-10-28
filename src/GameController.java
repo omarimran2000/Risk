@@ -30,7 +30,12 @@ public class GameController implements ActionListener {
 
                 }
              }
+            else if (buttonPressed.equals(view.getPassButton()))
+            {
+
+            }
         }
+
     }
 
 }
