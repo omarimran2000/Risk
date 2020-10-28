@@ -1,8 +1,10 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameController implements ActionListener {
+public class GameController implements ActionListener, ListSelectionListener {
 
     GameModel model;
     GameView view;
@@ -36,8 +38,17 @@ public class GameController implements ActionListener {
             {
 
             }
+            else if (buttonPressed.equals(view.getDeployButton()))
+            {
+
+            }
         }
 
     }
 
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
+        //view.getAttackToList().setModel(attackFromTerritory.getNeighbourTerritories());
+    }
 }
