@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 public class GameView extends JFrame {
 
@@ -29,6 +30,7 @@ public class GameView extends JFrame {
 
         attackFromList = new JList();
         attackToList = new JList();
+        attackFromList.addListSelectionListener(new GameController(model,this));
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(new GameController(model,this));
@@ -48,6 +50,10 @@ public class GameView extends JFrame {
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.JSON");
         contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
+    }
+    public void updateAttack()
+    {
+        //attackFromList.setModel(model.getPlayer().getTerritories());
     }
 
     public JList getAttackFromList() {
