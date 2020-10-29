@@ -40,12 +40,15 @@ public class GameView extends JFrame {
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(controller);
+        attackButton.setVisible(false);
 
         passButton = new JButton("PASS");
         passButton.addActionListener(controller);
+        passButton.setVisible(false);
 
         deployButton = new JButton("DEPLOY");
         deployButton.addActionListener(controller);
+        deployButton.setVisible(false);
 
         startButton = new JButton("START");
         startButton.addActionListener(controller);
@@ -63,6 +66,7 @@ public class GameView extends JFrame {
     public void updateAttack()
     {
         attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+
     }
 
     public JList getAttackFromList() {

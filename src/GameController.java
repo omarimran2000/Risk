@@ -70,5 +70,8 @@ public class GameController implements ActionListener, ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
         view.getAttackToList().setModel(model.defaultListConversion(attackFromTerritory.getNeighbourTerritories(model.getPlayer())));
+
+        SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
+        view.getNumDice().setModel(numDiceModel);
     }
 }

@@ -577,6 +577,26 @@ public class GameModel {
             addPlayer(player);
         }
     }
+
+    /**
+     * Calculates the number of dice given a territory
+     * @param attackFrom territory to attack from
+     * @return number of dice
+     */
+    public int calculateDice(Territory attackFrom) {
+        int legalArmies = currentPlayer.findTroops(attackFrom) - 1;
+        int numDice = 0;
+        if (legalArmies == 1) {
+            numDice = 1;
+        } else if (legalArmies == 2) {
+            numDice = 2;
+        }
+        else
+        {
+            numDice = 3;
+        }
+        return numDice;
+    }
     /**
      * @param args
      * @throws IOException
