@@ -14,6 +14,7 @@
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -549,6 +550,19 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Converts an ArrayList to a DefaultListModel
+     *
+     * @param list the ArrayList
+     * @return the converted DefaultListModel
+     */
+    public DefaultListModel<Territory> defaultListConversion(ArrayList<Territory> list) {
+        DefaultListModel<Territory> model = new DefaultListModel<>();
+        for(Territory t : list) {
+            model.addElement(t);
+        }
+        return model;
+    }
 
     /**
      * @param args
