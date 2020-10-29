@@ -38,6 +38,14 @@ public class GameController implements ActionListener, ListSelectionListener {
              }
             else if (buttonPressed.equals(view.getPassButton()))
             {
+                if(model.playersActive())
+                {
+                    model.passTurn();
+                }
+                else    //no players active i.e. game is done
+                {
+
+                }
 
             }
             else if (buttonPressed.equals(view.getDeployButton()))

@@ -231,6 +231,23 @@ public class GameModel {
     }
 
     /**
+     * Function to pass turn
+     */
+
+    public void passTurn()
+    {
+        for(Player p:players)
+        {
+            if(p.isActive())
+            {
+                currentPlayer = p;
+                return;
+            }
+
+        }
+
+    }
+    /**
      * Plays the game
      */
     public void play() {
@@ -517,7 +534,7 @@ public class GameModel {
      *
      * @return true if there is still at least 2 active players
      */
-    private boolean playersActive(){
+    public boolean playersActive(){
         int x = 0;
         for (Player p : players){
             if (p.isActive()){
