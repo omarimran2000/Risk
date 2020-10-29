@@ -49,6 +49,6 @@ public class GameController implements ActionListener, ListSelectionListener {
     @Override
     public void valueChanged(ListSelectionEvent e) {
         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
-        //view.getAttackToList().setModel(attackFromTerritory.getNeighbourTerritories());
+        view.getAttackToList().setModel(model.defaultListConversion(attackFromTerritory.getNeighbourTerritories(model.getPlayer())));
     }
 }

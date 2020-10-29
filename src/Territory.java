@@ -57,6 +57,23 @@ public class Territory {
     }
 
     /**
+     * gets all the neighbouring territories that aren't owned by a specific player
+     *
+     * @param player the specific player
+     * @return the list of neighbouring territories
+     */
+    public ArrayList<Territory> getNeighbourTerritories(Player player) {
+        ArrayList<Territory> territories = null;
+        for(Territory t:neighbourTerritories)
+        {
+            if (t.currentPlayer != player) {
+                territories.add(t);
+            }
+        }
+        return territories;
+    }
+
+    /**
      * Add neighbouring territories
      *
      * @param t  the territory
