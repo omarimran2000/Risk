@@ -46,6 +46,7 @@ public class GameModel {
         players.add(player);
     }
 
+    public void setNumberOfPlayers(int num){ numberOfPlayers = num;}
 
     public int getNumberOfPlayers() {
         return numberOfPlayers;
@@ -564,6 +565,18 @@ public class GameModel {
         return model;
     }
 
+    /**
+     * method used to create players
+     *
+     * @param names the ArrayList filled with player names
+     */
+    public void createPlayers(ArrayList<String> names) {
+        for (int i = 0; i < numberOfPlayers; i++) {
+            Player player = new Player(names.get(i));
+            player.setActive(true);
+            addPlayer(player);
+        }
+    }
     /**
      * @param args
      * @throws IOException
