@@ -35,8 +35,9 @@ public class GameView extends JFrame {
         setUpMap();
 
         attackFromList = new JList();
-        attackToList = new JList();
         attackFromList.addListSelectionListener(controller);
+        attackToList = new JList();
+        attackToList.setVisible(false);
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(controller);
