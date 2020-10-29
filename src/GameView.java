@@ -15,31 +15,39 @@ public class GameView extends JFrame {
     private JButton attackButton;
     private JButton passButton;
     private JButton deployButton;
+    private JButton startButton;
     private JSpinner numDice;
     private Container contentPane;
+    private GameController controller;
 
     public GameView() throws IOException, ParseException {
         //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
+        model = new GameModel();
+        controller = new GameController(model, this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setIconImage(icon.getImage());
-        model = new GameModel();
+
+
         model.setView(this);
         contentPane = getContentPane();
         setUpMap();
 
         attackFromList = new JList();
         attackToList = new JList();
-        attackFromList.addListSelectionListener(new GameController(model,this));
+        attackFromList.addListSelectionListener(controller);
 
         attackButton = new JButton("ATTACK");
-        attackButton.addActionListener(new GameController(model,this));
+        attackButton.addActionListener(controller);
 
         passButton = new JButton("PASS");
-        passButton.addActionListener(new GameController(model,this));
+        passButton.addActionListener(controller);
 
         deployButton = new JButton("DEPLOY");
-        deployButton.addActionListener(new GameController(model,this));
+        deployButton.addActionListener(controller);
+
+        startButton = new JButton("START");
+        startButton.addActionListener(controller);
 
         numDice = new JSpinner();
 
@@ -66,6 +74,10 @@ public class GameView extends JFrame {
 
     public JButton getAttackButton() {
         return attackButton;
+    }
+
+    public JButton getStartButton() {
+        return startButton;
     }
 
     public JButton getPassButton() {

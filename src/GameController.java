@@ -3,6 +3,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class GameController implements ActionListener, ListSelectionListener {
 
@@ -41,6 +43,24 @@ public class GameController implements ActionListener, ListSelectionListener {
             else if (buttonPressed.equals(view.getDeployButton()))
             {
 
+            }
+            else if (buttonPressed.equals(view.getStartButton()))
+            {
+                int numPlayers = 0;
+                ArrayList<String> names = new ArrayList<>();
+                String name = "";
+                while (numPlayers < 2 || numPlayers > 6) {
+                    String num = JOptionPane.showInputDialog("How many players are playing? (2-6)");
+                    numPlayers = Integer.parseInt(num);
+                }
+                model.setNumberOfPlayers(numPlayers);
+                for (int i = 0; i < numPlayers; i++) {
+                    while(name == null || name.equals("")) {
+                        name = JOptionPane.showInputDialog("what is your name?");
+                    }
+                    names.add(name);
+                }
+                model.createPlayers(names);
             }
         }
 
