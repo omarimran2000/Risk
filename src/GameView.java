@@ -30,7 +30,7 @@ public class GameView extends JFrame {
 
         attackFromList = new JList();
         attackToList = new JList();
-        attackToList.addListSelectionListener(new GameController(model,this));
+        attackFromList.addListSelectionListener(new GameController(model,this));
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(new GameController(model,this));
