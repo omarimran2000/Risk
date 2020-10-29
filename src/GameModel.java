@@ -250,6 +250,7 @@ public class GameModel {
             if(players.get(i).isActive())
             {
                 currentPlayer = players.get(i);
+                return;
             }
             if(i==players.size()-1)
             {
