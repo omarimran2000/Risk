@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class GameView extends JFrame {
@@ -17,6 +18,7 @@ public class GameView extends JFrame {
     private JButton deployButton;
     private JButton startButton;
     private JSpinner numDice;
+    private JSpinner numPlayers;
     private Container contentPane;
     private GameController controller;
 
@@ -34,20 +36,28 @@ public class GameView extends JFrame {
         setUpMap();
 
         attackFromList = new JList();
-        attackToList = new JList();
         attackFromList.addListSelectionListener(controller);
+        attackToList = new JList();
+        attackToList.setEnabled(false);
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(controller);
+        attackButton.setEnabled(false);
 
         passButton = new JButton("PASS");
         passButton.addActionListener(controller);
+        passButton.setEnabled(false);
 
         deployButton = new JButton("DEPLOY");
         deployButton.addActionListener(controller);
+        deployButton.setEnabled(false);
 
         startButton = new JButton("START");
         startButton.addActionListener(controller);
+        startButton.setEnabled(true);
+
+        SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
+        numPlayers = new JSpinner(playersModel);
 
         numDice = new JSpinner();
 
@@ -61,7 +71,8 @@ public class GameView extends JFrame {
     }
     public void updateAttack()
     {
-        //attackFromList.setModel(model.getPlayer().getTerritories());
+        attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+
     }
 
     public JList getAttackFromList() {
@@ -90,6 +101,10 @@ public class GameView extends JFrame {
 
     public JSpinner getNumDice() {
         return numDice;
+    }
+    public JSpinner getNumPlayers()
+    {
+        return numPlayers;
     }
 
     public static void main(String[] args) throws IOException, ParseException {

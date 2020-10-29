@@ -11,7 +11,7 @@ public class Continent {
 
     private String name;
     private ArrayList<Territory> territories;
-    private int continentPoint;
+    private static int continentPoint;
 
     /**
      * Default constructor
