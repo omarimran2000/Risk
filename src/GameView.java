@@ -18,6 +18,7 @@ public class GameView extends JFrame {
     private JButton deployButton;
     private JButton startButton;
     private JSpinner numDice;
+    private JSpinner numPlayers;
     private Container contentPane;
     private GameController controller;
 
@@ -37,22 +38,26 @@ public class GameView extends JFrame {
         attackFromList = new JList();
         attackFromList.addListSelectionListener(controller);
         attackToList = new JList();
-        attackToList.setVisible(false);
+        attackToList.setEnabled(false);
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(controller);
-        attackButton.setVisible(false);
+        attackButton.setEnabled(false);
 
         passButton = new JButton("PASS");
         passButton.addActionListener(controller);
-        passButton.setVisible(false);
+        passButton.setEnabled(false);
 
         deployButton = new JButton("DEPLOY");
         deployButton.addActionListener(controller);
-        deployButton.setVisible(false);
+        deployButton.setEnabled(false);
 
         startButton = new JButton("START");
         startButton.addActionListener(controller);
+        startButton.setEnabled(true);
+
+        SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
+        numPlayers = new JSpinner(playersModel);
 
         numDice = new JSpinner();
 
@@ -96,6 +101,10 @@ public class GameView extends JFrame {
 
     public JSpinner getNumDice() {
         return numDice;
+    }
+    public JSpinner getNumPlayers()
+    {
+        return numPlayers;
     }
 
     public static void main(String[] args) throws IOException, ParseException {

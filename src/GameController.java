@@ -49,10 +49,15 @@ public class GameController implements ActionListener, ListSelectionListener {
                 int numPlayers = 0;
                 ArrayList<String> names = new ArrayList<>();
                 String name = "";
-                while (numPlayers < 2 || numPlayers > 6) {
-                    String num = JOptionPane.showInputDialog("How many players are playing? (2-6)");
-                    numPlayers = Integer.parseInt(num);
+                try {
+                    numPlayers = (int) view.getNumPlayers().getValue();
+                }catch (Exception ex)
+                {
+
                 }
+                view.getNumPlayers().setEnabled(false);
+                view.getStartButton().setEnabled(false);
+
                 model.setNumberOfPlayers(numPlayers);
                 for (int i = 0; i < numPlayers; i++) {
                     while(name == null || name.equals("")) {
@@ -70,7 +75,7 @@ public class GameController implements ActionListener, ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
         view.getAttackToList().setModel(model.defaultListConversion(attackFromTerritory.getNeighbourTerritories(model.getPlayer())));
-        view.getAttackToList().setVisible(true);
+        view.getAttackToList().setEnabled(true);
 
         SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
         view.getNumDice().setModel(numDiceModel);
