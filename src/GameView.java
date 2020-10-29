@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class GameView extends JFrame {
@@ -53,7 +54,7 @@ public class GameView extends JFrame {
     }
     public void updateAttack()
     {
-        //attackFromList.setModel(model.getPlayer().getTerritories());
+        attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
     }
 
     public JList getAttackFromList() {
