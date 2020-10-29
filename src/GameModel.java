@@ -236,16 +236,26 @@ public class GameModel {
 
     public void passTurn()
     {
-        for(Player p:players)
+        int temp = 0;
+        for (int i=0;i<players.size();i++) //find index of current player
         {
-            if(p.isActive())
+            if(players.get(i).equals(currentPlayer))
             {
-                currentPlayer = p;
-                return;
+                temp = i;
+                break;
             }
-
         }
-
+        for(int i = (temp+1)%players.size();i<players.size();i++) //find next active player
+        {
+            if(players.get(i).isActive())
+            {
+                currentPlayer = players.get(i);
+            }
+            if(i==players.size()-1)
+            {
+                i=0;
+            }
+        }
     }
     /**
      * Plays the game
