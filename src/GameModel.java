@@ -270,7 +270,7 @@ public class GameModel {
                 printPlayer(currentPlayer);
 
 
-                deploy();
+                //deploy();
 
 
                 // after deploy phase and before attack phase
@@ -307,13 +307,13 @@ public class GameModel {
     }
 
     /**
-     * Gets the number of troops to be deployed in the deploy phase at the beginning of each turn
+     * Gets the number of troops to be deployed by the current player in the deploy phase at the beginning of each turn
      * You get a minimum of 3 troops or the number of territories owned/3 + any continents bonus points
      *
-     * @param player The current player
      * @return The number of troops to be deployed
      */
-    private int getNumberOfTroops(Player player) {
+    public int getNumberOfTroops() {
+        Player player = currentPlayer;
         int numberOfTerritories = player.getTerritories().size();
         int continentBonusPoints = 0; // find out if player has any continents and how much each is worth
 
@@ -326,35 +326,43 @@ public class GameModel {
     /**
      * The deploy phase
      *
+     * @param territory The territory to receive troops
+     * @param numTroops The number of troops to be deployed
      */
-    public void deploy() {
+    public void deploy(Territory territory, int numTroops) {
 
-        int deployTroops = getNumberOfTroops(currentPlayer);
+        int deployTroops = getNumberOfTroops();
         while (deployTroops > 0) {
 
-            view.setTextArea("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
-            String t = String.valueOf(view.getDeployToList().getSelectedValue()) ;
-            Territory territory = (Territory) view.getDeployToList().getSelectedValue();
+            for (int i = 0; i < numTroops; i++) {
+                currentPlayer.getArmy().addTroop(new Troop());
+            }
+            deployTroops -= numTroops;
+            currentPlayer.deploy(numTroops, territory);
 
-            if (!(currentPlayer.getTerritories().contains(territory))) {
-                view.setTextArea("Cannot deploy here. Pick another territory. ");
-            }
-            else if (deployTroops == 1) {
-                currentPlayer.deploy(deployTroops, territory);
-            }
-            else {
-                view.setTextArea("How many would you like to deploy? ");
-                int x = (Integer) view.getNumTroops().getValue();
-                if (x <= deployTroops && (deployTroops - x) >= 0) {
-                    for (int i = 0; i < x; i++) {
+            //view.setTextArea("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
+            //String t = String.valueOf(view.getDeployToList().getSelectedValue()) ;
+            //Territory territory = theMap.findTerritory(t);
+
+            //if (!(currentPlayer.getTerritories().contains(territory))) {
+            //    view.setTextArea("Cannot deploy here. Pick another territory. ");
+            //}
+            //else if (deployTroops == 1) {
+            //    currentPlayer.deploy(deployTroops, territory);
+            //}
+            //else {
+                //view.setTextArea("How many would you like to deploy? ");
+                //int x = (Integer) view.getNumTroops().getValue();
+                //if (x <= deployTroops && (deployTroops - x) >= 0) {
+                    /*for (int i = 0; i < numTroops; i++) {
                         currentPlayer.getArmy().addTroop(new Troop());
                     }
-                    deployTroops -= x;
-                    currentPlayer.deploy(x, territory);
-                } else {
-                    view.setTextArea("Please choose a number between " + 1 + "-" + deployTroops);
-                }
-            }
+                    deployTroops -= numTroops;
+                    currentPlayer.deploy(numTroops, territory);*/
+                //} else {
+                //    view.setTextArea("Please choose a number between " + 1 + "-" + deployTroops);
+                //}
+            //}
         }
     }
 
