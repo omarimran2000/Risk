@@ -14,7 +14,7 @@
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -257,6 +257,7 @@ public class GameModel {
                 i=0;
             }
         }
+        view.pass();
     }
     /**
      * Plays the game
@@ -339,13 +340,12 @@ public class GameModel {
      */
     public void deploy(Territory territory, int numTroops) {
 
-        int deployTroops = getNumberOfTroops();
-        while (deployTroops > 0) {
 
             for (int i = 0; i < numTroops; i++) {
                 currentPlayer.getArmy().addTroop(new Troop());
             }
-            deployTroops -= numTroops;
+            view.setTroopsDeployed(numTroops);
+            view.deploy();
             currentPlayer.deploy(numTroops, territory);
 
             //view.setTextArea("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
@@ -372,7 +372,6 @@ public class GameModel {
                 //}
             //}
         }
-    }
 
     /**
      * Attacking phase

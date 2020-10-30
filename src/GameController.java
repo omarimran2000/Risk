@@ -53,21 +53,18 @@ public class GameController implements ActionListener, ListSelectionListener {
             else if (buttonPressed.equals(view.getDeployButton()))
             {
 
-                view.getDeployButton().setEnabled(true);
-                view.getDeployToList().setVisible(true);
-                view.getNumTroops().setVisible(true);
-                int allTroops = model.getNumberOfTroops();
-                    String t = String.valueOf(view.getDeployToList().getSelectedValue());
-                    Territory territory = model.getTheMap().findTerritory(t); //??
-                    int numTroops = (Integer) view.getNumTroops().getValue();
-                    model.deploy(territory, numTroops);
+                    Territory t = (Territory) (view.getDeployToList().getSelectedValue());
+                    int numTroops = (int) view.getNumTroops().getValue();
+                    model.deploy(t, numTroops);
                     // update the numTroops spinner in view
-               // }
+                /*
                 if (allTroops - numTroops == 0){
                     view.getDeployButton().setEnabled(false);
                     view.getDeployToList().setVisible(false);
                     view.getNumTroops().setVisible(false);
                 }
+
+                 */
                 // go to next phase
             }
             else if (buttonPressed.equals(view.getStartButton()))
@@ -75,7 +72,6 @@ public class GameController implements ActionListener, ListSelectionListener {
 
                 try {
                     view.start();
-
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (ParseException parseException) {
@@ -92,7 +88,6 @@ public class GameController implements ActionListener, ListSelectionListener {
 
                 }
                 view.getNumPlayers().setEnabled(false);*/
-                view.getStartButton().setEnabled(false);
             }
         }
 

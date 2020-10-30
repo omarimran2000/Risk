@@ -26,6 +26,8 @@ public class GameView extends JFrame {
     private GameController controller;
     private JTextArea textArea;
     private JPanel welcomePanel;
+    private int troopsDeployed;
+
     public GameView() throws IOException, ParseException {
         //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
@@ -55,6 +57,7 @@ public class GameView extends JFrame {
 
         attackFromList = new JList();
         attackFromList.addListSelectionListener(controller);
+        attackFromList.setEnabled(false);
         attackToList = new JList();
         attackToList.setEnabled(false);
 
@@ -92,15 +95,13 @@ public class GameView extends JFrame {
         contentPane.add(welcomePanel, BorderLayout.CENTER);
         setVisible(true);
         setSize(800,800);
+
+        troopsDeployed = 0;
     }
 
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.JSON");
         contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
-    }
-    public void updateAttack()
-    {
-        attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
     }
 
     public JList getAttackFromList() {
@@ -193,11 +194,59 @@ public class GameView extends JFrame {
         contentPane.add(gameControl, BorderLayout.SOUTH);
         pack();
 
+        startButton.setEnabled(false);
+        deployButton.setEnabled(true);
+        deployToList.setVisible(true);
+        numTroops.setVisible(true);
+        troopsDeployed = 0;
+        deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+
+    }
+    public void pass()
+    {
+        deployButton.setEnabled(true);
+        deployToList.setVisible(true);
+        deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        numTroops.setVisible(true);
+
+        passButton.setVisible(false);
+        attackButton.setEnabled(false);
+        attackFromList.setEnabled(false);
+        attackToList.setEnabled(false);
+
+        setNumTroops(model.getNumberOfTroops());
+        troopsDeployed= 0;
+    }
+    public void deploy()
+    {
+        if(troopsDeployed == model.getNumberOfTroops())
+        {
+            deployButton.setEnabled(false);
+            deployToList.setVisible(false);
+            numTroops.setVisible(false);
+
+            attackButton.setVisible(true);
+            attackFromList.setEnabled(true);
+            attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        }
+        else
+        {
+            setNumTroops(model.getNumberOfTroops() - troopsDeployed);
+        }
+
+    }
+    public void setTroopsDeployed(int newTroops)
+    {
+        troopsDeployed += newTroops;
+    }
+    public void attack()
+    {
+
     }
 
     public void setNumTroops(int max) {
-        SpinnerNumberModel troopsModel = new SpinnerNumberModel(2, 2, max, 1);
-        numTroops = new JSpinner(troopsModel);
+        SpinnerNumberModel troopsModel = new SpinnerNumberModel(1, 1, max, 1);
+        numTroops.setModel(troopsModel);
     }
 
 
