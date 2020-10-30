@@ -334,7 +334,7 @@ public class GameModel {
 
             view.setTextArea("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
             String t = String.valueOf(view.getDeployToList().getSelectedValue()) ;
-            Territory territory = theMap.findTerritory(t);
+            Territory territory = (Territory) view.getDeployToList().getSelectedValue();
 
             if (!(currentPlayer.getTerritories().contains(territory))) {
                 view.setTextArea("Cannot deploy here. Pick another territory. ");
