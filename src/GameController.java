@@ -54,26 +54,18 @@ public class GameController implements ActionListener, ListSelectionListener {
             }
             else if (buttonPressed.equals(view.getStartButton()))
             {
-                int numPlayers = 0;
-                ArrayList<String> names = new ArrayList<>();
-                String name = "";
+                view.start();
+
+                //int option = JOptionPane.showOptionDialog(null, view.getNumPlayers(), "Enter the number of players", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                /*JOptionPane.showMessageDialog(null, view.getNumPlayers());
                 try {
                     numPlayers = (int) view.getNumPlayers().getValue();
                 }catch (Exception ex)
                 {
 
                 }
-                view.getNumPlayers().setEnabled(false);
+                view.getNumPlayers().setEnabled(false);*/
                 view.getStartButton().setEnabled(false);
-
-                model.setNumberOfPlayers(numPlayers);
-                for (int i = 0; i < numPlayers; i++) {
-                    while(name == null || name.equals("")) {
-                        name = JOptionPane.showInputDialog("What is your name?");
-                    }
-                    names.add(name);
-                }
-                model.createPlayers(names);
             }
         }
 
