@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.concurrent.Flow;
 
 public class GameView extends JFrame {
 
@@ -50,7 +51,7 @@ public class GameView extends JFrame {
         welcomePanel.add(Box.createVerticalGlue());
         welcomePanel.add(welcome);
 
-
+        textArea = new JTextArea();
 
         attackFromList = new JList();
         attackFromList.addListSelectionListener(controller);
@@ -169,6 +170,24 @@ public class GameView extends JFrame {
         model.createPlayers(names);
         welcomePanel.setVisible(false);
         setUpMap();
+        gameStart("STATUS WILL GO HERE");
+
+    }
+
+    public void gameStart(String status) throws IOException, ParseException {
+        JPanel gameControl = new JPanel();
+        JPanel statusPanel = new JPanel();
+        textArea.setText(status);
+        textArea.setEditable(false);
+        statusPanel.add(textArea);
+        gameControl.setLayout(new FlowLayout());
+        gameControl.add(attackButton);
+        gameControl.add(deployButton);
+        deployButton.setEnabled(true);
+        gameControl.add(passButton);
+        gameControl.add(statusPanel);
+        contentPane.add(gameControl, BorderLayout.SOUTH);
+        pack();
 
     }
 
