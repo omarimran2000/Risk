@@ -42,7 +42,22 @@ public class GameController implements ActionListener, ListSelectionListener {
             }
             else if (buttonPressed.equals(view.getDeployButton()))
             {
-                model.deploy();
+                view.getDeployButton().setEnabled(true);
+                view.getDeployToList().setVisible(true);
+                view.getNumTroops().setVisible(true);
+                int allTroops = model.getNumberOfTroops();
+                    String t = String.valueOf(view.getDeployToList().getSelectedValue());
+                    Territory territory = model.getTheMap().findTerritory(t); //??
+                    int numTroops = (Integer) view.getNumTroops().getValue();
+                    model.deploy(territory, numTroops);
+                    // update the numTroops spinner in view
+               // }
+                if (allTroops - numTroops == 0){
+                    view.getDeployButton().setEnabled(false);
+                    view.getDeployToList().setVisible(false);
+                    view.getNumTroops().setVisible(false);
+                }
+                // go to next phase
             }
             else if (buttonPressed.equals(view.getStartButton()))
             {
