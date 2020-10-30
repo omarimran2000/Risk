@@ -171,8 +171,7 @@ public class GameView extends JFrame {
         model.createPlayers(names);
         welcomePanel.setVisible(false);
         setUpMap();
-        model.initializeDefaultArmy();
-        model.setArmies(numOfPlayers);
+
         model.play();
 
         //gameStart("STATUS WILL GO HERE");
