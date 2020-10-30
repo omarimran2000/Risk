@@ -20,12 +20,11 @@ public class GameView extends JFrame {
     private JButton deployButton;
     private JButton startButton;
     private JSpinner numDice;
-    private JSpinner numPlayers;
     private JSpinner numTroops;
     private Container contentPane;
     private GameController controller;
     private JTextArea textArea;
-
+    private JPanel welcomePanel;
     public GameView() throws IOException, ParseException {
         //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
@@ -37,7 +36,21 @@ public class GameView extends JFrame {
 
         model.setView(this);
         contentPane = getContentPane();
-        setUpMap();
+        //setUpMap();
+
+        contentPane.setLayout(new BorderLayout());
+        welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.PAGE_AXIS));
+
+        JLabel welcome = new JLabel("Welcome to RISK!");
+
+        welcome.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        welcome.setFont(welcome.getFont().deriveFont(30.0f));
+
+        welcomePanel.add(Box.createVerticalGlue());
+        welcomePanel.add(welcome);
+
+
 
         attackFromList = new JList();
         attackFromList.addListSelectionListener(controller);
@@ -62,12 +75,20 @@ public class GameView extends JFrame {
         startButton.addActionListener(controller);
         startButton.setEnabled(true);
 
-        SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
-        numPlayers = new JSpinner(playersModel);
+
+        startButton.setAlignmentX(Box.CENTER_ALIGNMENT);
+        welcomePanel.add(startButton);
+
+        welcomePanel.add(Box.createVerticalGlue());
+
+        //SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
+        //numPlayers = new JSpinner(playersModel);
+        //numOfPlayers = JOptionPane.showMessageDialog(null, numPlayers);
 
         numDice = new JSpinner();
         numTroops = new JSpinner();
 
+        contentPane.add(welcomePanel, BorderLayout.CENTER);
         setVisible(true);
         setSize(800,800);
     }
@@ -79,7 +100,6 @@ public class GameView extends JFrame {
     public void updateAttack()
     {
         attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-
     }
 
     public JList getAttackFromList() {
@@ -110,10 +130,6 @@ public class GameView extends JFrame {
         return numDice;
     }
 
-    public JSpinner getNumPlayers() {
-        return numPlayers;
-    }
-
     public JList getDeployToList() {
         return deployToList;
     }
@@ -125,6 +141,45 @@ public class GameView extends JFrame {
     public JSpinner getNumTroops() {
         return numTroops;
     }
+
+    public void start() throws IOException, ParseException {
+        ArrayList<String> names = new ArrayList<>();
+        String name = "";
+        int numOfPlayers = 0;
+        SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
+        JSpinner numPlayers = new JSpinner(playersModel);
+        JOptionPane.showMessageDialog(null, numPlayers);
+        try {
+            numOfPlayers = (int) numPlayers.getValue();
+
+            model.setNumberOfPlayers(numOfPlayers);
+        }catch (Exception ex)
+        {
+            System.out.println("Spinner is not returning an integer. Error: " + ex);
+        }
+
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            while(name == null || name.equals("")) {
+                name = JOptionPane.showInputDialog("Player #" + (i+1) + ": What is your name?");
+            }
+            names.add(name);
+            name = "";
+        }
+        model.createPlayers(names);
+        welcomePanel.setVisible(false);
+        setUpMap();
+
+    }
+
+    public void setNumTroops(int max) {
+        SpinnerNumberModel troopsModel = new SpinnerNumberModel(2, 2, max, 1);
+        numTroops = new JSpinner(troopsModel);
+    }
+
+
+
+
 
     public static void main(String[] args) throws IOException, ParseException {
         new GameView();

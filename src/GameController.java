@@ -1,9 +1,11 @@
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameController implements ActionListener, ListSelectionListener {
@@ -38,6 +40,14 @@ public class GameController implements ActionListener, ListSelectionListener {
              }
             else if (buttonPressed.equals(view.getPassButton()))
             {
+                if(model.playersActive())
+                {
+                    model.passTurn();
+                }
+                else    //no players active i.e. game is done
+                {
+
+                }
 
             }
             else if (buttonPressed.equals(view.getDeployButton()))
@@ -61,26 +71,26 @@ public class GameController implements ActionListener, ListSelectionListener {
             }
             else if (buttonPressed.equals(view.getStartButton()))
             {
-                int numPlayers = 0;
-                ArrayList<String> names = new ArrayList<>();
-                String name = "";
+
+                try {
+                    view.start();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+
+
+                //int option = JOptionPane.showOptionDialog(null, view.getNumPlayers(), "Enter the number of players", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                /*JOptionPane.showMessageDialog(null, view.getNumPlayers());
                 try {
                     numPlayers = (int) view.getNumPlayers().getValue();
                 }catch (Exception ex)
                 {
 
                 }
-                view.getNumPlayers().setEnabled(false);
+                view.getNumPlayers().setEnabled(false);*/
                 view.getStartButton().setEnabled(false);
-
-                model.setNumberOfPlayers(numPlayers);
-                for (int i = 0; i < numPlayers; i++) {
-                    while(name == null || name.equals("")) {
-                        name = JOptionPane.showInputDialog("What is your name?");
-                    }
-                    names.add(name);
-                }
-                model.createPlayers(names);
             }
         }
 
