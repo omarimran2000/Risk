@@ -327,29 +327,24 @@ public class GameModel {
      * The deploy phase
      *
      */
-    private void deploy() {
+    public void deploy() {
 
-        scanner.nextLine();
         int deployTroops = getNumberOfTroops(currentPlayer);
         while (deployTroops > 0) {
 
-            System.out.println("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
-            String t = scanner.nextLine();
+            view.setTextArea("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
+            String t = String.valueOf(view.getDeployToList().getSelectedValue()) ;
             Territory territory = theMap.findTerritory(t);
 
-            if (t.equals("help")){
-                printGame();
-            }
-            else if (!(currentPlayer.getTerritories().contains(territory))) {
-                System.out.println("Cannot deploy here. Pick another territory. ");
+            if (!(currentPlayer.getTerritories().contains(territory))) {
+                view.setTextArea("Cannot deploy here. Pick another territory. ");
             }
             else if (deployTroops == 1) {
                 currentPlayer.deploy(deployTroops, territory);
             }
             else {
-                System.out.println("How many would you like to deploy? ");
-                int x = scanner.nextInt();
-                scanner.nextLine();
+                view.setTextArea("How many would you like to deploy? ");
+                int x = (Integer) view.getNumTroops().getValue();
                 if (x <= deployTroops && (deployTroops - x) >= 0) {
                     for (int i = 0; i < x; i++) {
                         currentPlayer.getArmy().addTroop(new Troop());
@@ -357,7 +352,7 @@ public class GameModel {
                     deployTroops -= x;
                     currentPlayer.deploy(x, territory);
                 } else {
-                    System.out.println("Please choose a number between " + 1 + "-" + deployTroops);
+                    view.setTextArea("Please choose a number between " + 1 + "-" + deployTroops);
                 }
             }
         }

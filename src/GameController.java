@@ -50,7 +50,7 @@ public class GameController implements ActionListener, ListSelectionListener {
             }
             else if (buttonPressed.equals(view.getDeployButton()))
             {
-
+                model.deploy();
             }
             else if (buttonPressed.equals(view.getStartButton()))
             {
@@ -69,7 +69,7 @@ public class GameController implements ActionListener, ListSelectionListener {
                 model.setNumberOfPlayers(numPlayers);
                 for (int i = 0; i < numPlayers; i++) {
                     while(name == null || name.equals("")) {
-                        name = JOptionPane.showInputDialog("what is your name?");
+                        name = JOptionPane.showInputDialog("What is your name?");
                     }
                     names.add(name);
                 }

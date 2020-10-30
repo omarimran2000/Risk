@@ -2,6 +2,7 @@ import org.json.simple.parser.ParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -13,14 +14,17 @@ public class GameView extends JFrame {
     private GameModel model;
     private JList attackFromList;
     private JList attackToList;
+    private JList deployToList;
     private JButton attackButton;
     private JButton passButton;
     private JButton deployButton;
     private JButton startButton;
     private JSpinner numDice;
     private JSpinner numPlayers;
+    private JSpinner numTroops;
     private Container contentPane;
     private GameController controller;
+    private JTextArea textArea;
 
     public GameView() throws IOException, ParseException {
         //ImageIcon icon = new ImageIcon("image_name.png");
@@ -39,6 +43,8 @@ public class GameView extends JFrame {
         attackFromList.addListSelectionListener(controller);
         attackToList = new JList();
         attackToList.setEnabled(false);
+
+        deployToList = new JList();
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(controller);
@@ -60,6 +66,7 @@ public class GameView extends JFrame {
         numPlayers = new JSpinner(playersModel);
 
         numDice = new JSpinner();
+        numTroops = new JSpinner();
 
         setVisible(true);
         setSize(800,800);
@@ -101,9 +108,21 @@ public class GameView extends JFrame {
     public JSpinner getNumDice() {
         return numDice;
     }
-    public JSpinner getNumPlayers()
-    {
+
+    public JSpinner getNumPlayers() {
         return numPlayers;
+    }
+
+    public JList getDeployToList() {
+        return deployToList;
+    }
+
+    public void setTextArea(String message){
+        textArea.setText(message);
+    }
+
+    public JSpinner getNumTroops() {
+        return numTroops;
     }
 
     public static void main(String[] args) throws IOException, ParseException {
