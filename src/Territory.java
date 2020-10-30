@@ -130,4 +130,8 @@ public class Territory {
             }
         }
     }
+
+    public String toString(){
+        return name;
+    }
 }

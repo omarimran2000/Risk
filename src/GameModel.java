@@ -269,6 +269,7 @@ public class GameModel {
             currentPlayer = players.get(i % numberOfPlayers);
             if (currentPlayer.isActive()) {
                 status = "It is now " + currentPlayer.getName() + "'s turn.";
+                status = status + "\n You have " + getNumberOfTroops() + " troops to deploy";
                 view.gameStart(status);
                 break;
                 //System.out.println("It is now " + currentPlayer.getName() + "'s turn.");

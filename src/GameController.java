@@ -72,6 +72,7 @@ public class GameController implements ActionListener, ListSelectionListener {
 
                 try {
                     view.start();
+
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (ParseException parseException) {

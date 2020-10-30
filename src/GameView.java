@@ -170,10 +170,19 @@ public class GameView extends JFrame {
         }
         model.createPlayers(names);
         welcomePanel.setVisible(false);
-        //model.play();
         setUpMap();
+        model.initializeDefaultArmy();
+        model.setArmies(numOfPlayers);
         model.play();
+
         //gameStart("STATUS WILL GO HERE");
+
+        startButton.setEnabled(false);
+        deployButton.setEnabled(true);
+        deployToList.setVisible(true);
+        numTroops.setVisible(true);
+        troopsDeployed = 0;
+        deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
 
     }
 
@@ -187,19 +196,17 @@ public class GameView extends JFrame {
         gameControl.add(attackButton);
         gameControl.add(deployButton);
         deployButton.setEnabled(true);
-        gameControl.add(numTroops);
-        numTroops.setVisible(true);
+
+
+
         gameControl.add(passButton);
+        gameControl.add(numTroops);
+        statusPanel.add(deployToList);
         gameControl.add(statusPanel);
         contentPane.add(gameControl, BorderLayout.SOUTH);
-        pack();
 
-        startButton.setEnabled(false);
-        deployButton.setEnabled(true);
-        deployToList.setVisible(true);
-        numTroops.setVisible(true);
-        troopsDeployed = 0;
-        deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+
+
 
     }
     public void pass()
