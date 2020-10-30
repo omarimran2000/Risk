@@ -599,6 +599,7 @@ public class GameModel {
             player.setActive(true);
             addPlayer(player);
         }
+
     }
 
     /**

@@ -24,6 +24,7 @@ public class GameView extends JFrame {
     private Container contentPane;
     private GameController controller;
     private JTextArea textArea;
+    private JPanel welcomePanel;
     public GameView() throws IOException, ParseException {
         //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
@@ -38,7 +39,7 @@ public class GameView extends JFrame {
         //setUpMap();
 
         contentPane.setLayout(new BorderLayout());
-        JPanel welcomePanel = new JPanel();
+        welcomePanel = new JPanel();
         welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.PAGE_AXIS));
 
         JLabel welcome = new JLabel("Welcome to RISK!");
@@ -166,9 +167,8 @@ public class GameView extends JFrame {
             name = "";
         }
         model.createPlayers(names);
-
-
-
+        welcomePanel.setVisible(false);
+        setUpMap();
 
     }
 

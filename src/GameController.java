@@ -1,9 +1,11 @@
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameController implements ActionListener, ListSelectionListener {
@@ -54,7 +56,15 @@ public class GameController implements ActionListener, ListSelectionListener {
             }
             else if (buttonPressed.equals(view.getStartButton()))
             {
-                view.start();
+
+                try {
+                    view.start();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+
 
                 //int option = JOptionPane.showOptionDialog(null, view.getNumPlayers(), "Enter the number of players", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
                 /*JOptionPane.showMessageDialog(null, view.getNumPlayers());
