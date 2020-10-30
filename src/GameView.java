@@ -169,12 +169,14 @@ public class GameView extends JFrame {
         }
         model.createPlayers(names);
         welcomePanel.setVisible(false);
+        //model.play();
         setUpMap();
-        gameStart("STATUS WILL GO HERE");
+        model.play();
+        //gameStart("STATUS WILL GO HERE");
 
     }
 
-    public void gameStart(String status) throws IOException, ParseException {
+    public void gameStart(String status){
         JPanel gameControl = new JPanel();
         JPanel statusPanel = new JPanel();
         textArea.setText(status);
@@ -184,6 +186,8 @@ public class GameView extends JFrame {
         gameControl.add(attackButton);
         gameControl.add(deployButton);
         deployButton.setEnabled(true);
+        gameControl.add(numTroops);
+        numTroops.setVisible(true);
         gameControl.add(passButton);
         gameControl.add(statusPanel);
         contentPane.add(gameControl, BorderLayout.SOUTH);

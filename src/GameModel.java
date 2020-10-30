@@ -262,17 +262,21 @@ public class GameModel {
      * Plays the game
      */
     public void play() {
-        String response = "";
+        //String response = "";
+        String status = "";
         for (int i = 0; playersActive(); i++) { // infinite loop that will end once all players are inactive
             currentPlayer = players.get(i % numberOfPlayers);
             if (currentPlayer.isActive()) {
-                System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
-                printPlayer(currentPlayer);
+                status = "It is now " + currentPlayer.getName() + "'s turn.";
+                view.gameStart(status);
+                break;
+                //System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
+                //printPlayer(currentPlayer);
 
 
                 //deploy();
 
-
+/*
                 // after deploy phase and before attack phase
                 while (!response.equals("pass")) {
 
@@ -304,6 +308,10 @@ public class GameModel {
             }
         }
         System.out.println("Congratulations! " + currentPlayer.getName() + " is the winner!");
+
+ */
+            }
+        }
     }
 
     /**

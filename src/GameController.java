@@ -52,6 +52,7 @@ public class GameController implements ActionListener, ListSelectionListener {
             }
             else if (buttonPressed.equals(view.getDeployButton()))
             {
+
                 view.getDeployButton().setEnabled(true);
                 view.getDeployToList().setVisible(true);
                 view.getNumTroops().setVisible(true);
@@ -74,6 +75,7 @@ public class GameController implements ActionListener, ListSelectionListener {
 
                 try {
                     view.start();
+
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 } catch (ParseException parseException) {
