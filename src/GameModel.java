@@ -606,6 +606,9 @@ public class GameModel {
             player.setActive(true);
             addPlayer(player);
         }
+        initializeDefaultArmy();
+        setArmies(numberOfPlayers);
+        currentPlayer = players.get(0);
 
     }
 
