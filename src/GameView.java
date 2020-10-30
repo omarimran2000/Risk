@@ -72,7 +72,6 @@ public class GameView extends JFrame {
     public void updateAttack()
     {
         attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-
     }
 
     public JList getAttackFromList() {

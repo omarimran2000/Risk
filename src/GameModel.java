@@ -231,6 +231,34 @@ public class GameModel {
     }
 
     /**
+     * Function to pass turn
+     */
+
+    public void passTurn()
+    {
+        int temp = 0;
+        for (int i=0;i<players.size();i++) //find index of current player
+        {
+            if(players.get(i).equals(currentPlayer))
+            {
+                temp = i;
+                break;
+            }
+        }
+        for(int i = (temp+1)%players.size();i<players.size();i++) //find next active player
+        {
+            if(players.get(i).isActive())
+            {
+                currentPlayer = players.get(i);
+                return;
+            }
+            if(i==players.size()-1)
+            {
+                i=0;
+            }
+        }
+    }
+    /**
      * Plays the game
      */
     public void play() {
@@ -517,7 +545,7 @@ public class GameModel {
      *
      * @return true if there is still at least 2 active players
      */
-    private boolean playersActive(){
+    public boolean playersActive(){
         int x = 0;
         for (Player p : players){
             if (p.isActive()){
