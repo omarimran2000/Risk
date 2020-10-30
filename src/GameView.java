@@ -168,9 +168,9 @@ public class GameView extends JFrame {
             names.add(name);
             name = "";
         }
+        setUpMap();
         model.createPlayers(names);
         welcomePanel.setVisible(false);
-        setUpMap();
 
         model.play();
 
