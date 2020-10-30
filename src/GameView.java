@@ -24,6 +24,7 @@ public class GameView extends JFrame {
     private Container contentPane;
     private GameController controller;
     private JTextArea textArea;
+    private JPanel welcomePanel;
     public GameView() throws IOException, ParseException {
         //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
@@ -35,7 +36,21 @@ public class GameView extends JFrame {
 
         model.setView(this);
         contentPane = getContentPane();
-        setUpMap();
+        //setUpMap();
+
+        contentPane.setLayout(new BorderLayout());
+        welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.PAGE_AXIS));
+
+        JLabel welcome = new JLabel("Welcome to RISK!");
+
+        welcome.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        welcome.setFont(welcome.getFont().deriveFont(30.0f));
+
+        welcomePanel.add(Box.createVerticalGlue());
+        welcomePanel.add(welcome);
+
+
 
         attackFromList = new JList();
         attackFromList.addListSelectionListener(controller);
@@ -60,6 +75,12 @@ public class GameView extends JFrame {
         startButton.addActionListener(controller);
         startButton.setEnabled(true);
 
+
+        startButton.setAlignmentX(Box.CENTER_ALIGNMENT);
+        welcomePanel.add(startButton);
+
+        welcomePanel.add(Box.createVerticalGlue());
+
         //SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
         //numPlayers = new JSpinner(playersModel);
         //numOfPlayers = JOptionPane.showMessageDialog(null, numPlayers);
@@ -67,6 +88,7 @@ public class GameView extends JFrame {
         numDice = new JSpinner();
         numTroops = new JSpinner();
 
+        contentPane.add(welcomePanel, BorderLayout.CENTER);
         setVisible(true);
         setSize(800,800);
     }
@@ -120,7 +142,7 @@ public class GameView extends JFrame {
         return numTroops;
     }
 
-    public void start() {
+    public void start() throws IOException, ParseException {
         ArrayList<String> names = new ArrayList<>();
         String name = "";
         int numOfPlayers = 0;
@@ -129,25 +151,35 @@ public class GameView extends JFrame {
         JOptionPane.showMessageDialog(null, numPlayers);
         try {
             numOfPlayers = (int) numPlayers.getValue();
+
             model.setNumberOfPlayers(numOfPlayers);
         }catch (Exception ex)
         {
             System.out.println("Spinner is not returning an integer. Error: " + ex);
         }
 
+
         for (int i = 0; i < numOfPlayers; i++) {
             while(name == null || name.equals("")) {
                 name = JOptionPane.showInputDialog("Player #" + (i+1) + ": What is your name?");
             }
             names.add(name);
+            name = "";
         }
         model.createPlayers(names);
+        welcomePanel.setVisible(false);
+        setUpMap();
+
     }
 
     public void setNumTroops(int max) {
         SpinnerNumberModel troopsModel = new SpinnerNumberModel(2, 2, max, 1);
         numTroops = new JSpinner(troopsModel);
     }
+
+
+
+
 
     public static void main(String[] args) throws IOException, ParseException {
         new GameView();
