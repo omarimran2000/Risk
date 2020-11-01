@@ -31,6 +31,7 @@ public class GameModel {
     private static Scanner scanner = new Scanner(System.in);
     private GameView view;
     private Player currentPlayer;
+    private String status;
 
     public GameModel() {
         theMap = new Map("Global");
@@ -60,6 +61,10 @@ public class GameModel {
     {
         this.view = view;
     }
+
+    public void setStatus(String status){
+        this.status = status;
+    }
     /**
      * This method is used to determine if a raid was successful or not. Each loser of a die roll will lose a troop and
      * if the defender no longer has any troops, return true
@@ -80,9 +85,13 @@ public class GameModel {
             defence = defender.getDice()[i];
             if (offence > defence) {
                 defender.removeTroops(1, territory);
+                setStatus(defender.getName() + " loses one troop.");
+                view.attack(status);
                 System.out.println(defender.getName() + " loses one troop.");
             } else {
                 attacker.removeTroops(1, attackFrom);
+                setStatus(attacker.getName() + " loses one troop");
+                view.attack(status);
                 System.out.println(attacker.getName() + " loses one troop.");
             }
         }
@@ -90,6 +99,8 @@ public class GameModel {
             defender.removeTerritory(territory);
             territory.setCurrentPlayer(attacker);
             if(defender.getTerritories().size() == 0){
+                setStatus(defender.getName() + " has no more territories and is now out of the game.");
+                view.attack(status);
                 System.out.println(defender.getName() + " has no more territories and is now out of the game.");
                 defender.setActive(false);
             }
@@ -257,28 +268,35 @@ public class GameModel {
                 i=0;
             }
         }
-        view.pass();
+        //view.pass();
     }
     /**
      * Plays the game
      */
     public void play() {
-        //String response = "";
-        String status = "";
+
+
+
+
+
+
+
+
+
+       /* String response = "";
+
         for (int i = 0; playersActive(); i++) { // infinite loop that will end once all players are inactive
             currentPlayer = players.get(i % numberOfPlayers);
             if (currentPlayer.isActive()) {
-                status = "It is now " + currentPlayer.getName() + "'s turn.";
-                status = status + "\n You have " + getNumberOfTroops() + " troops to deploy";
-                view.gameStart(status);
-                break;
-                //System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
-                //printPlayer(currentPlayer);
+
+
+                System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
+                printPlayer(currentPlayer);
 
 
                 //deploy();
 
-/*
+
                 // after deploy phase and before attack phase
                 while (!response.equals("pass")) {
 
@@ -310,11 +328,11 @@ public class GameModel {
             }
         }
         System.out.println("Congratulations! " + currentPlayer.getName() + " is the winner!");
+*/
 
- */
             }
-        }
-    }
+
+
 
     /**
      * Gets the number of troops to be deployed by the current player in the deploy phase at the beginning of each turn
@@ -381,8 +399,10 @@ public class GameModel {
      * @param attack the Terrritory the player is attacking
      * @param numDice the number of dice the attacker is using
      */
-    public void attack(Territory attackFrom,Territory attack,int numDice) {
+    public boolean attack(Territory attackFrom,Territory attack,int numDice) {
         //printPlayer(currentPlayer);
+        setStatus(currentPlayer.getName() + " is attacking " + attack.getName() + " from " + attackFrom.getName());
+        view.attack(status);
         int legalArmies, numDefendDice;
         //List<Territory> territories = currentPlayer.getTerritories();
         //scanner.nextLine();
@@ -479,13 +499,21 @@ public class GameModel {
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
             int numMoveTroops = 0;
-            legalArmies = currentPlayer.findTroops(attackFrom);
+            //legalArmies = currentPlayer.findTroops(attackFrom);
+            //view.attackWon(attack);
+            /*
             while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
                 System.out.println("How many troops would you like to move to " + attack.getName() + "? (1-" + (legalArmies - 1) + ")");
                 numMoveTroops = scanner.nextInt();
             }
-            currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
+            */
+           //currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
+           view.attackWon(attack, currentPlayer.findTroops(attackFrom));
+           return true;
         }
+        return false;
+
+
     }
 
     /**
@@ -618,8 +646,18 @@ public class GameModel {
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
+        view.start();
+        view.turn(currentPlayer, getNumberOfTroops());
+
+
+
 
     }
+
+
+
+
+
 
     /**
      * Calculates the number of dice given a territory
@@ -639,6 +677,23 @@ public class GameModel {
             numDice = 3;
         }
         return numDice;
+    }
+
+    public boolean checkGameOver(){
+        if(!playersActive()){
+            return true;
+
+        }
+        return false;
+    }
+
+    public Player getWinner(){
+        for(int i = 0; i < numberOfPlayers; i++){
+            if(players.get(i).isActive()){
+                return players.get(i);
+            }
+        }
+        return null;
     }
     /**
      * @param args

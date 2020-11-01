@@ -1,35 +1,43 @@
 {
-	"continents":{
-
+	"continents": {
 		"Europe": {
-			"territories":{
-				"Spain":{"adjacent":
-				["France","Germany"]
+			"territories": {
+				"Spain": {
+					"adjacent": [
+						"France",
+						"Germany"
+					]
 				},
-				"France":{"adjacent":
-				["Spain"]
+				"France": {
+					"adjacent": [
+						"Spain"
+					]
 				},
-				"Germany":{"adjacent":
-				["Canada","Spain"]
-				}
-				},
-			"points":2
-
-		},
-
-		"North America":
-		{
-			"territories":
-			{
-				"Canada":{"adjacent":
-				["Germany","USA"]
-				},
-				"USA":{"adjacent":
-				["Canada"]
+				"Germany": {
+					"adjacent": [
+						"Canada",
+						"Spain"
+					]
 				}
 			},
-			"points":2
+			"points": 2
+		},
+		"North America": {
+			"territories": {
+				"Canada": {
+					"adjacent": [
+						"Germany",
+						"USA"
+					]
+				},
+				"USA": {
+					"adjacent": [
+						"Canada"
+					]
+				}
+			},
+			"points": 2
 		}
-
+	},
+	"filepath": "map.png"
 	}
-}

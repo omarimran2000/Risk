@@ -63,7 +63,7 @@ public class Territory {
      * @return the list of neighbouring territories
      */
     public ArrayList<Territory> getNeighbourTerritories(Player player) {
-        ArrayList<Territory> territories = null;
+        ArrayList<Territory> territories = new ArrayList<>();
         for(Territory t:neighbourTerritories)
         {
             if (t.currentPlayer != player) {
@@ -132,6 +132,6 @@ public class Territory {
     }
 
     public String toString(){
-        return name;
+        return name + ": " + currentPlayer.findTroops(this) + " troops";
     }
 }
