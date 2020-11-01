@@ -1,3 +1,14 @@
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
+import javax.swing.DefaultListModel;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import java.util.Scanner;
+
 /**
  * The main class for RISK where the map is loaded
  * and the players can perform actions through the
@@ -10,19 +21,6 @@
  *
  * @version October 25 2020
  */
-
-import org.json.simple.*;
-import org.json.simple.parser.*;
-
-import javax.swing.DefaultListModel;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import java.util.Scanner;
-
-
 public class GameModel {
 
     private Map theMap;
@@ -244,7 +242,6 @@ public class GameModel {
     /**
      * Function to pass turn
      */
-
     public void passTurn()
     {
         int temp = 0;
@@ -270,6 +267,7 @@ public class GameModel {
         }
         //view.pass();
     }
+
     /**
      * Plays the game
      */
@@ -374,7 +372,7 @@ public class GameModel {
                 //    view.setTextArea("Please choose a number between " + 1 + "-" + deployTroops);
                 //}
             //}
-        }
+    }
 
     /**
      * Attacking phase
@@ -638,11 +636,6 @@ public class GameModel {
 
     }
 
-
-
-
-
-
     /**
      * Calculates the number of dice given a territory
      * @param attackFrom territory to attack from
@@ -663,6 +656,11 @@ public class GameModel {
         return numDice;
     }
 
+    /**
+     * checked if the game is over
+     *
+     * @return true if game is over, false otherwise
+     */
     public boolean checkGameOver(){
         if(!playersActive()){
             return true;
@@ -671,6 +669,10 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * gets the winner of the game
+     * @return the winner
+     */
     public Player getWinner(){
         for(int i = 0; i < numberOfPlayers; i++){
             if(players.get(i).isActive()){
@@ -679,6 +681,7 @@ public class GameModel {
         }
         return null;
     }
+
     /**
      * @param args
      * @throws IOException
