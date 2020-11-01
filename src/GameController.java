@@ -51,7 +51,7 @@ public class GameController implements ActionListener, ListSelectionListener {
 
 
                 } catch (Exception ex) {
-
+                    JOptionPane.showMessageDialog(null,"Not enough parameters to attack with. Error: " + ex);
                 }
              }
             else if (buttonPressed.equals(view.getPassButton()))
@@ -62,14 +62,20 @@ public class GameController implements ActionListener, ListSelectionListener {
                     view.pass();
                 } else    //no players active i.e. game is done
                 {
-
+                    JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
+                    view.setVisible(false);
+                    view.dispose();
                 }
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
-
-                    Territory t = (Territory) (view.getDeployToList().getSelectedValue());
-                    int numTroops = (int) view.getNumTroops().getValue();
-                    model.deploy(t, numTroops);
+                    try {
+                        Territory t = (Territory) (view.getDeployToList().getSelectedValue());
+                        int numTroops = (int) view.getNumTroops().getValue();
+                        model.deploy(t, numTroops);
+                    }catch(Exception ex)
+                    {
+                        JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
+                    }
                     // update the numTroops spinner in view
                 /*
                 if (allTroops - numTroops == 0){
@@ -95,7 +101,7 @@ public class GameController implements ActionListener, ListSelectionListener {
                         model.setNumberOfPlayers(numOfPlayers);
                     }catch (Exception ex)
                     {
-                        System.out.println("Spinner is not returning an integer. Error: " + ex);
+                        JOptionPane.showMessageDialog(null,"Spinner is not returning an integer. Error: " + ex);
                     }
 
 
@@ -126,16 +132,23 @@ public class GameController implements ActionListener, ListSelectionListener {
                 }
                 view.getNumPlayers().setEnabled(false);*/
             } else if (buttonPressed.equals(view.getMoveButton())) {
-                Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
-                Territory attack = (Territory) view.getAttackToList().getSelectedValue();
-                int numTroops = (int) view.getNumTroops().getValue();
-                model.getPlayer().attackWin(numTroops, attackFrom, attack);
-                view.getDeployToScrollPane().setVisible(false);
-                view.getAttackFromScrollPane().setVisible(true);
-                view.move(numTroops, attack);
+                try {
+                    Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
+                    Territory attack = (Territory) view.getAttackToList().getSelectedValue();
+                    int numTroops = (int) view.getNumTroops().getValue();
+                    model.getPlayer().attackWin(numTroops, attackFrom, attack);
+                    view.getDeployToScrollPane().setVisible(false);
+                    view.getAttackFromScrollPane().setVisible(true);
+                    view.move(numTroops, attack);
+                }catch (Exception ex)
+                {
+                    JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
+                }
                 view.getNumTroops().setVisible(false);
                 view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
                 view.clearAttackFromSelection();
+                view.getAttackToList().setEnabled(true);
+                view.getAttackFromList().setEnabled(true);
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
                 view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
