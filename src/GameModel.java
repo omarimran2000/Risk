@@ -600,7 +600,7 @@ public class GameModel {
      *
      * @param names the ArrayList filled with player names
      */
-    public void createPlayers(ArrayList<String> names) {
+    public void createPlayers(ArrayList<String> names){
         for (int i = 0; i < numberOfPlayers; i++) {
             Player player = new Player(names.get(i));
             player.setActive(true);
@@ -609,6 +609,7 @@ public class GameModel {
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
+        view.start();
 
     }
 

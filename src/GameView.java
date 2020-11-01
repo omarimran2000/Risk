@@ -143,32 +143,8 @@ public class GameView extends JFrame {
         return numTroops;
     }
 
-    public void start() throws IOException, ParseException {
-        ArrayList<String> names = new ArrayList<>();
-        String name = "";
-        int numOfPlayers = 0;
-        SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
-        JSpinner numPlayers = new JSpinner(playersModel);
-        JOptionPane.showMessageDialog(null, numPlayers);
-        try {
-            numOfPlayers = (int) numPlayers.getValue();
+    public void start() {
 
-            model.setNumberOfPlayers(numOfPlayers);
-        }catch (Exception ex)
-        {
-            System.out.println("Spinner is not returning an integer. Error: " + ex);
-        }
-
-
-        for (int i = 0; i < numOfPlayers; i++) {
-            while(name == null || name.equals("")) {
-                name = JOptionPane.showInputDialog("Player #" + (i+1) + ": What is your name?");
-            }
-            names.add(name);
-            name = "";
-        }
-        setUpMap();
-        model.createPlayers(names);
         welcomePanel.setVisible(false);
 
         startButton.setEnabled(false);
