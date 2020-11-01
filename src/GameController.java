@@ -5,6 +5,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,20 +22,35 @@ public class GameController implements ActionListener, ListSelectionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() instanceof JButton)
-        {
+        if (e.getSource() instanceof JButton) {
             JButton buttonPressed = (JButton) e.getSource();
 
-            if(buttonPressed.equals(view.getAttackButton()))
-            {
+            if (buttonPressed.equals(view.getAttackButton())) {
                 try {
 
                     Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
-                    Territory attackToTerritory = (Territory) view.getAttackToList().getSelectedValue();
-                    int numDice = (int) view.getNumDice().getValue();
-                    model.attack(attackFromTerritory, attackToTerritory, numDice);
 
-                }catch(Exception ex){
+                    if (model.getPlayer().findTroops(attackFromTerritory) == 1) {
+
+                        view.invalidAttackFrom();
+                    } else {
+                        Territory attackToTerritory = (Territory) view.getAttackToList().getSelectedValue();
+                        int numDice = (int) view.getNumDice().getValue();
+
+                        if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
+                            view.clearAttackFromSelection();
+                        }
+                        view.getNumDice().setVisible(false);
+                        view.getAttackScrollPane().setVisible(false);
+
+                        if (model.checkGameOver()) {
+                            view.gameOver(model.getWinner());
+                        }
+
+                    }
+
+
+                } catch (Exception ex) {
 
                 }
              }
@@ -43,15 +59,13 @@ public class GameController implements ActionListener, ListSelectionListener {
                 if(model.playersActive())
                 {
                     model.passTurn();
-                }
-                else    //no players active i.e. game is done
+                    view.pass();
+                } else    //no players active i.e. game is done
                 {
 
                 }
 
-            }
-            else if (buttonPressed.equals(view.getDeployButton()))
-            {
+            } else if (buttonPressed.equals(view.getDeployButton())) {
 
                     Territory t = (Territory) (view.getDeployToList().getSelectedValue());
                     int numTroops = (int) view.getNumTroops().getValue();
@@ -66,9 +80,7 @@ public class GameController implements ActionListener, ListSelectionListener {
 
                  */
                 // go to next phase
-            }
-            else if (buttonPressed.equals(view.getStartButton()))
-            {
+            } else if (buttonPressed.equals(view.getStartButton())) {
 
                 try {
                     ArrayList<String> names = new ArrayList<>();
@@ -113,18 +125,42 @@ public class GameController implements ActionListener, ListSelectionListener {
 
                 }
                 view.getNumPlayers().setEnabled(false);*/
+            } else if (buttonPressed.equals(view.getMoveButton())) {
+                Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
+                Territory attack = (Territory) view.getAttackToList().getSelectedValue();
+                int numTroops = (int) view.getNumTroops().getValue();
+                model.getPlayer().attackWin(numTroops, attackFrom, attack);
+                view.getDeployToScrollPane().setVisible(false);
+                view.getAttackFromScrollPane().setVisible(true);
+                view.move(numTroops, attack);
+                view.getNumTroops().setVisible(false);
+                view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+                view.clearAttackFromSelection();
+
+            } else if (buttonPressed.equals(view.getQuitButton())) {
+                view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
+
             }
         }
-
     }
+
+
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
-        view.getAttackToList().setModel(model.defaultListConversion(attackFromTerritory.getNeighbourTerritories(model.getPlayer())));
-        view.getAttackToList().setEnabled(true);
 
-        SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
-        view.getNumDice().setModel(numDiceModel);
+            if(e.getValueIsAdjusting()) {
+                Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
+                view.getAttackToList().setModel(model.defaultListConversion(attackFromTerritory.getNeighbourTerritories(model.getPlayer())));
+                view.getAttackToList().setEnabled(true);
+                view.getAttackScrollPane().setVisible(true);
+                view.resetAttackText();
+
+                SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
+                view.getNumDice().setModel(numDiceModel);
+                view.getNumDice().setVisible(true);
+            }
+
     }
+
 }
