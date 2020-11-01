@@ -304,9 +304,6 @@ public class GameView extends JFrame {
         textArea.append(status + "\n");
         textArea.setVisible(true);
 
-
-
-
     }
 
     public void clearAttackFromSelection(){
@@ -326,6 +323,8 @@ public class GameView extends JFrame {
     public void attackWon(Territory newTerritory, int numAttackTroops){
         textArea.append("\nSelect the number of troops to move to " + newTerritory.getName());
         setNumTroops(numAttackTroops - 1);
+        attackToList.setEnabled(false);
+        attackFromList.setEnabled(false);
         numTroops.setVisible(true);
         moveButton.setVisible(true);
         moveButton.setEnabled(true);
@@ -366,21 +365,10 @@ public class GameView extends JFrame {
     }
 
 
-
-
-
-
-
-
-
     public void setNumTroops(int max) {
         SpinnerNumberModel troopsModel = new SpinnerNumberModel(1, 1, max, 1);
         numTroops.setModel(troopsModel);
     }
-
-
-
-
 
     public static void main(String[] args) throws IOException, ParseException {
         new GameView();
