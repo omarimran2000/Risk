@@ -274,22 +274,10 @@ public class GameModel {
      * Plays the game
      */
     public void play() {
-
-
-
-
-
-
-
-
-
-       /* String response = "";
-
+        String response = "";
         for (int i = 0; playersActive(); i++) { // infinite loop that will end once all players are inactive
             currentPlayer = players.get(i % numberOfPlayers);
             if (currentPlayer.isActive()) {
-
-
                 System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
                 printPlayer(currentPlayer);
 
@@ -328,11 +316,7 @@ public class GameModel {
             }
         }
         System.out.println("Congratulations! " + currentPlayer.getName() + " is the winner!");
-*/
-
-            }
-
-
+    }
 
     /**
      * Gets the number of troops to be deployed by the current player in the deploy phase at the beginning of each turn

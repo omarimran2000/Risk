@@ -28,7 +28,6 @@ public class GameController implements ActionListener, ListSelectionListener {
             if (buttonPressed.equals(view.getAttackButton())) {
                 try {
 
-
                     Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
 
                     if (model.getPlayer().findTroops(attackFromTerritory) == 1) {
@@ -54,9 +53,11 @@ public class GameController implements ActionListener, ListSelectionListener {
                 } catch (Exception ex) {
 
                 }
-            } else if (buttonPressed.equals(view.getPassButton())) {
-                System.out.println(model.playersActive());
-                if (model.playersActive()) {
+             }
+            else if (buttonPressed.equals(view.getPassButton()))
+            {
+                if(model.playersActive())
+                {
                     model.passTurn();
                     view.pass();
                 } else    //no players active i.e. game is done
@@ -66,12 +67,10 @@ public class GameController implements ActionListener, ListSelectionListener {
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
 
-                Territory t = (Territory) (view.getDeployToList().getSelectedValue());
-                int numTroops = (int) view.getNumTroops().getValue();
-                model.deploy(t, numTroops);
-
-
-                // update the numTroops spinner in view
+                    Territory t = (Territory) (view.getDeployToList().getSelectedValue());
+                    int numTroops = (int) view.getNumTroops().getValue();
+                    model.deploy(t, numTroops);
+                    // update the numTroops spinner in view
                 /*
                 if (allTroops - numTroops == 0){
                     view.getDeployButton().setEnabled(false);
@@ -84,7 +83,6 @@ public class GameController implements ActionListener, ListSelectionListener {
             } else if (buttonPressed.equals(view.getStartButton())) {
 
                 try {
-
                     ArrayList<String> names = new ArrayList<>();
                     String name = "";
                     int numOfPlayers = 0;
@@ -110,7 +108,6 @@ public class GameController implements ActionListener, ListSelectionListener {
                     }
                     view.setUpMap();
                     model.createPlayers(names);
-
 
                 } catch (IOException ioException) {
                     ioException.printStackTrace();

@@ -6,10 +6,8 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Vector;
-
 
 public class GameView extends JFrame {
 
@@ -69,10 +67,7 @@ public class GameView extends JFrame {
         attackToList = new JList();
         attackToList.setEnabled(false);
 
-
-
         deployToList = new JList();
-
 
         attackButton = new JButton("ATTACK");
         attackButton.addActionListener(controller);
@@ -123,7 +118,7 @@ public class GameView extends JFrame {
     }
 
     public void setUpMap() throws IOException, ParseException {
-        model.loadMap("example.JSON");
+        model.loadMap("map.JSON");
         contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
     }
 
@@ -193,10 +188,6 @@ public class GameView extends JFrame {
 
 
         welcomePanel.setVisible(false);
-
-
-
-
 
         startButton.setEnabled(false);
         deployButton.setEnabled(true);
@@ -296,10 +287,7 @@ public class GameView extends JFrame {
             attackFromScrollPane.setVisible(true);
             attackFromScrollPane.setEnabled(true);
             attackFromList.setEnabled(true);
-
-           attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-
-
+            attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         }
         else
         {
@@ -390,9 +378,11 @@ public class GameView extends JFrame {
         numTroops.setModel(troopsModel);
     }
 
+
+
+
+
     public static void main(String[] args) throws IOException, ParseException {
         new GameView();
     }
-
-
 }
