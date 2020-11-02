@@ -679,11 +679,13 @@ public class GameModel {
         }
         return null;
     }
+
     /**
      * @param args
      * @throws IOException
      * @throws ParseException
      */
+     /*
     public static void main(String[] args) throws IOException, ParseException {
         GameModel game = new GameModel();
         game.loadMap("map.json");
@@ -719,4 +721,5 @@ public class GameModel {
         // ready to begin playing
         game.play();
     }
+    */
 }
