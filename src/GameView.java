@@ -297,6 +297,7 @@ public class GameView extends JFrame {
         else
         {
             setNumTroops(model.getNumberOfTroops() - troopsDeployed);
+            deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         }
 
     }
