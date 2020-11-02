@@ -687,6 +687,7 @@ public class GameModel {
      * @throws IOException
      * @throws ParseException
      */
+     /*
     public static void main(String[] args) throws IOException, ParseException {
         GameModel game = new GameModel();
         game.loadMap("map.json");
@@ -722,4 +723,5 @@ public class GameModel {
         // ready to begin playing
         game.play();
     }
+    */
 }

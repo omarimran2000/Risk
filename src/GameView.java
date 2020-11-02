@@ -4,8 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -128,7 +127,7 @@ public class GameView extends JFrame {
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
         setVisible(true);
-        setSize(800,800);
+        setSize(850,800);
 
         troopsDeployed = 0;
     }
@@ -140,8 +139,14 @@ public class GameView extends JFrame {
      * @throws ParseException
      */
     public void setUpMap() throws IOException, ParseException {
-        model.loadMap("map.JSON");
-        contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
+        model.loadMap("map.json");
+        try {                                  //for IDE
+            contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
+        }catch (Exception ex)  //for JAR
+        {
+            InputStream in = getClass().getResourceAsStream("/"+model.getTheMap().getFilePath());
+            contentPane.add(new JLabel(new ImageIcon(ImageIO.read(in))));
+        }
     }
 
     /**
@@ -398,6 +403,7 @@ public class GameView extends JFrame {
         else
         {
             setNumTroops(model.getNumberOfTroops() - troopsDeployed);
+            deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         }
 
     }
