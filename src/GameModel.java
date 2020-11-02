@@ -85,12 +85,12 @@ public class GameModel {
                 defender.removeTroops(1, territory);
                 setStatus(defender.getName() + " loses one troop.");
                 view.attack(status);
-                System.out.println(defender.getName() + " loses one troop.");
+              //  System.out.println(defender.getName() + " loses one troop.");
             } else {
                 attacker.removeTroops(1, attackFrom);
                 setStatus(attacker.getName() + " loses one troop");
                 view.attack(status);
-                System.out.println(attacker.getName() + " loses one troop.");
+             //   System.out.println(attacker.getName() + " loses one troop.");
             }
         }
         if (defender.findTroops(territory) == 0) {
@@ -99,7 +99,7 @@ public class GameModel {
             if(defender.getTerritories().size() == 0){
                 setStatus(defender.getName() + " has no more territories and is now out of the game.");
                 view.attack(status);
-                System.out.println(defender.getName() + " has no more territories and is now out of the game.");
+             //   System.out.println(defender.getName() + " has no more territories and is now out of the game.");
                 defender.setActive(false);
             }
             return true;

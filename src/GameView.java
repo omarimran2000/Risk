@@ -129,7 +129,7 @@ public class GameView extends JFrame {
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
         setVisible(true);
-        setSize(850,800);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         troopsDeployed = 0;
     }
