@@ -116,7 +116,8 @@ public class GameController implements ActionListener, ListSelectionListener {
                     int numOfPlayers = 0;
                     SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
                     JSpinner numPlayers = new JSpinner(playersModel);
-                    JOptionPane.showMessageDialog(null, numPlayers);
+                    //JOptionPane.showMessageDialog(null, numPlayers);
+                    JOptionPane.showMessageDialog(null, numPlayers, "Enter the number of players", JOptionPane.QUESTION_MESSAGE);
                     try {
                         numOfPlayers = (int) numPlayers.getValue();
 
