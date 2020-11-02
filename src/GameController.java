@@ -9,16 +9,38 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The controller class for RISK that connects the View class with the Model Class.
+ * This class is in charge of the events that occur.
+ *
+ * @author Erica Oliver
+ * @author Wintana Yosief
+ * @author Santhosh Pradeepan
+ * @author Omar Imran
+ *
+ * @version October 25 2020
+ */
 public class GameController implements ActionListener, ListSelectionListener {
 
-    GameModel model;
-    GameView view;
+    private GameModel model;
+    private GameView view;
 
+    /**
+     * Constructor for this class
+     *
+     * @param model the model for this game
+     * @param view the visual representation of this game
+     */
     public GameController(GameModel model, GameView view) {
         this.model = model;
         this.view = view;
     }
 
+    /**
+     * method is invoked whenever a specfic action is performed
+     *
+     * @param e the action event that invoked this method
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -158,7 +180,11 @@ public class GameController implements ActionListener, ListSelectionListener {
     }
 
 
-
+    /**
+     * Method is invoked when a list value is selected
+     *
+     * @param e the listSelectionEvent that invoked this method
+     */
     @Override
     public void valueChanged(ListSelectionEvent e) {
 

@@ -9,6 +9,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
+/**
+ * The view class for RISK which is in charge of all GUI components
+ *
+ * @author Erica Oliver
+ * @author Wintana Yosief
+ * @author Santhosh Pradeepan
+ * @author Omar Imran
+ *
+ * @version October 25 2020
+ */
 public class GameView extends JFrame {
 
     private GameModel model;
@@ -30,10 +40,16 @@ public class GameView extends JFrame {
     private JScrollPane deployToScrollPane;
     private JScrollPane attackFromScrollPane;
     private JScrollPane attackScrollPane;
-    JPanel gameControl;
-    JPanel statusPanel;
+    private JPanel gameControl;
+    private JPanel statusPanel;
     private int troopsDeployed;
 
+    /**
+     * Constructor of class GameView
+     *
+     * @throws IOException
+     * @throws ParseException
+     */
     public GameView() throws IOException, ParseException {
         //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
@@ -117,48 +133,103 @@ public class GameView extends JFrame {
         troopsDeployed = 0;
     }
 
+    /**
+     * method used to set up the map
+     *
+     * @throws IOException
+     * @throws ParseException
+     */
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.JSON");
         contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
     }
 
+    /**
+     * getter method for attackFromList
+     *
+     * @return attackFromList
+     */
     public JList getAttackFromList() {
         return attackFromList;
     }
 
+    /**
+     * getter method for attackToList
+     *
+     * @return attackToList
+     */
     public JList getAttackToList() {
         return attackToList;
     }
 
+    /**
+     * getter method for attackButton
+     *
+     * @return attackButton
+     */
     public JButton getAttackButton() {
         return attackButton;
     }
 
+    /**
+     * getter method for startButton
+     *
+     * @return startButton
+     */
     public JButton getStartButton() {
         return startButton;
     }
 
+    /**
+     * getter method for passButton
+     *
+     * @return passButton
+     */
     public JButton getPassButton() {
         return passButton;
     }
 
+    /**
+     * getter method for deployButton
+     *
+     * @return deployButton
+     */
     public JButton getDeployButton() {
         return deployButton;
     }
 
+    /**
+     * getter method for moveButton
+     *
+     * @return moveButton
+     */
     public JButton getMoveButton(){
         return moveButton;
     }
 
+    /**
+     * getter method for quitButton
+     *
+     * @return quitButton
+     */
     public JButton getQuitButton(){
         return quitButton;
     }
 
-
+    /**
+     * getter method for numDice
+     *
+     * @return numDice
+     */
     public JSpinner getNumDice() {
         return numDice;
     }
 
+    /**
+     * getter method for deployToList
+     *
+     * @return deployToList
+     */
     public JList getDeployToList() {
         return deployToList;
     }
@@ -167,25 +238,46 @@ public class GameView extends JFrame {
         textArea.setText(message);
     }
 
+    /**
+     * getter method for numTroops
+     *
+     * @return numTroops
+     */
     public JSpinner getNumTroops() {
         return numTroops;
     }
 
+    /**
+     * getter method for attackFromScrollPane
+     *
+     * @return attackFromScrollPane
+     */
     public JScrollPane getAttackFromScrollPane(){
         return attackFromScrollPane;
     }
 
+    /**
+     * getter method for attackScrollPane
+     *
+     * @return attackScrollPane
+     */
     public JScrollPane getAttackScrollPane(){
         return attackScrollPane;
     }
 
+    /**
+     * getter method for deployToScrollPane
+     *
+     * @return deployToScrollPane
+     */
     public JScrollPane getDeployToScrollPane(){
         return deployToScrollPane;
     }
 
+    /**
+     * method invoked to show starting GUI components
+     */
     public void start()  {
-
-
 
         welcomePanel.setVisible(false);
 
@@ -198,6 +290,12 @@ public class GameView extends JFrame {
 
     }
 
+    /**
+     * method used to show the current player and number of troops they can deploy
+     *
+     * @param curr the current player
+     * @param numDeployTroops the number of troops to deploy
+     */
     public void turn(Player curr, int numDeployTroops){
 
 
@@ -246,6 +344,10 @@ public class GameView extends JFrame {
 
 
     }
+
+    /**
+     *  method invoked when player ends their turn
+     */
     public void pass()
     {
         deployButton.setEnabled(true);
@@ -268,6 +370,10 @@ public class GameView extends JFrame {
 
 
     }
+
+    /**
+     * method invoked when a player is in the deploy phase
+     */
     public void deploy()
     {
         if(troopsDeployed == model.getNumberOfTroops())
@@ -295,10 +401,22 @@ public class GameView extends JFrame {
         }
 
     }
+
+    /**
+     * set the number of deployable troops
+     *
+     * @param newTroops num of new troops
+     */
     public void setTroopsDeployed(int newTroops)
     {
         troopsDeployed += newTroops;
     }
+
+    /**
+     * method invoked during attack phase
+     *
+     * @param status the status of an attack
+     */
     public void attack(String status)
     {
         textArea.append(status + "\n");
@@ -306,12 +424,18 @@ public class GameView extends JFrame {
 
     }
 
+    /**
+     * method used to remove a selected territory
+     */
     public void clearAttackFromSelection(){
 
         attackFromList.clearSelection();
 
     }
 
+    /**
+     * method used to reset the attack text+
+     */
     public void resetAttackText(){
         textArea.setText("");
         textArea.setVisible(false);
@@ -319,7 +443,12 @@ public class GameView extends JFrame {
     }
 
 
-
+    /**
+     * method used for to move troops into new territory after successful attacks
+     *
+     * @param newTerritory the new territory to move into
+     * @param numAttackTroops number of troops to move
+     */
     public void attackWon(Territory newTerritory, int numAttackTroops){
         textArea.append("\nSelect the number of troops to move to " + newTerritory.getName());
         setNumTroops(numAttackTroops - 1);
@@ -334,6 +463,12 @@ public class GameView extends JFrame {
 
     }
 
+    /**
+     * moving troops into a territory
+     *
+     * @param numTroops number of troops to move
+     * @param attack territory where troops are being moved
+     */
     public void move(int numTroops, Territory attack){
         textArea.setText(model.getPlayer().getName() + " moved " + numTroops + " troop(s) to " + attack.getName());
         moveButton.setVisible(false);
@@ -341,11 +476,19 @@ public class GameView extends JFrame {
         passButton.setEnabled(true);
     }
 
+    /**
+     * method is used when user chooses to attack from an invalid territory
+     */
     public void invalidAttackFrom(){
         textArea.setVisible(true);
         textArea.setText("This territory does not have enough troops to attack");
     }
 
+    /**
+     * method is invoked when the game is over
+     *
+     * @param winner the winner of the game
+     */
     public void gameOver(Player winner){
         JOptionPane.showMessageDialog(contentPane, "GAME OVER!\n" + winner.getName() + " is the winner!");
         JOptionPane.showMessageDialog(contentPane, "Click QUIT to exit");
@@ -364,6 +507,12 @@ public class GameView extends JFrame {
 
     }
 
+
+    /**
+     * method user to set the spinner with a max number
+     *
+     * @param max the max number
+     */
 
     public void setNumTroops(int max) {
         SpinnerNumberModel troopsModel = new SpinnerNumberModel(1, 1, max, 1);
