@@ -35,6 +35,7 @@ public class GameView extends JFrame {
     private Container contentPane;
     private GameController controller;
     private JTextArea textArea;
+    private JTextArea continentControl;
     private JPanel welcomePanel;
     private JScrollPane deployToScrollPane;
     private JScrollPane attackFromScrollPane;
@@ -75,6 +76,7 @@ public class GameView extends JFrame {
         welcomePanel.add(welcome);
 
         textArea = new JTextArea();
+        continentControl = new JTextArea();
 
         attackFromList = new JList();
         attackFromList.addListSelectionListener(controller);
@@ -127,7 +129,7 @@ public class GameView extends JFrame {
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
         setVisible(true);
-        setSize(850,800);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         troopsDeployed = 0;
     }
@@ -294,6 +296,20 @@ public class GameView extends JFrame {
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
 
     }
+    /**
+     * Method to update the continent area
+     * @return string to put in JTextArea
+     */
+    public String updateContinent()
+    {
+        String text = "";
+        text += "You control the following continents:\n";
+        for (Continent c: model.getPlayer().getContinents())
+        {
+            text+= c.getName() + "\n";
+        }
+        return text;
+    }
 
     /**
      * method used to show the current player and number of troops they can deploy
@@ -306,6 +322,10 @@ public class GameView extends JFrame {
 
         textArea.setText("It is " + curr.getName() + "'s turn.\n You have " + numDeployTroops + " troops to deploy");
         textArea.setEditable(false);
+
+        continentControl.setText(updateContinent());
+        continentControl.setEditable(false);
+
         gameControl = new JPanel();
         gameControl.setLayout(new FlowLayout());
         gameControl.add(attackButton);
@@ -328,6 +348,7 @@ public class GameView extends JFrame {
         gameControl.add(numDice);
         numDice.setVisible(false);
         statusPanel = new JPanel();
+        statusPanel.add(continentControl);
         statusPanel.add(textArea);
 
         deployToScrollPane = new JScrollPane(deployToList);
@@ -372,6 +393,8 @@ public class GameView extends JFrame {
         textArea.setText("It is " + model.getPlayer().getName() + " 's turn");
         textArea.append("\n You have " + model.getNumberOfTroops() + " troops to deploy");
         textArea.setVisible(true);
+
+        continentControl.setText(updateContinent());
 
 
     }
@@ -427,6 +450,7 @@ public class GameView extends JFrame {
     {
         textArea.append(status + "\n");
         textArea.setVisible(true);
+        continentControl.setText(updateContinent());
 
     }
 
@@ -467,6 +491,7 @@ public class GameView extends JFrame {
         passButton.setEnabled(false);
 
 
+
     }
 
     /**
@@ -477,6 +502,7 @@ public class GameView extends JFrame {
      */
     public void move(int numTroops, Territory attack){
         textArea.setText(model.getPlayer().getName() + " moved " + numTroops + " troop(s) to " + attack.getName());
+        continentControl.setText(updateContinent());
         moveButton.setVisible(false);
         attackButton.setEnabled(true);
         passButton.setEnabled(true);
@@ -486,8 +512,8 @@ public class GameView extends JFrame {
      * method is used when user chooses to attack from an invalid territory
      */
     public void invalidAttackFrom(){
-        textArea.setVisible(true);
-        textArea.setText("This territory does not have enough troops to attack");
+        //textArea.setVisible(true);
+        JOptionPane.showMessageDialog(null,"This territory does not have enough troops to attack");
     }
 
     /**
