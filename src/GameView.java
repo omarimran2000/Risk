@@ -42,6 +42,8 @@ public class GameView extends JFrame {
     private JScrollPane attackScrollPane;
     private JPanel gameControl;
     private JPanel statusPanel;
+    private JPanel numDicePanel;
+    private JPanel numTroopsPanel;
     private int troopsDeployed;
 
     /**
@@ -124,8 +126,20 @@ public class GameView extends JFrame {
         //numPlayers = new JSpinner(playersModel);
         //numOfPlayers = JOptionPane.showMessageDialog(null, numPlayers);
 
+        numDicePanel = new JPanel();
+        numDicePanel.setLayout(new BoxLayout(numDicePanel, BoxLayout.PAGE_AXIS));
+        JLabel numDiceLabel = new JLabel("Number of Dice: ");
+        numDicePanel.add(numDiceLabel);
         numDice = new JSpinner();
+        numDicePanel.add(numDice);
+
+
+        numTroopsPanel = new JPanel();
+        numTroopsPanel.setLayout(new BoxLayout(numTroopsPanel, BoxLayout.PAGE_AXIS));
+        JLabel numTroopsLabel = new JLabel("Number of Troops: ");
+        numTroopsPanel.add(numTroopsLabel);
         numTroops = new JSpinner();
+        numTroopsPanel.add(numTroops);
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
         setVisible(true);
@@ -282,6 +296,26 @@ public class GameView extends JFrame {
     }
 
     /**
+     * Gets the numDicePanel
+     *
+     * @return numDicePanel
+     */
+    public JPanel getNumDicePanel(){
+        return numDicePanel;
+    }
+
+    /**
+     * Gets the numTroopsPanel
+     *
+     * @return numTroopsPanel
+     */
+    public JPanel getNumTroopsPanel(){
+        return numTroopsPanel;
+    }
+
+
+
+    /**
      * method invoked to show starting GUI components
      */
     public void start()  {
@@ -291,7 +325,7 @@ public class GameView extends JFrame {
         startButton.setEnabled(false);
         deployButton.setEnabled(true);
         deployToList.setVisible(true);
-        numTroops.setVisible(true);
+        numTroopsPanel.setVisible(true);
         troopsDeployed = 0;
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
 
@@ -344,9 +378,9 @@ public class GameView extends JFrame {
 
 
         setNumTroops(numDeployTroops);
-        gameControl.add(numTroops);
-        gameControl.add(numDice);
-        numDice.setVisible(false);
+        gameControl.add(numTroopsPanel);
+        gameControl.add(numDicePanel);
+        numDicePanel.setVisible(false);
         statusPanel = new JPanel();
         statusPanel.add(continentControl);
         statusPanel.add(textArea);
@@ -379,13 +413,13 @@ public class GameView extends JFrame {
         deployButton.setEnabled(true);
         deployToScrollPane.setVisible(true);
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-        numTroops.setVisible(true);
+        numTroopsPanel.setVisible(true);
 
         passButton.setVisible(false);
         attackButton.setEnabled(false);
         attackFromScrollPane.setVisible(false);
         attackScrollPane.setVisible(false);
-        numDice.setVisible(false);
+        numDicePanel.setVisible(false);
 
         setNumTroops(model.getNumberOfTroops());
         troopsDeployed= 0;
@@ -409,7 +443,7 @@ public class GameView extends JFrame {
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(false);
             //deployToList.setVisible(false);
-            numTroops.setVisible(false);
+            numTroopsPanel.setVisible(false);
 
             textArea.setText("");
             textArea.setVisible(false);
@@ -484,7 +518,7 @@ public class GameView extends JFrame {
         setNumTroops(numAttackTroops - 1);
         attackToList.setEnabled(false);
         attackFromList.setEnabled(false);
-        numTroops.setVisible(true);
+        numTroopsPanel.setVisible(true);
         moveButton.setVisible(true);
         moveButton.setEnabled(true);
         attackButton.setEnabled(false);
@@ -529,7 +563,7 @@ public class GameView extends JFrame {
         deployButton.setVisible(false);
         passButton.setVisible(false);
         moveButton.setVisible(false);
-        numTroops.setVisible(false);
+        numTroopsPanel.setVisible(false);
         attackFromScrollPane.setVisible(false);
         startButton.setVisible(true);
         startButton.setEnabled(true);

@@ -62,7 +62,7 @@ public class GameController implements ActionListener, ListSelectionListener {
                         if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
                             view.clearAttackFromSelection();
                         }
-                        view.getNumDice().setVisible(false);
+                        view.getNumDicePanel().setVisible(false);
                         view.getAttackScrollPane().setVisible(false);
 
                         if (model.checkGameOver()) {
@@ -167,7 +167,7 @@ public class GameController implements ActionListener, ListSelectionListener {
                 {
                     JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
                 }
-                view.getNumTroops().setVisible(false);
+                view.getNumTroopsPanel().setVisible(false);
                 view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
                 view.clearAttackFromSelection();
                 view.getAttackToList().setEnabled(true);
@@ -198,7 +198,7 @@ public class GameController implements ActionListener, ListSelectionListener {
 
                 SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
                 view.getNumDice().setModel(numDiceModel);
-                view.getNumDice().setVisible(true);
+                view.getNumDicePanel().setVisible(true);
             }
 
     }
