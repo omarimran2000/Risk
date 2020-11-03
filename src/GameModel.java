@@ -26,6 +26,9 @@ public class GameModel {
     private Map theMap;
     private static List<Player> players;
     private static int numberOfPlayers;
+    private final static int loseTroop = 1;
+    private final static int deploySingleTroop = 1;
+    private final static int[] dice = {1, 2, 3};
     private static Scanner scanner = new Scanner(System.in);
     private GameView view;
     private Player currentPlayer;
@@ -82,12 +85,12 @@ public class GameModel {
             offence = attacker.getDice()[i]; //access the die number saved at position i
             defence = defender.getDice()[i];
             if (offence > defence) {
-                defender.removeTroops(1, territory);
+                defender.removeTroops(loseTroop, territory);
                 setStatus(defender.getName() + " loses one troop.");
                 view.attack(status);
               //  System.out.println(defender.getName() + " loses one troop.");
             } else {
-                attacker.removeTroops(1, attackFrom);
+                attacker.removeTroops(loseTroop, attackFrom);
                 setStatus(attacker.getName() + " loses one troop");
                 view.attack(status);
              //   System.out.println(attacker.getName() + " loses one troop.");
@@ -219,14 +222,14 @@ public class GameModel {
             for (Territory t : p.getTerritories()) //puts one army in every territory owned by player
             {
                 p.getArmy().addTroop(new Troop());
-                p.deploy(1, t);
+                p.deploy(deploySingleTroop, t);
                 armiesCount--;
             }
             while(armiesCount!=0)
             {
                 int index = random.nextInt(p.getTerritories().size());
                 p.getArmy().addTroop(new Troop());
-                p.deploy(1, p.getTerritories().get(index));
+                p.deploy(deploySingleTroop, p.getTerritories().get(index));
                 armiesCount--;
             }
             for(Continent c:theMap.getContinents())
@@ -262,7 +265,7 @@ public class GameModel {
             }
             if(i==players.size()-1)
             {
-                i=0;
+                i = 0;
             }
         }
         //view.pass();
@@ -473,9 +476,9 @@ public class GameModel {
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
         if (defender.findTroops(attack) == 1 || numDice == 1) {
-            numDefendDice = 1;
+            numDefendDice = dice[0];
         } else {
-            numDefendDice = 2;
+            numDefendDice = dice[1];
         }
         defender.rollDice(numDefendDice);
 
@@ -645,13 +648,13 @@ public class GameModel {
         int legalArmies = currentPlayer.findTroops(attackFrom) - 1;
         int numDice = 0;
         if (legalArmies == 1) {
-            numDice = 1;
+            numDice = dice[0];
         } else if (legalArmies == 2) {
-            numDice = 2;
+            numDice = dice[1];
         }
         else
         {
-            numDice = 3;
+            numDice = dice[2];
         }
         return numDice;
     }
