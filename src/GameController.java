@@ -75,6 +75,10 @@ public class GameController implements ActionListener, ListSelectionListener {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,"Not enough parameters to attack with. Error: " + ex);
                 }
+                if (!model.canAttack(model.getPlayer())){
+                    model.passTurn();
+                    view.pass();
+                }
              }
             else if (buttonPressed.equals(view.getPassButton()))
             {
