@@ -33,6 +33,8 @@ public class GameModel {
     private GameView view;
     private Player currentPlayer;
     private String status;
+    private final int MIN_DEPLOY_TROOPS = 3;
+    private final int DEPLOY_TERRITORY_DIVISOR = 3;
 
     public GameModel() {
         theMap = new Map("Global");
@@ -333,7 +335,7 @@ public class GameModel {
         for (Continent continent : player.getContinents()) {
             continentBonusPoints += continent.getContinentPoint();
         }
-        return Math.max(numberOfTerritories / 3 + continentBonusPoints, 3);
+        return Math.max(numberOfTerritories / DEPLOY_TERRITORY_DIVISOR + continentBonusPoints, MIN_DEPLOY_TROOPS);
     }
 
     /**
