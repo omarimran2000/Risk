@@ -75,6 +75,10 @@ public class GameController implements ActionListener, ListSelectionListener {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,"Not enough parameters to attack with. Error: " + ex);
                 }
+                if (!model.canAttack(model.getPlayer())){
+                    model.passTurn();
+                    view.pass();
+                }
              }
             else if (buttonPressed.equals(view.getPassButton()))
             {
@@ -92,8 +96,13 @@ public class GameController implements ActionListener, ListSelectionListener {
             } else if (buttonPressed.equals(view.getDeployButton())) {
                     try {
                         Territory t = (Territory) (view.getDeployToList().getSelectedValue());
-                        int numTroops = (int) view.getNumTroops().getValue();
-                        model.deploy(t, numTroops);
+                        if (t==null){
+                            JOptionPane.showMessageDialog(null, "Pick a territory.");
+                        }
+                        else {
+                            int numTroops = (int) view.getNumTroops().getValue();
+                            model.deploy(t, numTroops);
+                        }
                     }catch(Exception ex)
                     {
                         JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
