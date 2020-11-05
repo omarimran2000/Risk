@@ -45,6 +45,8 @@ public class GameView extends JFrame {
     private JPanel numDicePanel;
     private JPanel numTroopsPanel;
     private int troopsDeployed;
+    private final int frameSizeX = 1200;
+    private final int frameSizeY = 750;
 
     /**
      * Constructor of class GameView
@@ -144,9 +146,12 @@ public class GameView extends JFrame {
         contentPane.add(welcomePanel, BorderLayout.CENTER);
         contentPane.addMouseListener(controller);
         setVisible(true);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         troopsDeployed = 0;
+
+        this.setResizable(false);
+        this.setSize(frameSizeX,frameSizeY);
     }
 
     /**
