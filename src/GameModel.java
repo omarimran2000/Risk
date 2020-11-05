@@ -700,6 +700,16 @@ public class GameModel {
         }
         return null;
     }
+    public boolean ownNeighbours(Territory t ) {
+        int x = t.getNeighbourTerritories().size() - 1;
+        for (Territory territory : t.getNeighbourTerritories()) {
+            if (!(territory.getCurrentPlayer() == currentPlayer)) {
+                return false;
+            }
+            x--;
+        }
+        return true;
+    }
 
     /**
      * @param args
