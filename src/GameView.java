@@ -606,6 +606,7 @@ public class GameView extends JFrame {
         TerritoryButton temp = new TerritoryButton(t);
       //  temp.setBackground(Color.GREEN);
         temp.setBounds(x,y,10,10);
+        temp.addActionListener(controller);
         temp.setEnabled(false);
         territoryButtons.add(temp);
     }
