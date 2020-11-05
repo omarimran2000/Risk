@@ -1,15 +1,15 @@
 import javax.swing.*;
 
-public class territoryButton extends JButton {
+public class TerritoryButton extends JButton {
 
     private Territory territory;
 
-    public territoryButton(Territory t) {
+    public TerritoryButton(Territory t) {
         super();
         territory = t;
     }
 
-    public territoryButton(String text, Territory t) {
+    public TerritoryButton(String text, Territory t) {
         super(text);
         territory = t;
     }
