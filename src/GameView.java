@@ -163,6 +163,11 @@ public class GameView extends JFrame {
      */
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.json");
+        for(TerritoryButton tb:territoryButtons)
+        {
+            tb.setVisible(true);
+            contentPane.add(tb);
+        }
         try {                                  //for IDE
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
         }catch (Exception ex)  //for JAR
@@ -170,11 +175,7 @@ public class GameView extends JFrame {
             InputStream in = getClass().getResourceAsStream("/"+model.getTheMap().getFilePath());
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(in))));
         }
-        for(TerritoryButton tb:territoryButtons)
-        {
-            tb.setVisible(true);
-            contentPane.add(tb);
-        }
+
     }
 
     /**
