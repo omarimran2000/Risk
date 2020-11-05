@@ -46,6 +46,8 @@ public class GameView extends JFrame {
     private final int frameSizeX = 1200;
     private final int frameSizeY = 750;
     private ArrayList<TerritoryButton> territoryButtons;
+    private boolean chosenAttack;
+    private boolean chooseDeploy;
 
     /**
      * Constructor of class GameView
@@ -61,6 +63,8 @@ public class GameView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         territoryButtons = new ArrayList<TerritoryButton>();
+        chosenAttack = false;
+        chooseDeploy = false;
         //setIconImage(icon.getImage());
 
 
@@ -336,6 +340,8 @@ public class GameView extends JFrame {
         startButton.setEnabled(false);
         deployButton.setEnabled(true);
         deployToList.setVisible(true);
+        setDeployButtons();
+        chooseDeploy = true;
         numTroopsPanel.setVisible(true);
         troopsDeployed = 0;
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
@@ -424,6 +430,8 @@ public class GameView extends JFrame {
         deployButton.setEnabled(true);
         deployToScrollPane.setVisible(true);
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        setDeployButtons();
+        chooseDeploy = true;
         numTroopsPanel.setVisible(true);
 
         passButton.setVisible(false);
@@ -467,6 +475,9 @@ public class GameView extends JFrame {
             attackFromScrollPane.setEnabled(true);
             attackFromList.setEnabled(true);
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+            setAttackFromButtons();
+            chooseDeploy = false;
+            chosenAttack = false;
         }
         else
         {
@@ -611,13 +622,6 @@ public class GameView extends JFrame {
         temp.setEnabled(false);
         territoryButtons.add(temp);
     }
-    public void setNotEnabledButtons()
-    {
-        for(TerritoryButton tb:territoryButtons)
-        {
-            tb.setEnabled(false);
-        }
-    }
     public void setDeployButtons()
     {
         for(Territory t:model.getPlayer().getTerritories())
@@ -643,6 +647,36 @@ public class GameView extends JFrame {
                 }
             }
         }
+    }
+    public void setAttackToButtons(Territory attackFrom)
+    {
+        for(TerritoryButton tb:territoryButtons)
+        {
+            if(! attackFrom.getNeighbourTerritories().contains(tb.getTerritory()) && !attackFrom.getCurrentPlayer().equals(model.getPlayer()))
+            {
+                tb.setEnabled(false);
+            }
+        }
+
+    }
+    public void disableAllButtons()
+    {
+        for (TerritoryButton tb:territoryButtons)
+        {
+            tb.setEnabled(false);
+        }
+    }
+
+    public void setChosenAttack(boolean chosenAttack) {
+        this.chosenAttack = chosenAttack;
+    }
+
+    public boolean isChosenAttack() {
+        return chosenAttack;
+    }
+
+    public boolean isChooseDeploy() {
+        return chooseDeploy;
     }
 
     public static void main(String[] args) throws IOException, ParseException {
