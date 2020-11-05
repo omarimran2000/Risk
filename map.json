@@ -7,7 +7,11 @@
             "Kamchatka",
             "Northwest Territories",
             "Alberta"
-          ]
+          ],
+          "coordinates": {
+            "x": 221,
+            "y": 106
+          }
         },
         "Alberta": {
           "adjacent": [
@@ -15,14 +19,22 @@
             "Northwest Territories",
             "Ontario",
             "Western United States"
-          ]
+          ],
+          "coordinates": {
+            "x": 289,
+            "y": 147
+          }
         },
         "Central America": {
           "adjacent": [
             "Eastern United States",
             "Western United States",
             "Venezuela"
-          ]
+          ],
+          "coordinates": {
+            "x": 334,
+            "y": 272
+          }
         },
         "Eastern United States": {
           "adjacent": [
@@ -30,7 +42,11 @@
             "Ontario",
             "Quebec",
             "Central America"
-          ]
+          ],
+          "coordinates": {
+            "x": 338,
+            "y": 237
+          }
         },
         "Greenland": {
           "adjacent": [
@@ -38,7 +54,11 @@
             "Ontario",
             "Quebec",
             "Iceland"
-          ]
+          ],
+          "coordinates": {
+            "x": 449,
+            "y": 77
+          }
         },
         "Northwest Territories": {
           "adjacent": [
@@ -46,7 +66,11 @@
             "Alberta",
             "Ontario",
             "Greenland"
-          ]
+          ],
+          "coordinates": {
+            "x": 275,
+            "y": 64
+          }
         },
         "Ontario": {
           "adjacent": [
@@ -56,14 +80,22 @@
             "Eastern United States",
             "Western United States",
             "Greenland"
-          ]
+          ],
+          "coordinates": {
+            "x": 347,
+            "y": 129
+          }
         },
         "Quebec": {
           "adjacent": [
             "Ontario",
             "Greenland",
             "Eastern United States"
-          ]
+          ],
+          "coordinates": {
+            "x": 399,
+            "y": 160
+          }
         },
         "Western United States": {
           "adjacent": [
@@ -71,7 +103,11 @@
             "Ontario",
             "Alberta",
             "Central America"
-          ]
+          ],
+          "coordinates": {
+            "x": 283,
+            "y": 208
+          }
         }
       },
         "points": 5
@@ -82,7 +118,11 @@
             "adjacent": [
               "Brazil",
               "Peru"
-            ]
+            ],
+            "coordinates": {
+              "x": 376,
+              "y": 464
+            }
           },
           "Brazil": {
             "adjacent": [
@@ -90,21 +130,33 @@
               "Peru",
               "Venezuela",
               "North Africa"
-            ]
+            ],
+            "coordinates": {
+              "x": 419,
+              "y": 382
+            }
           },
           "Peru": {
             "adjacent": [
               "Brazil",
               "Argentina",
               "Venezuela"
-            ]
+            ],
+            "coordinates": {
+              "x": 353,
+              "y": 385
+            }
           },
           "Venezuela": {
             "adjacent": [
               "Brazil",
               "Peru",
               "Central America"
-            ]
+            ],
+            "coordinates": {
+              "x": 351,
+              "y": 329
+            }
           }
         },
         "points": 2
@@ -117,14 +169,22 @@
               "Scandinavia",
               "Northern Europe",
               "Western Europe"
-            ]
+            ],
+            "coordinates": {
+              "x": 482,
+              "y": 196
+            }
           },
           "Iceland": {
             "adjacent": [
               "Great Britain",
               "Scandinavia",
               "Greenland"
-            ]
+            ],
+            "coordinates": {
+              "x": 514,
+              "y": 130
+            }
           },
           "Northern Europe": {
             "adjacent": [
@@ -133,7 +193,11 @@
               "Western Europe",
               "Southern Europe",
               "Ukraine"
-            ]
+            ],
+            "coordinates": {
+              "x": 565,
+              "y": 209
+            }
           },
           "Scandinavia": {
             "adjacent": [
@@ -141,7 +205,11 @@
               "Great Britain",
               "Northern Europe",
               "Ukraine"
-            ]
+            ],
+            "coordinates": {
+              "x": 585,
+              "y": 139
+            }
           },
           "Southern Europe": {
             "adjacent": [
@@ -151,7 +219,11 @@
               "North Africa",
               "Egypt",
               "Middle East"
-            ]
+            ],
+            "coordinates": {
+              "x": 575,
+              "y": 254
+            }
           },
           "Ukraine": {
             "adjacent": [
@@ -161,7 +233,11 @@
               "Afghanistan",
               "Middle East",
               "Ural"
-            ]
+            ],
+            "coordinates": {
+              "x": 628,
+              "y": 165
+            }
           },
           "Western Europe": {
             "adjacent": [
@@ -169,7 +245,11 @@
               "Northern Europe",
               "Southern Europe",
               "North Africa"
-            ]
+            ],
+            "coordinates": {
+              "x": 483,
+              "y": 246
+            }
           }
         },
         "points": 5
@@ -181,7 +261,11 @@
               "East Africa",
               "North Africa",
               "South Africa"
-            ]
+            ],
+            "coordinates": {
+              "x": 598,
+              "y": 431
+            }
           },
           "East Africa": {
             "adjacent": [
@@ -191,7 +275,11 @@
               "North Africa",
               "South Africa",
               "Middle East"
-            ]
+            ],
+            "coordinates": {
+              "x": 670,
+              "y": 412
+            }
           },
           "Egypt": {
             "adjacent": [
@@ -199,13 +287,21 @@
               "North Africa",
               "Southern Europe",
               "Middle East"
-            ]
+            ],
+            "coordinates": {
+              "x": 606,
+              "y": 339
+            }
           },
           "Madagascar": {
             "adjacent": [
               "East Africa",
               "South Africa"
-            ]
+            ],
+            "coordinates": {
+              "x": 709,
+              "y": 507
+            }
           },
           "North Africa": {
             "adjacent": [
@@ -215,14 +311,22 @@
               "Southern Europe",
               "Western Europe",
               "Brazil"
-            ]
+            ],
+            "coordinates": {
+              "x": 528,
+              "y": 374
+            }
           },
           "South Africa": {
             "adjacent": [
               "Congo",
               "East Africa",
               "Madagascar"
-            ]
+            ],
+            "coordinates": {
+              "x": 610,
+              "y": 511
+            }
           }
         },
         "points": 3
@@ -236,7 +340,11 @@
               "Middle East",
               "Ural",
               "Ukraine"
-            ]
+            ],
+            "coordinates": {
+              "x": 713,
+              "y": 224
+            }
           },
           "China": {
             "adjacent": [
@@ -246,7 +354,11 @@
               "Siam",
               "Siberia",
               "Ural"
-            ]
+            ],
+            "coordinates": {
+              "x": 803,
+              "y": 263
+            }
           },
           "India": {
             "adjacent": [
@@ -254,7 +366,11 @@
               "China",
               "Middle East",
               "Siam"
-            ]
+            ],
+            "coordinates": {
+              "x": 762,
+              "y": 308
+            }
           },
           "Irkutsk": {
             "adjacent": [
@@ -262,13 +378,21 @@
               "Mongolia",
               "Yakutsk",
               "Siberia"
-            ]
+            ],
+            "coordinates": {
+              "x": 818,
+              "y": 151
+            }
           },
           "Japan": {
             "adjacent": [
               "Kamchatka",
               "Mongolia"
-            ]
+            ],
+            "coordinates": {
+              "x": 925,
+              "y": 222
+            }
           },
           "Kamchatka": {
             "adjacent": [
@@ -277,7 +401,11 @@
               "Mongolia",
               "Yakutsk",
               "Alaska"
-            ]
+            ],
+            "coordinates": {
+              "x": 899,
+              "y": 90
+            }
           },
           "Middle East": {
             "adjacent": [
@@ -287,7 +415,11 @@
               "Ukraine",
               "East Africa",
               "Egypt"
-            ]
+            ],
+            "coordinates": {
+              "x": 668,
+              "y": 296
+            }
           },
           "Mongolia": {
             "adjacent": [
@@ -296,14 +428,22 @@
               "Kamchatka",
               "China",
               "Afghanistan"
-            ]
+            ],
+            "coordinates": {
+              "x": 825,
+              "y": 209
+            }
           },
           "Siam": {
             "adjacent": [
               "China",
               "India",
               "Indonesia"
-            ]
+            ],
+            "coordinates": {
+              "x": 840,
+              "y": 330
+            }
           },
           "Siberia": {
             "adjacent": [
@@ -312,7 +452,11 @@
               "Mongolia",
               "Ural",
               "Yakutsk"
-            ]
+            ],
+            "coordinates": {
+              "x": 774,
+              "y": 109
+            }
           },
           "Ural": {
             "adjacent": [
@@ -320,14 +464,22 @@
               "China",
               "Siberia",
               "Ukraine"
-            ]
+            ],
+            "coordinates": {
+              "x": 735,
+              "y": 153
+            }
           },
           "Yakutsk": {
             "adjacent": [
               "Irkutsk",
               "Kamchatka",
               "Siberia"
-            ]
+            ],
+            "coordinates": {
+              "x": 832,
+              "y": 89
+            }
           }
         },
         "points": 7
@@ -338,28 +490,44 @@
             "adjacent": [
               "New Guinea",
               "Western Australia"
-            ]
+            ],
+            "coordinates": {
+              "x": 944,
+              "y": 485
+            }
           },
           "Indonesia": {
             "adjacent": [
               "New Guinea",
               "Western Australia",
               "Siam"
-            ]
+            ],
+            "coordinates": {
+              "x": 832,
+              "y": 426
+            }
           },
           "New Guinea": {
             "adjacent": [
               "Eastern Australia",
               "Indonesia",
               "Western Australia"
-            ]
+            ],
+            "coordinates": {
+              "x": 917,
+              "y": 404
+            }
           },
           "Western Australia": {
             "adjacent": [
               "Eastern Australia",
               "Indonesia",
               "New Guinea"
-            ]
+            ],
+            "coordinates": {
+              "x": 862,
+              "y": 512
+            }
           }
         },
         "points": 2

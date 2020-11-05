@@ -157,6 +157,12 @@ public class GameModel {
                 String territoryName = (String) territories.keySet().toArray()[j];
                 Territory temp = new Territory(territoryName, theMap.getContinents().get(i));
                 theMap.getContinents().get(i).addTerritories(temp);
+
+                JSONObject territoriesKeys = (JSONObject) territories.get(territoryName);
+                JSONObject coordinates = (JSONObject) territoriesKeys.get("coordinates");
+                int x = (int)((long) coordinates.get("x"));
+                int y = (int)((long) coordinates.get("y"));
+                view.addButtons(temp,x,y);
             }
         }
         /*
