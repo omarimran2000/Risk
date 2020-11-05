@@ -517,6 +517,13 @@ public class GameModel {
     public Player getPlayer() { return currentPlayer; }
 
     /**
+     * Initializes the first player of the game
+     */
+    public void setFirstPlayer(){
+        currentPlayer = players.get(0);
+    }
+
+    /**
      * Prints a smaller overview for a specific player at the beginning of their turn including
      * the territories and continents that they own
      *
@@ -638,7 +645,8 @@ public class GameModel {
         }
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
-        currentPlayer = players.get(0);
+        //currentPlayer = players.get(0);
+        setFirstPlayer();
         view.start();
         view.turn(currentPlayer, getNumberOfTroops());
 
