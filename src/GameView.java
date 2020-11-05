@@ -142,6 +142,7 @@ public class GameView extends JFrame {
         numTroopsPanel.add(numTroops);
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
+        contentPane.addMouseListener(controller);
         setVisible(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 

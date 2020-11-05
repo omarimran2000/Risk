@@ -3,9 +3,7 @@ import org.json.simple.parser.ParseException;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,7 +18,7 @@ import java.util.ArrayList;
  *
  * @version October 25 2020
  */
-public class GameController implements ActionListener, ListSelectionListener {
+public class GameController implements ActionListener, ListSelectionListener, MouseListener {
 
     private GameModel model;
     private GameView view;
@@ -212,4 +210,28 @@ public class GameController implements ActionListener, ListSelectionListener {
 
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("x: "+e.getX()+" y:"+e.getY());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
