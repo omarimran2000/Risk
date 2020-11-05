@@ -54,13 +54,14 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
                 view.disableAllButtons();
             }
 
-            else if(!view.isChosenAttack() && model.getPlayer().findTroops(temp) > 1 && model.ownNeighbours(temp))
+            else if(view.isChosenAttack())
             {
+                view.disableAllButtons();
                 view.setAttackToButtons(temp);
                 attackFromTerritory = temp;
-                view.setChosenAttack(true);
+                view.setChosenAttack(false);
             }
-            else if(view.isChosenAttack())
+            else if(!view.isChosenAttack())
             {
                 attackToTerritory = temp;
                 view.getAttackButton().setEnabled(true);

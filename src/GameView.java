@@ -477,11 +477,12 @@ public class GameView extends JFrame {
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             setAttackFromButtons();
             chooseDeploy = false;
-            chosenAttack = false;
+            chosenAttack = true;
         }
         else
         {
             setNumTroops(model.getNumberOfTroops() - troopsDeployed);
+            enableAllPlayerButtons();
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         }
 
@@ -516,6 +517,7 @@ public class GameView extends JFrame {
     public void clearAttackFromSelection(){
 
         attackFromList.clearSelection();
+        setAttackFromButtons();
 
     }
 
@@ -641,7 +643,7 @@ public class GameView extends JFrame {
         {
             for(TerritoryButton tb:territoryButtons)
             {
-                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1)
+                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1 && !model.ownNeighbours(t))
                 {
                     tb.setEnabled(true);
                 }
@@ -652,9 +654,9 @@ public class GameView extends JFrame {
     {
         for(TerritoryButton tb:territoryButtons)
         {
-            if(! attackFrom.getNeighbourTerritories().contains(tb.getTerritory()) && !attackFrom.getCurrentPlayer().equals(model.getPlayer()))
+            if((attackFrom.getNeighbourTerritories().contains(tb.getTerritory())) && !tb.getTerritory().getCurrentPlayer().equals(model.getPlayer()))
             {
-                tb.setEnabled(false);
+                tb.setEnabled(true);
             }
         }
 
@@ -664,6 +666,15 @@ public class GameView extends JFrame {
         for (TerritoryButton tb:territoryButtons)
         {
             tb.setEnabled(false);
+        }
+    }
+    public void enableAllPlayerButtons()
+    {
+        for (TerritoryButton tb:territoryButtons)
+        {
+            if(tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
+                tb.setEnabled(true);
+            }
         }
     }
 
