@@ -25,8 +25,6 @@ public class Territory {
         this.name = name;
         this.continent = continent;
         neighbourTerritories = new ArrayList<>();
-        //this.territoryButton = new JButton(this.name);
-
     }
 
     /**
@@ -134,4 +132,6 @@ public class Territory {
     public String toString(){
         return name + ": " + currentPlayer.findTroops(this) + " troops";
     }
+
+
 }

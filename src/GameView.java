@@ -2,11 +2,9 @@ import org.json.simple.parser.ParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * The view class for RISK which is in charge of all GUI components
@@ -47,6 +45,7 @@ public class GameView extends JFrame {
     private int troopsDeployed;
     private final int frameSizeX = 1200;
     private final int frameSizeY = 750;
+    private ArrayList<TerritoryButton> territoryButtons;
 
     /**
      * Constructor of class GameView
@@ -60,6 +59,8 @@ public class GameView extends JFrame {
         model = new GameModel();
         controller = new GameController(model, this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        territoryButtons = new ArrayList<TerritoryButton>();
         //setIconImage(icon.getImage());
 
 
@@ -162,6 +163,11 @@ public class GameView extends JFrame {
      */
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.json");
+        for(TerritoryButton tb:territoryButtons)
+        {
+            tb.setVisible(true);
+            contentPane.add(tb);
+        }
         try {                                  //for IDE
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
         }catch (Exception ex)  //for JAR
@@ -169,6 +175,7 @@ public class GameView extends JFrame {
             InputStream in = getClass().getResourceAsStream("/"+model.getTheMap().getFilePath());
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(in))));
         }
+
     }
 
     /**
@@ -318,8 +325,6 @@ public class GameView extends JFrame {
     public JPanel getNumTroopsPanel(){
         return numTroopsPanel;
     }
-
-
 
     /**
      * method invoked to show starting GUI components
@@ -589,6 +594,55 @@ public class GameView extends JFrame {
     public void setNumTroops(int max) {
         SpinnerNumberModel troopsModel = new SpinnerNumberModel(1, 1, max, 1);
         numTroops.setModel(troopsModel);
+    }
+
+    /**
+     *
+     * @param t
+     * @param x
+     * @param y
+     */
+    public void addButtons(Territory t,int x,int y)
+    {
+        TerritoryButton temp = new TerritoryButton(t);
+      //  temp.setBackground(Color.GREEN);
+        temp.setBounds(x,y,10,10);
+        temp.addActionListener(controller);
+        temp.setEnabled(false);
+        territoryButtons.add(temp);
+    }
+    public void setNotEnabledButtons()
+    {
+        for(TerritoryButton tb:territoryButtons)
+        {
+            tb.setEnabled(false);
+        }
+    }
+    public void setDeployButtons()
+    {
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            for(TerritoryButton tb:territoryButtons)
+            {
+                if (tb.getTerritory().equals(t))
+                {
+                    tb.setEnabled(true);
+                }
+            }
+        }
+    }
+    public void setAttackFromButtons()
+    {
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            for(TerritoryButton tb:territoryButtons)
+            {
+                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1)
+                {
+                    tb.setEnabled(true);
+                }
+            }
+        }
     }
 
     public static void main(String[] args) throws IOException, ParseException {
