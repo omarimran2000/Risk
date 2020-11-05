@@ -22,6 +22,9 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
 
     private GameModel model;
     private GameView view;
+    Territory attackFromTerritory;
+    Territory attackToTerritory;
+    Territory deployTerritory;
 
     /**
      * Constructor for this class
@@ -41,20 +44,43 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() instanceof TerritoryButton)
+        {
+            TerritoryButton territoryButton = (TerritoryButton) e.getSource();
+            Territory temp = territoryButton.getTerritory();
+            if(view.isChooseDeploy())
+            {
+                deployTerritory = temp;
+                view.disableAllButtons();
+            }
+
+            else if(!view.isChosenAttack() && model.getPlayer().findTroops(temp) > 1 && model.ownNeighbours(temp))
+            {
+                view.setAttackToButtons(temp);
+                attackFromTerritory = temp;
+                view.setChosenAttack(true);
+            }
+            else if(view.isChosenAttack())
+            {
+                attackToTerritory = temp;
+                view.getAttackButton().setEnabled(true);
+            }
+        }
 
         if (e.getSource() instanceof JButton) {
             JButton buttonPressed = (JButton) e.getSource();
 
             if (buttonPressed.equals(view.getAttackButton())) {
+
                 try {
 
-                    Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
+           //         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
 
-                    if (model.getPlayer().findTroops(attackFromTerritory) == 1) {
+        //            if (model.getPlayer().findTroops(attackFromTerritory) == 1) {
 
-                        view.invalidAttackFrom();
-                    } else {
-                        Territory attackToTerritory = (Territory) view.getAttackToList().getSelectedValue();
+          //              view.invalidAttackFrom();
+                     {
+                  //      Territory attackToTerritory = (Territory) view.getAttackToList().getSelectedValue();
                         int numDice = (int) view.getNumDice().getValue();
 
                         if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
@@ -93,14 +119,14 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
                     try {
-                        Territory t = (Territory) (view.getDeployToList().getSelectedValue());
-                        if (t==null){
-                            JOptionPane.showMessageDialog(null, "Pick a territory.");
-                        }
-                        else {
+                      //  Territory t = (Territory) (view.getDeployToList().getSelectedValue());
+                        //if (t==null){
+                          //  JOptionPane.showMessageDialog(null, "Pick a territory.");
+                     //   }
+                       // else {
                             int numTroops = (int) view.getNumTroops().getValue();
-                            model.deploy(t, numTroops);
-                        }
+                            model.deploy(deployTerritory, numTroops);
+                      //  }
                     }catch(Exception ex)
                     {
                         JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
