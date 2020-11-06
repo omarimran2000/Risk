@@ -198,13 +198,13 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
                 view.getNumPlayers().setEnabled(false);*/
             } else if (buttonPressed.equals(view.getMoveButton())) {
                 try {
-                    Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
-                    Territory attack = (Territory) view.getAttackToList().getSelectedValue();
+                  //  Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
+                  //  Territory attack = (Territory) view.getAttackToList().getSelectedValue();
                     int numTroops = (int) view.getNumTroops().getValue();
-                    model.getPlayer().attackWin(numTroops, attackFrom, attack);
+                    model.getPlayer().attackWin(numTroops, attackFromTerritory, attackToTerritory);
                     view.getDeployToScrollPane().setVisible(false);
                     view.getAttackFromScrollPane().setVisible(true);
-                    view.move(numTroops, attack);
+                    view.move(numTroops, attackToTerritory);
                 }catch (Exception ex)
                 {
                     JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);

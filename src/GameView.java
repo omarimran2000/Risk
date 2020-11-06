@@ -430,6 +430,7 @@ public class GameView extends JFrame {
         deployButton.setEnabled(true);
         deployToScrollPane.setVisible(true);
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        disableAllButtons();
         setDeployButtons();
         chooseDeploy = true;
         numTroopsPanel.setVisible(true);
