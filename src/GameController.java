@@ -65,6 +65,10 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
             {
                 attackToTerritory = temp;
                 view.getAttackButton().setEnabled(true);
+                SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
+                view.getNumDice().setModel(numDiceModel);
+                view.getNumDicePanel().setVisible(true);
+
             }
         }
 
@@ -74,6 +78,7 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
             if (buttonPressed.equals(view.getAttackButton())) {
 
                 try {
+                       view.resetAttackText();
 
            //         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
 
@@ -85,7 +90,10 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
                         int numDice = (int) view.getNumDice().getValue();
 
                         if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
+                            view.disableAllButtons();
                             view.clearAttackFromSelection();
+
+
                         }
                         view.getNumDicePanel().setVisible(false);
                         view.getAttackScrollPane().setVisible(false);

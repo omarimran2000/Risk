@@ -518,6 +518,8 @@ public class GameView extends JFrame {
 
         attackFromList.clearSelection();
         setAttackFromButtons();
+        setChosenAttack(true);
+
 
     }
 
