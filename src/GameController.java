@@ -71,8 +71,7 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
 
             }
         }
-
-        if (e.getSource() instanceof JButton) {
+        else if (e.getSource() instanceof JButton) {
             JButton buttonPressed = (JButton) e.getSource();
 
             if (buttonPressed.equals(view.getAttackButton())) {
