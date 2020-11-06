@@ -65,6 +65,7 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
             {
                 attackToTerritory = temp;
                 view.getAttackButton().setEnabled(true);
+                view.disableAllButtons();
                 SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
                 view.getNumDice().setModel(numDiceModel);
                 view.getNumDicePanel().setVisible(true);
