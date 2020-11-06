@@ -169,7 +169,7 @@ public class GameView extends JFrame {
         model.loadMap("map.json");
         for(TerritoryButton tb:territoryButtons)
         {
-            tb.setVisible(true);
+            tb.setEnabled(false);
             contentPane.add(tb);
         }
         try {                                  //for IDE
