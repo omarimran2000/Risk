@@ -509,6 +509,7 @@ public class GameView extends JFrame {
         textArea.append(status + "\n");
         textArea.setVisible(true);
         continentControl.setText(updateContinent());
+        enableAllPlayerButtons();
 
     }
 
@@ -549,6 +550,7 @@ public class GameView extends JFrame {
         moveButton.setVisible(true);
         moveButton.setEnabled(true);
         attackButton.setEnabled(false);
+        disableAllButtons();
         passButton.setEnabled(false);
 
 
