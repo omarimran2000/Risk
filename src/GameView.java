@@ -88,7 +88,7 @@ public class GameView extends JFrame {
         continentControl = new JTextArea();
 
         attackFromList = new JList();
-        attackFromList.addListSelectionListener(controller);
+        //attackFromList.addListSelectionListener(controller);
         attackFromList.setEnabled(false);
         attackToList = new JList();
         attackToList.setEnabled(false);
@@ -149,7 +149,7 @@ public class GameView extends JFrame {
         numTroopsPanel.add(numTroops);
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
-        contentPane.addMouseListener(controller);
+        //contentPane.addMouseListener(controller);
         setVisible(true);
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -345,7 +345,7 @@ public class GameView extends JFrame {
         numTroopsPanel.setVisible(true);
         troopsDeployed = 0;
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-
+        deployToList.setEnabled(false);
     }
     /**
      * Method to update the continent area
@@ -430,6 +430,7 @@ public class GameView extends JFrame {
         deployButton.setEnabled(true);
         deployToScrollPane.setVisible(true);
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        deployToList.setEnabled(false);
         disableAllButtons();
         setDeployButtons();
         chooseDeploy = true;
@@ -476,6 +477,7 @@ public class GameView extends JFrame {
             attackFromScrollPane.setEnabled(true);
             attackFromList.setEnabled(true);
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+            attackFromList.setEnabled(false);
             setAttackFromButtons();
             chooseDeploy = false;
             chosenAttack = true;
@@ -486,6 +488,7 @@ public class GameView extends JFrame {
             setNumTroops(troopsLeft);
             enableAllPlayerButtons();
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+            deployToList.setEnabled(false);
             setTextArea("You have " + troopsLeft + " troops left to deploy");
         }
 
