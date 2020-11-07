@@ -100,19 +100,27 @@ public class ModelTest{
     public void testAttack(){
         Player player = model.getPlayer();
         Territory attack = player.getTerritories().get(0);
-
+        Territory defend = attack.getNeighbourTerritories().get(0);
         for(Territory t:player.getTerritories())
         {
             if(!model.ownNeighbours(t))
             {
                 attack = t;
+                for(Territory neighbour:t.getNeighbourTerritories())
+                {
+                    if (! neighbour.getCurrentPlayer().equals(model.getPlayer()))
+                    {
+                        defend = neighbour;
+                        break;
+                    }
+                }
                 break;
             }
         }
 
         assertEquals(player, attack.getCurrentPlayer());
 
-        Territory defend = attack.getNeighbourTerritories().get(0);
+
         assertNotEquals(player, defend.getCurrentPlayer());
 
         int numDice = model.calculateDice(attack);
@@ -174,7 +182,6 @@ public class ModelTest{
     }
 
     // OTHER TESTS:
-    // moving troops after winning a territory after an attack
     // getting points for continents
     // adding continents when you obtain all territories
     // removing continent when you loose a territory
