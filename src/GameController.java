@@ -148,12 +148,12 @@ public class GameController implements ActionListener {//, ListSelectionListener
                             model.deploy(deployTerritory, numTroops);
 
 
-                            if (deployTerritory != null) {
-                                model.deploy(deployTerritory, numTroops);
-                            }
-                            else {
-                                view.setTextArea("Choose a territory to deploy troops to");
-                            }
+                      //      if (deployTerritory != null) {
+                        //        model.deploy(deployTerritory, numTroops);
+                          //  }
+                      //      else {
+                        //        view.setTextArea("Choose a territory to deploy troops to");
+                          //  }
 
                       //  }
                     }catch(Exception ex)
