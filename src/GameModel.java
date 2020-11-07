@@ -369,6 +369,7 @@ public class GameModel {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
+
             view.attackWon(attack, currentPlayer.findTroops(attackFrom));
             return true;
         }
