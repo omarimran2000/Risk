@@ -499,13 +499,12 @@ public class GameModel {
                 numMoveTroops = scanner.nextInt();
             }
             */
-           //currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
-           view.attackWon(attack, currentPlayer.findTroops(attackFrom));
-           return true;
+            //currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
+            currentPlayer.move((Integer) view.getNumTroops().getValue(), attackFrom, attack);
+            view.attackWon(attack, currentPlayer.findTroops(attackFrom));
+            return true;
         }
         return false;
-
-
     }
 
     /**
