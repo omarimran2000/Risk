@@ -88,7 +88,7 @@ public class GameView extends JFrame {
         continentControl = new JTextArea();
 
         attackFromList = new JList();
-        attackFromList.addListSelectionListener(controller);
+        //attackFromList.addListSelectionListener(controller);
         attackFromList.setEnabled(false);
         attackToList = new JList();
         attackToList.setEnabled(false);
@@ -149,7 +149,7 @@ public class GameView extends JFrame {
         numTroopsPanel.add(numTroops);
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
-        contentPane.addMouseListener(controller);
+        //contentPane.addMouseListener(controller);
         setVisible(true);
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
 
