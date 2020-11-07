@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import java.util.Scanner;
 
 /**
@@ -23,7 +22,7 @@ import java.util.Scanner;
  */
 public class GameModel {
 
-    private Map theMap;
+    private final Map theMap;
     private static List<Player> players;
     private static int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
@@ -389,7 +388,7 @@ public class GameModel {
      * Attacking phase
      *
      * @param attackFrom the Territory the player is attacking from
-     * @param attack the Terrritory the player is attacking
+     * @param attack the Territory the player is attacking
      * @param numDice the number of dice the attacker is using
      */
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
