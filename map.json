@@ -10,7 +10,7 @@
           ],
           "coordinates": {
             "x": 221,
-            "y": 106
+            "y": 95
           }
         },
         "Alberta": {
@@ -22,7 +22,7 @@
           ],
           "coordinates": {
             "x": 289,
-            "y": 147
+            "y": 135
           }
         },
         "Central America": {
@@ -32,8 +32,8 @@
             "Venezuela"
           ],
           "coordinates": {
-            "x": 334,
-            "y": 272
+            "x": 330,
+            "y": 260
           }
         },
         "Eastern United States": {
@@ -44,8 +44,8 @@
             "Central America"
           ],
           "coordinates": {
-            "x": 338,
-            "y": 237
+            "x": 350,
+            "y": 180
           }
         },
         "Greenland": {
@@ -57,7 +57,7 @@
           ],
           "coordinates": {
             "x": 449,
-            "y": 77
+            "y": 75
           }
         },
         "Northwest Territories": {
@@ -68,8 +68,8 @@
             "Greenland"
           ],
           "coordinates": {
-            "x": 275,
-            "y": 64
+            "x": 315,
+            "y": 50
           }
         },
         "Ontario": {
@@ -83,7 +83,7 @@
           ],
           "coordinates": {
             "x": 347,
-            "y": 129
+            "y": 115
           }
         },
         "Quebec": {
@@ -94,7 +94,7 @@
           ],
           "coordinates": {
             "x": 399,
-            "y": 160
+            "y": 150
           }
         },
         "Western United States": {
@@ -105,8 +105,8 @@
             "Central America"
           ],
           "coordinates": {
-            "x": 283,
-            "y": 208
+            "x": 290,
+            "y": 205
           }
         }
       },
@@ -133,7 +133,7 @@
             ],
             "coordinates": {
               "x": 419,
-              "y": 382
+              "y": 375
             }
           },
           "Peru": {
@@ -143,8 +143,8 @@
               "Venezuela"
             ],
             "coordinates": {
-              "x": 353,
-              "y": 385
+              "x": 355,
+              "y": 372
             }
           },
           "Venezuela": {
@@ -155,7 +155,7 @@
             ],
             "coordinates": {
               "x": 351,
-              "y": 329
+              "y": 320
             }
           }
         },
@@ -172,7 +172,7 @@
             ],
             "coordinates": {
               "x": 482,
-              "y": 196
+              "y": 187
             }
           },
           "Iceland": {
@@ -183,7 +183,7 @@
             ],
             "coordinates": {
               "x": 514,
-              "y": 130
+              "y": 120
             }
           },
           "Northern Europe": {
@@ -196,7 +196,7 @@
             ],
             "coordinates": {
               "x": 565,
-              "y": 209
+              "y": 195
             }
           },
           "Scandinavia": {
@@ -208,7 +208,7 @@
             ],
             "coordinates": {
               "x": 585,
-              "y": 139
+              "y": 120
             }
           },
           "Southern Europe": {
@@ -222,7 +222,7 @@
             ],
             "coordinates": {
               "x": 575,
-              "y": 254
+              "y": 245
             }
           },
           "Ukraine": {
@@ -235,7 +235,7 @@
               "Ural"
             ],
             "coordinates": {
-              "x": 628,
+              "x": 640,
               "y": 165
             }
           },
@@ -247,8 +247,8 @@
               "North Africa"
             ],
             "coordinates": {
-              "x": 483,
-              "y": 246
+              "x": 500,
+              "y": 235
             }
           }
         },
@@ -263,8 +263,8 @@
               "South Africa"
             ],
             "coordinates": {
-              "x": 598,
-              "y": 431
+              "x": 605,
+              "y": 420
             }
           },
           "East Africa": {
@@ -277,8 +277,8 @@
               "Middle East"
             ],
             "coordinates": {
-              "x": 670,
-              "y": 412
+              "x": 660,
+              "y": 400
             }
           },
           "Egypt": {
@@ -290,7 +290,7 @@
             ],
             "coordinates": {
               "x": 606,
-              "y": 339
+              "y": 330
             }
           },
           "Madagascar": {
@@ -299,8 +299,8 @@
               "South Africa"
             ],
             "coordinates": {
-              "x": 709,
-              "y": 507
+              "x": 700,
+              "y": 500
             }
           },
           "North Africa": {
@@ -313,8 +313,8 @@
               "Brazil"
             ],
             "coordinates": {
-              "x": 528,
-              "y": 374
+              "x": 540,
+              "y": 360
             }
           },
           "South Africa": {
@@ -325,7 +325,7 @@
             ],
             "coordinates": {
               "x": 610,
-              "y": 511
+              "y": 505
             }
           }
         },
@@ -342,8 +342,8 @@
               "Ukraine"
             ],
             "coordinates": {
-              "x": 713,
-              "y": 224
+              "x": 720,
+              "y": 220
             }
           },
           "China": {
@@ -356,8 +356,8 @@
               "Ural"
             ],
             "coordinates": {
-              "x": 803,
-              "y": 263
+              "x": 815,
+              "y": 255
             }
           },
           "India": {
@@ -381,7 +381,7 @@
             ],
             "coordinates": {
               "x": 818,
-              "y": 151
+              "y": 145
             }
           },
           "Japan": {
@@ -390,8 +390,8 @@
               "Mongolia"
             ],
             "coordinates": {
-              "x": 925,
-              "y": 222
+              "x": 915,
+              "y": 215
             }
           },
           "Kamchatka": {
@@ -404,7 +404,7 @@
             ],
             "coordinates": {
               "x": 899,
-              "y": 90
+              "y": 70
             }
           },
           "Middle East": {
@@ -430,8 +430,8 @@
               "Siberia"
             ],
             "coordinates": {
-              "x": 825,
-              "y": 209
+              "x": 830,
+              "y": 200
             }
           },
           "Siam": {
@@ -467,7 +467,7 @@
             ],
             "coordinates": {
               "x": 735,
-              "y": 153
+              "y": 145
             }
           },
           "Yakutsk": {
@@ -478,7 +478,7 @@
             ],
             "coordinates": {
               "x": 832,
-              "y": 89
+              "y": 72
             }
           }
         },
@@ -503,8 +503,8 @@
               "Siam"
             ],
             "coordinates": {
-              "x": 832,
-              "y": 426
+              "x": 840,
+              "y": 410
             }
           },
           "New Guinea": {
@@ -515,7 +515,7 @@
             ],
             "coordinates": {
               "x": 917,
-              "y": 404
+              "y": 350
             }
           },
           "Western Australia": {
@@ -526,7 +526,7 @@
             ],
             "coordinates": {
               "x": 862,
-              "y": 512
+              "y": 505
             }
           }
         },
