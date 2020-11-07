@@ -479,6 +479,7 @@ public class GameView extends JFrame {
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             attackFromList.setEnabled(false);
             setAttackFromButtons();
+            enableAllPlayerButtons();
             chooseDeploy = false;
             chosenAttack = true;
         }
@@ -491,7 +492,6 @@ public class GameView extends JFrame {
             deployToList.setEnabled(false);
             setTextArea("You have " + troopsLeft + " troops left to deploy");
         }
-
     }
 
     /**
@@ -522,12 +522,9 @@ public class GameView extends JFrame {
      * method used to remove a selected territory
      */
     public void clearAttackFromSelection(){
-
         attackFromList.clearSelection();
         setAttackFromButtons();
         setChosenAttack(true);
-
-
     }
 
     /**
@@ -536,7 +533,6 @@ public class GameView extends JFrame {
     public void resetAttackText(){
         textArea.setText("");
         textArea.setVisible(false);
-
     }
 
 
@@ -557,9 +553,6 @@ public class GameView extends JFrame {
         attackButton.setEnabled(false);
         disableAllButtons();
         passButton.setEnabled(false);
-
-
-
     }
 
     /**
@@ -603,8 +596,6 @@ public class GameView extends JFrame {
         startButton.setEnabled(true);
         textArea.setVisible(false);
         quitButton.setVisible(true);
-
-
     }
 
 
@@ -633,6 +624,7 @@ public class GameView extends JFrame {
         temp.addActionListener(controller);
         temp.setEnabled(false);
         territoryButtons.add(temp);
+        temp.setSize(15, 15);
     }
     public void setDeployButtons()
     {
