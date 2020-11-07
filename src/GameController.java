@@ -232,8 +232,8 @@ public class GameController implements ActionListener {//, ListSelectionListener
                 view.getNumTroopsPanel().setVisible(false);
                 view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
                 view.clearAttackFromSelection();
-                view.getAttackToList().setEnabled(true);
-                view.getAttackFromList().setEnabled(true);
+               // view.getAttackToList().setEnabled(true);
+               // view.getAttackFromList().setEnabled(true);
                 view.getAttackButton().setEnabled(false);
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
