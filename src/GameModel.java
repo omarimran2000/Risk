@@ -275,46 +275,6 @@ public class GameModel {
     }
 
     /**
-     * Plays the game
-     */
-    public void play() {
-        String response = "";
-        for (int i = 0; playersActive(); i++) { // infinite loop that will end once all players are inactive
-            currentPlayer = players.get(i % numberOfPlayers);
-            if (currentPlayer.isActive()) {
-                System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
-                printPlayer(currentPlayer);
-                while (!response.equals("pass")) {
-
-                        System.out.println("Would you like to attack or pass your turn to the next player?");
-                        System.out.println("Type 'attack' or 'pass'.");
-                        response = scanner.next();
-
-                    while (!(response.equals("attack") | response.equals("pass") | response.equals("help"))) {
-                            System.out.println("Type 'attack' or 'pass'.");
-                            response = scanner.next();
-                    }
-                    if (response.equals("attack")) {
-                        if(canAttack(currentPlayer)) {
-                        } else {
-                            System.out.println("You do not have enough troops to attack.");
-                            break;
-
-                        }
-                    } else if (response.equals("pass")) {
-                        response = "";
-                        break;
-                    } else  {
-                        printGame();
-                        continue;
-                    }
-                }
-            }
-        }
-        System.out.println("Congratulations! " + currentPlayer.getName() + " is the winner!");
-    }
-
-    /**
      * Gets the number of troops to be deployed by the current player in the deploy phase at the beginning of each turn
      * You get a minimum of 3 troops or the number of territories owned/3 + any continents bonus points
      *
@@ -382,68 +342,6 @@ public class GameModel {
      * @return the current player
      */
     public Player getPlayer() { return currentPlayer; }
-
-    /**
-     * Initializes the first player of the game
-     */
-    public void setFirstPlayer(){
-        currentPlayer = players.get(0);
-    }
-
-    /**
-     * Prints a smaller overview for a specific player at the beginning of their turn including
-     * the territories and continents that they own
-     *
-     * @param player the player to be printed
-     */
-    private void printPlayer(Player player){
-        System.out.println("You are occupying the following territories:");
-        for (Territory t : player.getTerritories()){
-            int troops = player.findTroops(t);
-            System.out.println(t.getName() + " with " + troops + " troops.");
-        }
-        if (!player.getContinents().isEmpty()) {
-            System.out.println("You occupy the following continents: ");
-            for (Continent c : player.getContinents()){
-                System.out.println(c.getName());
-            }
-        }
-    }
-
-    /**
-     * Prints a view of the whole board including all territories, who owns them and how many troops
-     * plus any player that owns whole continents and any inactive players
-     */
-    private void printGame(){
-        // print all territories, who owns them and how many troops are in each
-        for (Continent c : theMap.getContinents()) {
-            for (Territory t : c.getTerritories()) {
-                Player player = t.getCurrentPlayer();
-                int troops = player.findTroops(t);
-                System.out.println(t.getName() + " is owned by " + player.getName() + " and there are " + troops + " troops.");
-            }
-        }
-        // print all players that own continents
-        for (Player p : players){
-            if (!p.getContinents().isEmpty()){
-                int count = 0;
-                System.out.print(p.getName() + " is in possession of: ");
-                for (Continent c : p.getContinents()){
-                    if (count < p.getContinents().size()) {
-                        System.out.print(c.getName() + ", ");
-                    }
-                    else {
-                        System.out.println(c.getName());
-                    }
-                    count ++;
-                }
-            }
-            // print any inactive players
-            if (!p.isActive()) {
-                System.out.println(p.getName() + " is out of the game.");
-            }
-        }
-    }
 
     /**
      * Checks if there are any active players - if there is only
