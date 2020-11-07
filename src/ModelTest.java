@@ -14,14 +14,15 @@ import static org.junit.Assert.*;
  */
 public class ModelTest{
 
-    static GameModel model;
-    static GameView  view;
+    private static GameModel model;
+    private static GameView  view;
 
-    Player player;
-    int minPlayers = 2;
-    int maxPlayers = 6;
-    int minDeployTroops = 3;
-    static ArrayList<Player> players;
+    private Player player;
+    private static int minPlayers = 2;
+    private int maxPlayers = 6;
+    private int minDeployTroops = 3;
+    private static ArrayList<Player> players;
+
 
     @BeforeClass
     public static void setup() throws IOException, ParseException {
@@ -35,7 +36,7 @@ public class ModelTest{
         model.setView(view);
         model.loadMap("map.json");
 
-        int numPlayers = 3;
+        int numPlayers = 2;
         model.setNumberOfPlayers(numPlayers);
 
         ArrayList<String> playerNames = new ArrayList<>();
@@ -75,6 +76,7 @@ public class ModelTest{
         for (Territory t : model.getPlayer().getTerritories()){
             assert (model.getPlayer().findTroops(t) >= 1);
         }
+        assertEquals(model.getPlayer().getArmy().getTroops().size(),50);
     }
 
     @Test
