@@ -38,7 +38,7 @@ public class GameController implements ActionListener {//, ListSelectionListener
     }
 
     /**
-     * method is invoked whenever a specfic action is performed
+     * method is invoked whenever a specific action is performed
      *
      * @param e the action event that invoked this method
      */
@@ -54,6 +54,7 @@ public class GameController implements ActionListener {//, ListSelectionListener
                 deployTerritory = temp;
                 view.disableAllButtons();
                 view.getDeployToList().setSelectedValue(temp, true);
+
                 view.getDeployButton().setEnabled(true);
 
             }
@@ -66,6 +67,8 @@ public class GameController implements ActionListener {//, ListSelectionListener
                 attackFromTerritory = temp;
                 view.setChosenAttack(false);
                 view.getAttackFromList().setSelectedValue(temp, true);
+                view.getAttackToList().setModel(model.defaultListConversion(temp.getNeighbourTerritories(model.getPlayer())));
+                view.getAttackScrollPane().setVisible(true);
 
             }
             else if(!view.isChosenAttack())
