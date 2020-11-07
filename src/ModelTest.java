@@ -138,6 +138,41 @@ public class ModelTest{
        // assertEquals(player2, model.getPlayer());
     }
 
+    @Test
+    public void testMove()
+    {
+        Territory empty = null;
+        Territory attackFrom = null;
+        int moveTroops =1;
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            if(!model.ownNeighbours(t) && model.getPlayer().findTroops(t)>2)
+            {
+                attackFrom = t;
+                for(Territory neighbour:t.getNeighbourTerritories())
+                {
+                    if (! neighbour.getCurrentPlayer().equals(model.getPlayer()))
+                    {
+                        empty = neighbour;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        Player occupant = empty.getCurrentPlayer();
+        occupant.removeTroops(occupant.findTroops(empty),empty);
+        occupant.removeTerritory(empty);
+        empty.setCurrentPlayer(model.getPlayer());
+        model.getPlayer().move(moveTroops,attackFrom,empty);
+
+        assertEquals(model.getPlayer(),empty.getCurrentPlayer());
+        assertNotEquals(occupant,empty.getCurrentPlayer());
+        assertEquals(moveTroops,model.getPlayer().findTroops(empty));
+        assertEquals(occupant.findTroops(empty),0);
+
+    }
+
     // OTHER TESTS:
     // moving troops after winning a territory after an attack
     // getting points for continents
