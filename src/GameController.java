@@ -50,26 +50,31 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
             Territory temp = territoryButton.getTerritory();
             if(view.isChooseDeploy())
             {
+                view.getDeployToList().clearSelection();
                 deployTerritory = temp;
                 view.disableAllButtons();
+                view.getDeployToList().setSelectedValue(temp, true);
             }
 
             else if(view.isChosenAttack())
             {
+                view.getAttackFromList().clearSelection();
                 view.disableAllButtons();
                 view.setAttackToButtons(temp);
                 attackFromTerritory = temp;
                 view.setChosenAttack(false);
+                view.getAttackFromList().setSelectedValue(temp, true);
             }
             else if(!view.isChosenAttack())
             {
+                view.getAttackToList().clearSelection();
                 attackToTerritory = temp;
                 view.getAttackButton().setEnabled(true);
                 view.disableAllButtons();
                 SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
                 view.getNumDice().setModel(numDiceModel);
                 view.getNumDicePanel().setVisible(true);
-
+                view.getAttackToList().setSelectedValue(temp, true);
             }
         }
         else if (e.getSource() instanceof JButton) {
