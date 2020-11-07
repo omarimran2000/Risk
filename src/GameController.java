@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @version October 25 2020
  */
-public class GameController implements ActionListener, ListSelectionListener, MouseListener {
+public class GameController implements ActionListener {//, ListSelectionListener, MouseListener {
 
     private GameModel model;
     private GameView view;
@@ -227,13 +227,12 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
         }
     }
 
-
     /**
      * Method is invoked when a list value is selected
      *
      * @param e the listSelectionEvent that invoked this method
      */
-    @Override
+    /*@Override
     public void valueChanged(ListSelectionEvent e) {
 
             if(e.getValueIsAdjusting()) {
@@ -273,5 +272,5 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
     @Override
     public void mouseExited(MouseEvent e) {
 
-    }
+    }*/
 }
