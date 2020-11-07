@@ -695,6 +695,10 @@ public class GameView extends JFrame {
         return chooseDeploy;
     }
 
+    public GameModel getModel() {
+        return model;
+    }
+
     public static void main(String[] args) throws IOException, ParseException {
         new GameView();
     }

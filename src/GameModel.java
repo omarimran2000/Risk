@@ -644,8 +644,8 @@ public class GameModel {
         }
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
-        //currentPlayer = players.get(0);
-        setFirstPlayer();
+        currentPlayer = players.get(0);
+        //setFirstPlayer();
         view.start();
         view.turn(currentPlayer, getNumberOfTroops());
 
@@ -708,6 +708,10 @@ public class GameModel {
             x--;
         }
         return true;
+    }
+
+    public static List<Player> getPlayers() {
+        return players;
     }
 
     /**

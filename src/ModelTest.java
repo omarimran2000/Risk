@@ -1,7 +1,5 @@
 import org.json.simple.parser.ParseException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,23 +14,24 @@ import static org.junit.Assert.*;
  */
 public class ModelTest{
 
-    GameModel model = new GameModel();
-    GameView view;
+    static GameModel model;
+    static GameView  view;
 
     Player player;
     int minPlayers = 2;
     int maxPlayers = 6;
     int minDeployTroops = 3;
-    ArrayList<Player> players;
+    static ArrayList<Player> players;
 
-    @Before
-    public void setup() throws IOException, ParseException {
+    @BeforeClass
+    public static void setup() throws IOException, ParseException {
 
         try {
             view = new GameView();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+        model = view.getModel();
         model.setView(view);
         model.loadMap("map.json");
 
@@ -43,6 +42,8 @@ public class ModelTest{
         playerNames.add("Player 1");
         playerNames.add("Player 2");
         playerNames.add("Player 3");
+        model.createPlayers(playerNames);
+        /*
         for (int i = 0; i < numPlayers; i++) {
             Player player = new Player(playerNames.get(i));
             player.setActive(true);
@@ -53,11 +54,10 @@ public class ModelTest{
         model.setArmies(numPlayers);
 
         model.setFirstPlayer();
-        player = model.getPlayer();
-    }
 
-    @After
-    public void teardown(){ }
+         */
+       // player = model.getPlayer();
+    }
 
     @Test
     /**
@@ -70,10 +70,10 @@ public class ModelTest{
         assert (model.getNumberOfPlayers() >= minPlayers);
         assert (model.getNumberOfPlayers() <= maxPlayers);
 
-        assertNotNull(player);
+        assertNotNull(model.getPlayer());
 
-        for (Territory t : player.getTerritories()){
-            assert (player.findTroops(t) >= 1);
+        for (Territory t : model.getPlayer().getTerritories()){
+            assert (model.getPlayer().findTroops(t) >= 1);
         }
     }
 
@@ -86,19 +86,28 @@ public class ModelTest{
         Territory t = model.getPlayer().getTerritories().get(0);
         assertNotNull (t);
 
-        int numTroops = player.findTroops(t);
+        int numTroops = model.getPlayer().findTroops(t);
         assert (numTroops >= 1);
 
         model.deploy(t, maxTroops);
-        assertEquals (maxTroops - numTroops, player.findTroops(t));
+        assertEquals (maxTroops+ numTroops, model.getPlayer().findTroops(t));
 
     }
 
     @Test
     public void testAttack(){
         Player player = model.getPlayer();
-
         Territory attack = player.getTerritories().get(0);
+
+        for(Territory t:player.getTerritories())
+        {
+            if(!model.ownNeighbours(t))
+            {
+                attack = t;
+                break;
+            }
+        }
+
         assertEquals(player, attack.getCurrentPlayer());
 
         Territory defend = attack.getNeighbourTerritories().get(0);
@@ -119,11 +128,12 @@ public class ModelTest{
         model.passTurn();
         Player player2 = model.getPlayer();
         assertNotEquals(player1, player2);
-        model.passTurn();
-        //Player player3 = model.getPlayer();
-        player1.setActive(false);
-        model.passTurn();
-        assertEquals(player2, model.getPlayer());
+        assertEquals(player2,model.getPlayers().get(1));
+       // model.passTurn();
+       // //Player player3 = model.getPlayer();
+       // player1.setActive(false);
+       // model.passTurn();
+       // assertEquals(player2, model.getPlayer());
     }
 
     // OTHER TESTS:
