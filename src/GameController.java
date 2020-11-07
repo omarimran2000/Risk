@@ -54,6 +54,8 @@ public class GameController implements ActionListener {//, ListSelectionListener
                 deployTerritory = temp;
                 view.disableAllButtons();
                 view.getDeployToList().setSelectedValue(temp, true);
+                view.getDeployButton().setEnabled(true);
+
             }
 
             else if(view.isChosenAttack())
@@ -64,6 +66,7 @@ public class GameController implements ActionListener {//, ListSelectionListener
                 attackFromTerritory = temp;
                 view.setChosenAttack(false);
                 view.getAttackFromList().setSelectedValue(temp, true);
+
             }
             else if(!view.isChosenAttack())
             {
@@ -75,6 +78,7 @@ public class GameController implements ActionListener {//, ListSelectionListener
                 view.getNumDice().setModel(numDiceModel);
                 view.getNumDicePanel().setVisible(true);
                 view.getAttackToList().setSelectedValue(temp, true);
+                view.getAttackButton().setEnabled(true);
             }
         }
         else if (e.getSource() instanceof JButton) {
@@ -84,6 +88,7 @@ public class GameController implements ActionListener {//, ListSelectionListener
 
                 try {
                        view.resetAttackText();
+                       view.getAttackButton().setEnabled(false);
 
            //         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
 
@@ -140,6 +145,7 @@ public class GameController implements ActionListener {//, ListSelectionListener
                        // else {
                             int numTroops = (int) view.getNumTroops().getValue();
                             model.deploy(deployTerritory, numTroops);
+
                       //  }
                     }catch(Exception ex)
                     {
@@ -219,6 +225,7 @@ public class GameController implements ActionListener {//, ListSelectionListener
                 view.clearAttackFromSelection();
                 view.getAttackToList().setEnabled(true);
                 view.getAttackFromList().setEnabled(true);
+                view.getAttackButton().setEnabled(false);
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
                 view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));

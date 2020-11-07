@@ -381,7 +381,7 @@ public class GameView extends JFrame {
         gameControl.setLayout(new FlowLayout());
         gameControl.add(attackButton);
         gameControl.add(deployButton);
-        deployButton.setEnabled(true);
+        deployButton.setEnabled(false);
 
         gameControl.add(passButton);
         gameControl.add(moveButton);
@@ -427,7 +427,7 @@ public class GameView extends JFrame {
      */
     public void pass()
     {
-        deployButton.setEnabled(true);
+        deployButton.setEnabled(false);
         deployToScrollPane.setVisible(true);
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         deployToList.setEnabled(false);
@@ -471,7 +471,7 @@ public class GameView extends JFrame {
             passButton.setVisible(true);
             passButton.setEnabled(true);
             attackButton.setVisible(true);
-            attackButton.setEnabled(true);
+            attackButton.setEnabled(false);
 
             attackFromScrollPane.setVisible(true);
             attackFromScrollPane.setEnabled(true);
