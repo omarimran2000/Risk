@@ -1,9 +1,9 @@
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -144,7 +144,16 @@ public class GameController implements ActionListener {//, ListSelectionListener
                      //   }
                        // else {
                             int numTroops = (int) view.getNumTroops().getValue();
+
                             model.deploy(deployTerritory, numTroops);
+
+
+                            if (deployTerritory != null) {
+                                model.deploy(deployTerritory, numTroops);
+                            }
+                            else {
+                                view.setTextArea("Choose a territory to deploy troops to");
+                            }
 
                       //  }
                     }catch(Exception ex)
