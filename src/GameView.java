@@ -70,7 +70,6 @@ public class GameView extends JFrame {
 
         model.setView(this);
         contentPane = getContentPane();
-        //setUpMap();
 
         contentPane.setLayout(new BorderLayout());
         welcomePanel = new JPanel();
@@ -88,11 +87,9 @@ public class GameView extends JFrame {
         continentControl = new JTextArea();
 
         attackFromList = new JList();
-        //attackFromList.addListSelectionListener(controller);
         attackFromList.setEnabled(false);
         attackToList = new JList();
         attackToList.setEnabled(false);
-
         deployToList = new JList();
 
         attackButton = new JButton("ATTACK");
@@ -111,27 +108,19 @@ public class GameView extends JFrame {
         moveButton.addActionListener(controller);
         moveButton.setEnabled(false);
 
-
         startButton = new JButton("START");
         startButton.addActionListener(controller);
         startButton.setEnabled(true);
-
-
 
         quitButton = new JButton("QUIT");
         quitButton.addActionListener(controller);
         quitButton.setVisible(false);
         quitButton.setEnabled(true);
 
-
         startButton.setAlignmentX(Box.CENTER_ALIGNMENT);
         welcomePanel.add(startButton);
 
         welcomePanel.add(Box.createVerticalGlue());
-
-        //SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
-        //numPlayers = new JSpinner(playersModel);
-        //numOfPlayers = JOptionPane.showMessageDialog(null, numPlayers);
 
         numDicePanel = new JPanel();
         numDicePanel.setLayout(new BoxLayout(numDicePanel, BoxLayout.PAGE_AXIS));
@@ -139,7 +128,6 @@ public class GameView extends JFrame {
         numDicePanel.add(numDiceLabel);
         numDice = new JSpinner();
         numDicePanel.add(numDice);
-
 
         numTroopsPanel = new JPanel();
         numTroopsPanel.setLayout(new BoxLayout(numTroopsPanel, BoxLayout.PAGE_AXIS));
@@ -149,9 +137,7 @@ public class GameView extends JFrame {
         numTroopsPanel.add(numTroops);
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
-        //contentPane.addMouseListener(controller);
         setVisible(true);
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         troopsDeployed = 0;
 
@@ -167,19 +153,16 @@ public class GameView extends JFrame {
      */
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.json");
-        for(TerritoryButton tb:territoryButtons)
-        {
+        for(TerritoryButton tb:territoryButtons) {
             tb.setEnabled(false);
             contentPane.add(tb);
         }
-        try {                                  //for IDE
+        try { //for IDE
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
-        }catch (Exception ex)  //for JAR
-        {
+        } catch (Exception ex) { //for JAR
             InputStream in = getClass().getResourceAsStream("/"+model.getTheMap().getFilePath());
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(in))));
         }
-
     }
 
     /**
@@ -334,9 +317,7 @@ public class GameView extends JFrame {
      * method invoked to show starting GUI components
      */
     public void start()  {
-
         welcomePanel.setVisible(false);
-
         startButton.setEnabled(false);
         deployButton.setEnabled(true);
         deployToList.setVisible(true);
@@ -347,6 +328,7 @@ public class GameView extends JFrame {
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         deployToList.setEnabled(false);
     }
+
     /**
      * Method to update the continent area
      * @return string to put in JTextArea
@@ -369,8 +351,6 @@ public class GameView extends JFrame {
      * @param numDeployTroops the number of troops to deploy
      */
     public void turn(Player curr, int numDeployTroops){
-
-
         textArea.setText("It is " + curr.getName() + "'s turn.\n You have " + numDeployTroops + " troops to deploy");
         textArea.setEditable(false);
 
@@ -387,12 +367,9 @@ public class GameView extends JFrame {
         gameControl.add(moveButton);
         moveButton.setVisible(false);
 
-
         startButton.setVisible(false);
         gameControl.add(quitButton);
         quitButton.setVisible(false);
-
-
 
         setNumTroops(numDeployTroops);
         gameControl.add(numTroopsPanel);
@@ -413,13 +390,8 @@ public class GameView extends JFrame {
         attackScrollPane.setVisible(false);
         statusPanel.add(attackScrollPane);
 
-
         gameControl.add(statusPanel);
         contentPane.add(gameControl, BorderLayout.SOUTH);
-
-
-
-
     }
 
     /**
@@ -450,8 +422,6 @@ public class GameView extends JFrame {
         textArea.setVisible(true);
 
         continentControl.setText(updateContinent());
-
-
     }
 
     /**
@@ -459,11 +429,9 @@ public class GameView extends JFrame {
      */
     public void deploy()
     {
-        if(troopsDeployed == model.getNumberOfTroops())
-        {
+        if(troopsDeployed == model.getNumberOfTroops()) {
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(false);
-            //deployToList.setVisible(false);
             numTroopsPanel.setVisible(false);
 
             textArea.setText("");
@@ -482,8 +450,7 @@ public class GameView extends JFrame {
             enableAllPlayerButtons();
             chooseDeploy = false;
             chosenAttack = true;
-        }
-        else
+        } else
         {
             int troopsLeft = model.getNumberOfTroops() - troopsDeployed;
             setNumTroops(troopsLeft);
@@ -499,8 +466,7 @@ public class GameView extends JFrame {
      *
      * @param newTroops num of new troops
      */
-    public void setTroopsDeployed(int newTroops)
-    {
+    public void setTroopsDeployed(int newTroops) {
         troopsDeployed += newTroops;
     }
 
@@ -509,8 +475,7 @@ public class GameView extends JFrame {
      *
      * @param status the status of an attack
      */
-    public void attack(String status)
-    {
+    public void attack(String status) {
         textArea.append(status + "\n");
         textArea.setVisible(true);
         continentControl.setText(updateContinent());
@@ -534,7 +499,6 @@ public class GameView extends JFrame {
         textArea.setText("");
         textArea.setVisible(false);
     }
-
 
     /**
      * method used for to move troops into new territory after successful attacks
@@ -598,7 +562,6 @@ public class GameView extends JFrame {
         quitButton.setVisible(true);
     }
 
-
     /**
      * method user to set the spinner with a max number
      *
@@ -616,64 +579,51 @@ public class GameView extends JFrame {
      * @param x
      * @param y
      */
-    public void addButtons(Territory t,int x,int y)
-    {
+    public void addButtons(Territory t, int x, int y) {
         TerritoryButton temp = new TerritoryButton(t);
-      //  temp.setBackground(Color.GREEN);
         temp.setBounds(x,y,10,10);
         temp.addActionListener(controller);
         temp.setEnabled(false);
         territoryButtons.add(temp);
         temp.setSize(15, 15);
     }
-    public void setDeployButtons()
-    {
-        for(Territory t:model.getPlayer().getTerritories())
-        {
-            for(TerritoryButton tb:territoryButtons)
-            {
-                if (tb.getTerritory().equals(t))
-                {
+
+    public void setDeployButtons() {
+        for(Territory t:model.getPlayer().getTerritories()) {
+            for(TerritoryButton tb:territoryButtons) {
+                if (tb.getTerritory().equals(t)) {
                     tb.setEnabled(true);
                 }
             }
         }
     }
-    public void setAttackFromButtons()
-    {
-        for(Territory t:model.getPlayer().getTerritories())
-        {
-            for(TerritoryButton tb:territoryButtons)
-            {
-                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1 && !model.ownNeighbours(t))
-                {
+
+    public void setAttackFromButtons() {
+        for(Territory t:model.getPlayer().getTerritories()) {
+            for(TerritoryButton tb:territoryButtons) {
+                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1 && !model.ownNeighbours(t)) {
                     tb.setEnabled(true);
                 }
             }
         }
     }
-    public void setAttackToButtons(Territory attackFrom)
-    {
-        for(TerritoryButton tb:territoryButtons)
-        {
-            if((attackFrom.getNeighbourTerritories().contains(tb.getTerritory())) && !tb.getTerritory().getCurrentPlayer().equals(model.getPlayer()))
-            {
+
+    public void setAttackToButtons(Territory attackFrom) {
+        for(TerritoryButton tb:territoryButtons) {
+            if((attackFrom.getNeighbourTerritories().contains(tb.getTerritory())) && !tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
                 tb.setEnabled(true);
             }
         }
-
     }
-    public void disableAllButtons()
-    {
-        for (TerritoryButton tb:territoryButtons)
-        {
+
+    public void disableAllButtons() {
+        for (TerritoryButton tb:territoryButtons) {
             tb.setEnabled(false);
         }
     }
-    public void enableAllPlayerButtons()
-    {
-        for (TerritoryButton tb:territoryButtons)
-        {
+
+    public void enableAllPlayerButtons() {
+        for (TerritoryButton tb:territoryButtons) {
             if(tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
                 tb.setEnabled(true);
             }

@@ -89,12 +89,10 @@ public class GameModel {
                 defender.removeTroops(LOSE_TROOP, territory);
                 setStatus(defender.getName() + " loses one troop.");
                 view.attack(status);
-              //  System.out.println(defender.getName() + " loses one troop.");
             } else {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
                 setStatus(attacker.getName() + " loses one troop");
                 view.attack(status);
-             //   System.out.println(attacker.getName() + " loses one troop.");
             }
         }
         if (defender.findTroops(territory) == 0) {
@@ -103,7 +101,6 @@ public class GameModel {
             if(defender.getTerritories().size() == 0){
                 setStatus(defender.getName() + " has no more territories and is now out of the game.");
                 view.attack(status);
-             //   System.out.println(defender.getName() + " has no more territories and is now out of the game.");
                 defender.setActive(false);
             }
             return true;
@@ -121,7 +118,7 @@ public class GameModel {
      */
     public void loadMap(String JSONfile) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
-        Object e =null;
+        Object e;
         try  //for JAR file
         {
             InputStream in = getClass().getResourceAsStream("/"+JSONfile);
@@ -275,7 +272,6 @@ public class GameModel {
                 i = 0;
             }
         }
-        //view.pass();
     }
 
     /**
@@ -288,12 +284,6 @@ public class GameModel {
             if (currentPlayer.isActive()) {
                 System.out.println("It is now " + currentPlayer.getName() + "'s turn.");
                 printPlayer(currentPlayer);
-
-
-                //deploy();
-
-
-                // after deploy phase and before attack phase
                 while (!response.equals("pass")) {
 
                         System.out.println("Would you like to attack or pass your turn to the next player?");
@@ -306,7 +296,6 @@ public class GameModel {
                     }
                     if (response.equals("attack")) {
                         if(canAttack(currentPlayer)) {
-                            //attack(player);
                         } else {
                             System.out.println("You do not have enough troops to attack.");
                             break;
@@ -315,7 +304,6 @@ public class GameModel {
                     } else if (response.equals("pass")) {
                         response = "";
                         break;
-                        //add a statement confirming they don't want to attack
                     } else  {
                         printGame();
                         continue;
@@ -358,30 +346,6 @@ public class GameModel {
             view.setTroopsDeployed(numTroops);
             view.deploy();
             currentPlayer.deploy(numTroops, territory);
-
-            //view.setTextArea("You have " + deployTroops + " troops to deploy. Where would you like to deploy them?");
-            //String t = String.valueOf(view.getDeployToList().getSelectedValue()) ;
-            //Territory territory = theMap.findTerritory(t);
-
-            //if (!(currentPlayer.getTerritories().contains(territory))) {
-            //    view.setTextArea("Cannot deploy here. Pick another territory. ");
-            //}
-            //else if (deployTroops == 1) {
-            //    currentPlayer.deploy(deployTroops, territory);
-            //}
-            //else {
-                //view.setTextArea("How many would you like to deploy? ");
-                //int x = (Integer) view.getNumTroops().getValue();
-                //if (x <= deployTroops && (deployTroops - x) >= 0) {
-                    /*for (int i = 0; i < numTroops; i++) {
-                        currentPlayer.getArmy().addTroop(new Troop());
-                    }
-                    deployTroops -= numTroops;
-                    currentPlayer.deploy(numTroops, territory);*/
-                //} else {
-                //    view.setTextArea("Please choose a number between " + 1 + "-" + deployTroops);
-                //}
-            //}
     }
 
     /**
@@ -392,94 +356,9 @@ public class GameModel {
      * @param numDice the number of dice the attacker is using
      */
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
-        //printPlayer(currentPlayer);
         setStatus(currentPlayer.getName() + " is attacking " + attack.getName() + " from " + attackFrom.getName());
         view.attack(status);
-        int legalArmies, numDefendDice;
-        //List<Territory> territories = currentPlayer.getTerritories();
-        //scanner.nextLine();
-      //  String t;
-   //     boolean attackFromChosen = false, attackChosen = false;
-   //     Territory attackFrom = null, attack = null;
-        /*
-        while(!attackFromChosen) {
-            System.out.println("Which of your territories would you like to attack from?");
-            t = scanner.nextLine();
-            attackFrom = theMap.findTerritory(t);
-
-            if (t.equals("help")) {
-                printGame();
-                continue;
-            } if(attackFrom == null){
-                System.out.println("This territory does not exist.");
-                continue;
-            } if (!(territories.contains(attackFrom))) {
-                System.out.println("You cannot attack from here. Please pick a territory you have armies in");
-                continue;
-            } if (player.findTroops(attackFrom) < 2) {
-                System.out.println("Territory must have more than 1 troop to attack from");
-                continue;
-            }
-
-            int x = attackFrom.getNeighbourTerritories().size() - 1;
-            for (Territory territory : attackFrom.getNeighbourTerritories()) {
-                if (!(territory.getCurrentPlayer() == player)) {
-                        attackFromChosen = true;
-                        break;
-                } else if (x == 0) {
-                    System.out.println("You own all neighbouring territories. Please pick a different territory to attack from");
-                }
-                x--;
-            }
-
-
-        }
-
-        System.out.println("You can attack any of the following territories: ");
-        attackFrom.printAdjacentTerritories(player);
-        while(!attackChosen) {
-            System.out.println("Which territory would you like to attack?");
-            t = scanner.nextLine();
-            attack = theMap.findTerritory(t);
-            if (t.equals("help")) {
-                printGame();
-                continue;
-            }
-            if(attack==null)
-            {
-                System.out.println("Please enter a valid territory");
-                continue;
-            }
-            else if(attack.getCurrentPlayer().equals(player))
-            {
-                System.out.println("You own this territory!");
-                continue;
-            }
-            ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories();
-
-            if(!(neighbours.contains(attack))) {
-                System.out.println("Please enter a territory that neighbours " + attackFrom.getName());
-                continue;
-            }
-            attackChosen = true;
-        }
-
-        legalArmies = player.findTroops(attackFrom) - 1;
-        if (legalArmies == 1) {
-            numDice = 1;
-        } else if (legalArmies == 2) {
-            while (numDice < 1 || numDice > 2) {
-                System.out.println("How many dice would you like to roll? (1-2)");
-                numDice = scanner.nextInt();
-            }
-        } else {
-            while (numDice < 1 || numDice > 3) {
-                System.out.println("How many dice would you like to roll? (1-3)");
-                numDice = scanner.nextInt();
-            }
-        }
-
-         */
+        int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
         if (defender.findTroops(attack) == 1 || numDice == 1) {
@@ -490,16 +369,6 @@ public class GameModel {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
-            int numMoveTroops = 0;
-            //legalArmies = currentPlayer.findTroops(attackFrom);
-            //view.attackWon(attack);
-            /*
-            while (numMoveTroops < 1 || numMoveTroops > (legalArmies - 1)) {
-                System.out.println("How many troops would you like to move to " + attack.getName() + "? (1-" + (legalArmies - 1) + ")");
-                numMoveTroops = scanner.nextInt();
-            }
-            */
-            //currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
 
             view.attackWon(attack, currentPlayer.findTroops(attackFrom));
             return true;
@@ -603,7 +472,6 @@ public class GameModel {
         List<Territory> territories = player.getTerritories();
         for (Territory t : territories) {
             if (player.findTroops(t) > 1){
-
                 // iterates through neighbour's of t
                 List<Territory> neighbours = t.getNeighbourTerritories();
                 for(Territory terr: neighbours){
@@ -644,7 +512,6 @@ public class GameModel {
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
-        //setFirstPlayer();
         view.start();
         view.turn(currentPlayer, getNumberOfTroops());
     }
@@ -656,14 +523,13 @@ public class GameModel {
      */
     public int calculateDice(Territory attackFrom) {
         int legalArmies = currentPlayer.findTroops(attackFrom) - 1;
-        int numDice = 0;
+        int numDice;
         if (legalArmies == 1) {
             numDice = DICE[0];
         } else if (legalArmies == 2) {
             numDice = DICE[1];
         }
-        else
-        {
+        else {
             numDice = DICE[2];
         }
         return numDice;
@@ -677,7 +543,6 @@ public class GameModel {
     public boolean checkGameOver(){
         if(!playersActive()){
             return true;
-
         }
         return false;
     }
@@ -708,47 +573,4 @@ public class GameModel {
     public static List<Player> getPlayers() {
         return players;
     }
-
-    /**
-     * @param args
-     * @throws IOException
-     * @throws ParseException
-     */
-     /*
-    public static void main(String[] args) throws IOException, ParseException {
-        GameModel game = new GameModel();
-        game.loadMap("map.json");
-
-        System.out.println("Welcome to RISK! Build your army, attack enemy territories, and take over the world");
-        System.out.println("How many players are playing? Enter a number between 2-6");
-        numberOfPlayers = scanner.nextInt();
-
-        while (!(numberOfPlayers >= 2 && numberOfPlayers <= 6)) {
-            System.out.println("Please enter a number between 2-6");
-            numberOfPlayers = scanner.nextInt();
-
-        }
-        // if a valid number of player is inputted
-        // get and print every player's name and adds them to players
-        {
-            for (int i = 0; i < numberOfPlayers; i++) {
-                System.out.print("Player name: ");
-                String name = scanner.next();
-                Player player = new Player(name);
-                player.setActive(true);
-                System.out.println(player.getName() + " added");
-                addPlayer(player);
-            }
-        }
-
-        // setup the army placements
-        game.initializeDefaultArmy();
-        game.setArmies(numberOfPlayers);
-
-        System.out.println("Ready to start the game");
-        System.out.println("Type 'help' at any point to print an overview of the entire board");
-        // ready to begin playing
-        game.play();
-    }
-    */
 }
