@@ -54,25 +54,31 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
                 view.disableAllButtons();
             }
 
-            else if(!view.isChosenAttack() && model.getPlayer().findTroops(temp) > 1 && model.ownNeighbours(temp))
+            else if(view.isChosenAttack())
             {
+                view.disableAllButtons();
                 view.setAttackToButtons(temp);
                 attackFromTerritory = temp;
-                view.setChosenAttack(true);
+                view.setChosenAttack(false);
             }
-            else if(view.isChosenAttack())
+            else if(!view.isChosenAttack())
             {
                 attackToTerritory = temp;
                 view.getAttackButton().setEnabled(true);
+                view.disableAllButtons();
+                SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
+                view.getNumDice().setModel(numDiceModel);
+                view.getNumDicePanel().setVisible(true);
+
             }
         }
-
-        if (e.getSource() instanceof JButton) {
+        else if (e.getSource() instanceof JButton) {
             JButton buttonPressed = (JButton) e.getSource();
 
             if (buttonPressed.equals(view.getAttackButton())) {
 
                 try {
+                       view.resetAttackText();
 
            //         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
 
@@ -84,7 +90,10 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
                         int numDice = (int) view.getNumDice().getValue();
 
                         if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
+                            view.disableAllButtons();
                             view.clearAttackFromSelection();
+
+
                         }
                         view.getNumDicePanel().setVisible(false);
                         view.getAttackScrollPane().setVisible(false);
@@ -189,13 +198,13 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
                 view.getNumPlayers().setEnabled(false);*/
             } else if (buttonPressed.equals(view.getMoveButton())) {
                 try {
-                    Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
-                    Territory attack = (Territory) view.getAttackToList().getSelectedValue();
+                  //  Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
+                  //  Territory attack = (Territory) view.getAttackToList().getSelectedValue();
                     int numTroops = (int) view.getNumTroops().getValue();
-                    model.getPlayer().attackWin(numTroops, attackFrom, attack);
+                    model.getPlayer().attackWin(numTroops, attackFromTerritory, attackToTerritory);
                     view.getDeployToScrollPane().setVisible(false);
                     view.getAttackFromScrollPane().setVisible(true);
-                    view.move(numTroops, attack);
+                    view.move(numTroops, attackToTerritory);
                 }catch (Exception ex)
                 {
                     JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
