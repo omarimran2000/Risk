@@ -26,8 +26,8 @@ public class ModelTest{
     private static ArrayList<Player> players;
 
 
-    @BeforeClass
-    public static void setup() throws IOException, ParseException {
+    @Before
+    public void setup() throws IOException, ParseException {
 
         try {
             view = new GameView();
@@ -46,20 +46,12 @@ public class ModelTest{
         playerNames.add("Player 2");
         playerNames.add("Player 3");
         model.createPlayers(playerNames);
-        /*
-        for (int i = 0; i < numPlayers; i++) {
-            Player player = new Player(playerNames.get(i));
-            player.setActive(true);
-            GameModel.addPlayer(player);
-        }
-
-        model.initializeDefaultArmy();
-        model.setArmies(numPlayers);
-
-        model.setFirstPlayer();
-
-         */
-       // player = model.getPlayer();
+    }
+    @After
+    public void tearDown()
+    {
+        view = null;
+        model = null;
     }
 
     @Test
@@ -203,12 +195,6 @@ public class ModelTest{
         assertEquals(model.getNumberOfTroops(),numTroopInitial+continentBonus);   //checks if continent bonus works
 
     }
-
-    @Test
-    public void testPlayersActive()
-    {
-        assertEquals(model.getNumberOfPlayers()>1,model.playersActive());
-    }
     @Test
     public void testCanAttack()
     {
@@ -227,7 +213,7 @@ public class ModelTest{
 
     }
     @Test
-    public void checkNeighbours()
+    public void testCheckNeighbours()
     {
         for(Territory t:model.getPlayer().getTerritories().get(0).getNeighbourTerritories()) //allows players to own all neighbouring territories
         {
@@ -245,16 +231,11 @@ public class ModelTest{
     }
 
     @Test
-    public void checkGameOver()
+    public void testCheckGameOver()
     {
         Player tempOff = model.getPlayers().get(0);
         tempOff.setActive(false);
         assertEquals(model.getWinner(),model.getPlayers().get(1));
         assertEquals(model.checkGameOver(),true);
     }
-
-    // OTHER TESTS:
-    // getting points for continents
-    // adding continents when you obtain all territories
-    // removing continent when you loose a territory
 }
