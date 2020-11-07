@@ -14,14 +14,15 @@ import static org.junit.Assert.*;
  */
 public class ModelTest{
 
-    static GameModel model;
-    static GameView  view;
+    private static GameModel model;
+    private static GameView  view;
 
-    Player player;
-    int minPlayers = 2;
-    int maxPlayers = 6;
-    int minDeployTroops = 3;
-    static ArrayList<Player> players;
+    private Player player;
+    private static int minPlayers = 2;
+    private int maxPlayers = 6;
+    private int minDeployTroops = 3;
+    private static ArrayList<Player> players;
+
 
     @BeforeClass
     public static void setup() throws IOException, ParseException {
@@ -35,7 +36,7 @@ public class ModelTest{
         model.setView(view);
         model.loadMap("map.json");
 
-        int numPlayers = 3;
+        int numPlayers = 2;
         model.setNumberOfPlayers(numPlayers);
 
         ArrayList<String> playerNames = new ArrayList<>();
@@ -75,6 +76,7 @@ public class ModelTest{
         for (Territory t : model.getPlayer().getTerritories()){
             assert (model.getPlayer().findTroops(t) >= 1);
         }
+        assertEquals(model.getPlayer().getArmy().getTroops().size(),50);
     }
 
     @Test
@@ -134,6 +136,41 @@ public class ModelTest{
        // player1.setActive(false);
        // model.passTurn();
        // assertEquals(player2, model.getPlayer());
+    }
+
+    @Test
+    public void testMove()
+    {
+        Territory empty = null;
+        Territory attackFrom = null;
+        int moveTroops =1;
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            if(!model.ownNeighbours(t) && model.getPlayer().findTroops(t)>2)
+            {
+                attackFrom = t;
+                for(Territory neighbour:t.getNeighbourTerritories())
+                {
+                    if (! neighbour.getCurrentPlayer().equals(model.getPlayer()))
+                    {
+                        empty = neighbour;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        Player occupant = empty.getCurrentPlayer();
+        occupant.removeTroops(occupant.findTroops(empty),empty);
+        occupant.removeTerritory(empty);
+        empty.setCurrentPlayer(model.getPlayer());
+        model.getPlayer().move(moveTroops,attackFrom,empty);
+
+        assertEquals(model.getPlayer(),empty.getCurrentPlayer());
+        assertNotEquals(occupant,empty.getCurrentPlayer());
+        assertEquals(moveTroops,model.getPlayer().findTroops(empty));
+        assertEquals(occupant.findTroops(empty),0);
+
     }
 
     // OTHER TESTS:
