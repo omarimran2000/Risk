@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
  *
  * @version Nov 4, 2020
  * @author Erica Oliver
+ * @author Omar Imran
  */
 public class ModelTest{
 
@@ -21,6 +22,7 @@ public class ModelTest{
     private static int minPlayers = 2;
     private int maxPlayers = 6;
     private int minDeployTroops = 3;
+    private static int moveTroops = 1;
     private static ArrayList<Player> players;
 
 
@@ -103,7 +105,7 @@ public class ModelTest{
         Territory defend = attack.getNeighbourTerritories().get(0);
         for(Territory t:player.getTerritories())
         {
-            if(!model.ownNeighbours(t))
+            if(!model.ownNeighbours(t) && player.findTroops(t)>1)
             {
                 attack = t;
                 for(Territory neighbour:t.getNeighbourTerritories())
@@ -119,8 +121,6 @@ public class ModelTest{
         }
 
         assertEquals(player, attack.getCurrentPlayer());
-
-
         assertNotEquals(player, defend.getCurrentPlayer());
 
         int numDice = model.calculateDice(attack);
@@ -139,11 +139,6 @@ public class ModelTest{
         Player player2 = model.getPlayer();
         assertNotEquals(player1, player2);
         assertEquals(player2,model.getPlayers().get(1));
-       // model.passTurn();
-       // //Player player3 = model.getPlayer();
-       // player1.setActive(false);
-       // model.passTurn();
-       // assertEquals(player2, model.getPlayer());
     }
 
     @Test
@@ -154,7 +149,7 @@ public class ModelTest{
         int moveTroops =1;
         for(Territory t:model.getPlayer().getTerritories())
         {
-            if(!model.ownNeighbours(t) && model.getPlayer().findTroops(t)>2)
+            if(!model.ownNeighbours(t) && model.getPlayer().findTroops(t)>2)  //generates a scenario for move
             {
                 attackFrom = t;
                 for(Territory neighbour:t.getNeighbourTerritories())
@@ -179,6 +174,83 @@ public class ModelTest{
         assertEquals(moveTroops,model.getPlayer().findTroops(empty));
         assertEquals(occupant.findTroops(empty),0);
 
+    }
+
+    @Test
+    public void testContinent()
+    {
+        int intialContinentSize = model.getPlayer().getContinents().size();
+
+        for(Territory t:model.getTheMap().getContinents().get(0).getTerritories()) //gives player all territories in South America
+        {
+            if(!(t.getCurrentPlayer().equals(model.getPlayer())))
+            {
+                Player occupant = t.getCurrentPlayer();
+                occupant.removeTroops(occupant.findTroops(t),t);
+                occupant.removeTerritory(t);
+
+                t.setCurrentPlayer(model.getPlayer());
+                model.getPlayer().getArmy().addTroop(new Troop());
+                model.getPlayer().deploy(moveTroops,t);
+            }
+        }
+        int numTroopInitial = model.getNumberOfTroops();
+        int continentBonus = model.getTheMap().getContinents().get(0).getContinentPoint();
+
+        model.getPlayer().addContinent(model.getTheMap().getContinents().get( intialContinentSize++));
+        assertEquals(model.getPlayer().getContinents().size(), intialContinentSize++);
+        assertEquals(model.getPlayer().getContinents().get(0),model.getTheMap().getContinents().get(0));
+        assertEquals(model.getNumberOfTroops(),numTroopInitial+continentBonus);   //checks if continent bonus works
+
+    }
+
+    @Test
+    public void testPlayersActive()
+    {
+        assertEquals(model.getNumberOfPlayers()>1,model.playersActive());
+    }
+    @Test
+    public void testCanAttack()
+    {
+
+            for(Territory t:model.getPlayer().getTerritories()) //removing all troops except one for each territory so no attack possible
+            {
+                Player occupant = t.getCurrentPlayer();
+                occupant.removeTroops(occupant.findTroops(t),t);
+
+                occupant.getArmy().addTroop(new Troop());
+                occupant.deploy(moveTroops,t);
+
+            }
+
+        assertEquals(model.canAttack(model.getPlayer()),false);
+
+    }
+    @Test
+    public void checkNeighbours()
+    {
+        for(Territory t:model.getPlayer().getTerritories().get(0).getNeighbourTerritories()) //allows players to own all neighbouring territories
+        {
+            if(!t.getCurrentPlayer().equals(model.getPlayer())) {
+                Player occupant = t.getCurrentPlayer();
+                occupant.removeTroops(occupant.findTroops(t), t);
+                occupant.removeTerritory(t);
+
+                t.setCurrentPlayer(model.getPlayer());
+                model.getPlayer().getArmy().addTroop(new Troop());
+                model.getPlayer().deploy(moveTroops, t);
+            }
+        }
+        assertEquals(model.ownNeighbours(model.getPlayer().getTerritories().get(0)),true);
+    }
+
+    @Test
+    public void checkGameOver()
+    {
+        Player tempOff = model.getPlayers().get(0);
+        tempOff.setActive(false);
+        assertEquals(model.getWinner(),model.getPlayers().get(1));
+        assertEquals(model.checkGameOver(),true);
     }
 
     // OTHER TESTS:

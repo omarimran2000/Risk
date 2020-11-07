@@ -647,10 +647,6 @@ public class GameModel {
         //setFirstPlayer();
         view.start();
         view.turn(currentPlayer, getNumberOfTroops());
-
-
-
-
     }
 
     /**
