@@ -484,10 +484,12 @@ public class GameView extends JFrame {
         }
         else
         {
-            setNumTroops(model.getNumberOfTroops() - troopsDeployed);
+            int troopsLeft = model.getNumberOfTroops() - troopsDeployed;
+            setNumTroops(troopsLeft);
             enableAllPlayerButtons();
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             deployToList.setEnabled(false);
+            setTextArea("You have " + troopsLeft + " troops left to deploy");
         }
 
     }
