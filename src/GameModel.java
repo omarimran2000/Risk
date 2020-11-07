@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import java.util.Scanner;
 
 /**
@@ -23,7 +22,7 @@ import java.util.Scanner;
  */
 public class GameModel {
 
-    private Map theMap;
+    private final Map theMap;
     private static List<Player> players;
     private static int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
@@ -389,7 +388,7 @@ public class GameModel {
      * Attacking phase
      *
      * @param attackFrom the Territory the player is attacking from
-     * @param attack the Terrritory the player is attacking
+     * @param attack the Territory the player is attacking
      * @param numDice the number of dice the attacker is using
      */
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
@@ -500,13 +499,12 @@ public class GameModel {
                 numMoveTroops = scanner.nextInt();
             }
             */
-           //currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
-           view.attackWon(attack, currentPlayer.findTroops(attackFrom));
-           return true;
+            //currentPlayer.attackWin(numMoveTroops, attackFrom, attack);
+            currentPlayer.move((Integer) view.getNumTroops().getValue(), attackFrom, attack);
+            view.attackWon(attack, currentPlayer.findTroops(attackFrom));
+            return true;
         }
         return false;
-
-
     }
 
     /**
@@ -515,6 +513,13 @@ public class GameModel {
      * @return the current player
      */
     public Player getPlayer() { return currentPlayer; }
+
+    /**
+     * Initializes the first player of the game
+     */
+    public void setFirstPlayer(){
+        currentPlayer = players.get(0);
+    }
 
     /**
      * Prints a smaller overview for a specific player at the beginning of their turn including
@@ -639,6 +644,7 @@ public class GameModel {
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
+        //setFirstPlayer();
         view.start();
         view.turn(currentPlayer, getNumberOfTroops());
 
@@ -691,6 +697,20 @@ public class GameModel {
             }
         }
         return null;
+    }
+    public boolean ownNeighbours(Territory t ) {
+        int x = t.getNeighbourTerritories().size() - 1;
+        for (Territory territory : t.getNeighbourTerritories()) {
+            if (!(territory.getCurrentPlayer() == currentPlayer)) {
+                return false;
+            }
+            x--;
+        }
+        return true;
+    }
+
+    public static List<Player> getPlayers() {
+        return players;
     }
 
     /**

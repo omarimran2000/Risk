@@ -46,6 +46,8 @@ public class GameView extends JFrame {
     private final int frameSizeX = 1200;
     private final int frameSizeY = 750;
     private ArrayList<TerritoryButton> territoryButtons;
+    private boolean chosenAttack;
+    private boolean chooseDeploy;
 
     /**
      * Constructor of class GameView
@@ -61,6 +63,8 @@ public class GameView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         territoryButtons = new ArrayList<TerritoryButton>();
+        chosenAttack = false;
+        chooseDeploy = false;
         //setIconImage(icon.getImage());
 
 
@@ -84,7 +88,7 @@ public class GameView extends JFrame {
         continentControl = new JTextArea();
 
         attackFromList = new JList();
-        attackFromList.addListSelectionListener(controller);
+        //attackFromList.addListSelectionListener(controller);
         attackFromList.setEnabled(false);
         attackToList = new JList();
         attackToList.setEnabled(false);
@@ -145,7 +149,7 @@ public class GameView extends JFrame {
         numTroopsPanel.add(numTroops);
 
         contentPane.add(welcomePanel, BorderLayout.CENTER);
-        contentPane.addMouseListener(controller);
+        //contentPane.addMouseListener(controller);
         setVisible(true);
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -163,6 +167,11 @@ public class GameView extends JFrame {
      */
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.json");
+        for(TerritoryButton tb:territoryButtons)
+        {
+            tb.setEnabled(false);
+            contentPane.add(tb);
+        }
         try {                                  //for IDE
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
         }catch (Exception ex)  //for JAR
@@ -170,11 +179,7 @@ public class GameView extends JFrame {
             InputStream in = getClass().getResourceAsStream("/"+model.getTheMap().getFilePath());
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(in))));
         }
-        for(TerritoryButton tb:territoryButtons)
-        {
-            tb.setVisible(true);
-            contentPane.add(tb);
-        }
+
     }
 
     /**
@@ -335,10 +340,12 @@ public class GameView extends JFrame {
         startButton.setEnabled(false);
         deployButton.setEnabled(true);
         deployToList.setVisible(true);
+        setDeployButtons();
+        chooseDeploy = true;
         numTroopsPanel.setVisible(true);
         troopsDeployed = 0;
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-
+        deployToList.setEnabled(false);
     }
     /**
      * Method to update the continent area
@@ -423,6 +430,10 @@ public class GameView extends JFrame {
         deployButton.setEnabled(true);
         deployToScrollPane.setVisible(true);
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        deployToList.setEnabled(false);
+        disableAllButtons();
+        setDeployButtons();
+        chooseDeploy = true;
         numTroopsPanel.setVisible(true);
 
         passButton.setVisible(false);
@@ -466,11 +477,19 @@ public class GameView extends JFrame {
             attackFromScrollPane.setEnabled(true);
             attackFromList.setEnabled(true);
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+            attackFromList.setEnabled(false);
+            setAttackFromButtons();
+            chooseDeploy = false;
+            chosenAttack = true;
         }
         else
         {
-            setNumTroops(model.getNumberOfTroops() - troopsDeployed);
+            int troopsLeft = model.getNumberOfTroops() - troopsDeployed;
+            setNumTroops(troopsLeft);
+            enableAllPlayerButtons();
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+            deployToList.setEnabled(false);
+            setTextArea("You have " + troopsLeft + " troops left to deploy");
         }
 
     }
@@ -495,6 +514,7 @@ public class GameView extends JFrame {
         textArea.append(status + "\n");
         textArea.setVisible(true);
         continentControl.setText(updateContinent());
+        enableAllPlayerButtons();
 
     }
 
@@ -504,6 +524,9 @@ public class GameView extends JFrame {
     public void clearAttackFromSelection(){
 
         attackFromList.clearSelection();
+        setAttackFromButtons();
+        setChosenAttack(true);
+
 
     }
 
@@ -532,6 +555,7 @@ public class GameView extends JFrame {
         moveButton.setVisible(true);
         moveButton.setEnabled(true);
         attackButton.setEnabled(false);
+        disableAllButtons();
         passButton.setEnabled(false);
 
 
@@ -610,13 +634,6 @@ public class GameView extends JFrame {
         temp.setEnabled(false);
         territoryButtons.add(temp);
     }
-    public void setNotEnabledButtons()
-    {
-        for(TerritoryButton tb:territoryButtons)
-        {
-            tb.setEnabled(false);
-        }
-    }
     public void setDeployButtons()
     {
         for(Territory t:model.getPlayer().getTerritories())
@@ -636,12 +653,55 @@ public class GameView extends JFrame {
         {
             for(TerritoryButton tb:territoryButtons)
             {
-                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1)
+                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1 && !model.ownNeighbours(t))
                 {
                     tb.setEnabled(true);
                 }
             }
         }
+    }
+    public void setAttackToButtons(Territory attackFrom)
+    {
+        for(TerritoryButton tb:territoryButtons)
+        {
+            if((attackFrom.getNeighbourTerritories().contains(tb.getTerritory())) && !tb.getTerritory().getCurrentPlayer().equals(model.getPlayer()))
+            {
+                tb.setEnabled(true);
+            }
+        }
+
+    }
+    public void disableAllButtons()
+    {
+        for (TerritoryButton tb:territoryButtons)
+        {
+            tb.setEnabled(false);
+        }
+    }
+    public void enableAllPlayerButtons()
+    {
+        for (TerritoryButton tb:territoryButtons)
+        {
+            if(tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
+                tb.setEnabled(true);
+            }
+        }
+    }
+
+    public void setChosenAttack(boolean chosenAttack) {
+        this.chosenAttack = chosenAttack;
+    }
+
+    public boolean isChosenAttack() {
+        return chosenAttack;
+    }
+
+    public boolean isChooseDeploy() {
+        return chooseDeploy;
+    }
+
+    public GameModel getModel() {
+        return model;
     }
 
     public static void main(String[] args) throws IOException, ParseException {

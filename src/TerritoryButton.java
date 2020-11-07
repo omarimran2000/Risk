@@ -14,5 +14,10 @@ public class TerritoryButton extends JButton {
         territory = t;
     }
 
+    public void setEnabled(boolean enable) {
+        super.setEnabled(enable);
+        super.setVisible(enable);
+    }
+
     public Territory getTerritory() { return territory; }
 }

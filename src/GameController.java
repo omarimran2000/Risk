@@ -18,10 +18,13 @@ import java.util.ArrayList;
  *
  * @version October 25 2020
  */
-public class GameController implements ActionListener, ListSelectionListener, MouseListener {
+public class GameController implements ActionListener {//, ListSelectionListener, MouseListener {
 
     private GameModel model;
     private GameView view;
+    Territory attackFromTerritory;
+    Territory attackToTerritory;
+    Territory deployTerritory;
 
     /**
      * Constructor for this class
@@ -41,24 +44,61 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() instanceof TerritoryButton)
+        {
+            TerritoryButton territoryButton = (TerritoryButton) e.getSource();
+            Territory temp = territoryButton.getTerritory();
+            if(view.isChooseDeploy())
+            {
+                view.getDeployToList().clearSelection();
+                deployTerritory = temp;
+                view.disableAllButtons();
+                view.getDeployToList().setSelectedValue(temp, true);
+            }
 
-        if (e.getSource() instanceof JButton) {
+            else if(view.isChosenAttack())
+            {
+                view.getAttackFromList().clearSelection();
+                view.disableAllButtons();
+                view.setAttackToButtons(temp);
+                attackFromTerritory = temp;
+                view.setChosenAttack(false);
+                view.getAttackFromList().setSelectedValue(temp, true);
+            }
+            else if(!view.isChosenAttack())
+            {
+                view.getAttackToList().clearSelection();
+                attackToTerritory = temp;
+                view.getAttackButton().setEnabled(true);
+                view.disableAllButtons();
+                SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
+                view.getNumDice().setModel(numDiceModel);
+                view.getNumDicePanel().setVisible(true);
+                view.getAttackToList().setSelectedValue(temp, true);
+            }
+        }
+        else if (e.getSource() instanceof JButton) {
             JButton buttonPressed = (JButton) e.getSource();
 
             if (buttonPressed.equals(view.getAttackButton())) {
+
                 try {
+                       view.resetAttackText();
 
-                    Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
+           //         Territory attackFromTerritory = (Territory) view.getAttackFromList().getSelectedValue();
 
-                    if (model.getPlayer().findTroops(attackFromTerritory) == 1) {
+        //            if (model.getPlayer().findTroops(attackFromTerritory) == 1) {
 
-                        view.invalidAttackFrom();
-                    } else {
-                        Territory attackToTerritory = (Territory) view.getAttackToList().getSelectedValue();
+          //              view.invalidAttackFrom();
+                     {
+                  //      Territory attackToTerritory = (Territory) view.getAttackToList().getSelectedValue();
                         int numDice = (int) view.getNumDice().getValue();
 
                         if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
+                            view.disableAllButtons();
                             view.clearAttackFromSelection();
+
+
                         }
                         view.getNumDicePanel().setVisible(false);
                         view.getAttackScrollPane().setVisible(false);
@@ -93,14 +133,19 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
                     try {
-                        Territory t = (Territory) (view.getDeployToList().getSelectedValue());
-                        if (t==null){
-                            JOptionPane.showMessageDialog(null, "Pick a territory.");
-                        }
-                        else {
+                      //  Territory t = (Territory) (view.getDeployToList().getSelectedValue());
+                        //if (t==null){
+                          //  JOptionPane.showMessageDialog(null, "Pick a territory.");
+                     //   }
+                       // else {
                             int numTroops = (int) view.getNumTroops().getValue();
-                            model.deploy(t, numTroops);
-                        }
+                            if (deployTerritory != null) {
+                                model.deploy(deployTerritory, numTroops);
+                            }
+                            else {
+                                view.setTextArea("Choose a territory to deploy troops to");
+                            }
+                      //  }
                     }catch(Exception ex)
                     {
                         JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
@@ -163,13 +208,13 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
                 view.getNumPlayers().setEnabled(false);*/
             } else if (buttonPressed.equals(view.getMoveButton())) {
                 try {
-                    Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
-                    Territory attack = (Territory) view.getAttackToList().getSelectedValue();
+                  //  Territory attackFrom = (Territory) view.getAttackFromList().getSelectedValue();
+                  //  Territory attack = (Territory) view.getAttackToList().getSelectedValue();
                     int numTroops = (int) view.getNumTroops().getValue();
-                    model.getPlayer().attackWin(numTroops, attackFrom, attack);
+                    model.getPlayer().attackWin(numTroops, attackFromTerritory, attackToTerritory);
                     view.getDeployToScrollPane().setVisible(false);
                     view.getAttackFromScrollPane().setVisible(true);
-                    view.move(numTroops, attack);
+                    view.move(numTroops, attackToTerritory);
                 }catch (Exception ex)
                 {
                     JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
@@ -187,13 +232,12 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
         }
     }
 
-
     /**
      * Method is invoked when a list value is selected
      *
      * @param e the listSelectionEvent that invoked this method
      */
-    @Override
+    /*@Override
     public void valueChanged(ListSelectionEvent e) {
 
             if(e.getValueIsAdjusting()) {
@@ -233,5 +277,5 @@ public class GameController implements ActionListener, ListSelectionListener, Mo
     @Override
     public void mouseExited(MouseEvent e) {
 
-    }
+    }*/
 }
