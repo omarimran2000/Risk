@@ -207,7 +207,6 @@ public class GameModel {
                 }
             }
         }
-
     }
 
     /**
@@ -318,12 +317,12 @@ public class GameModel {
      * @param numTroops The number of troops to be deployed
      */
     public void deploy(Territory territory, int numTroops) {
-            for (int i = 0; i < numTroops; i++) {
-                currentPlayer.getArmy().addTroop(new Troop());
-            }
-            view.setTroopsDeployed(numTroops);
-            view.deploy();
-            currentPlayer.deploy(numTroops, territory);
+        for (int i = 0; i < numTroops; i++) {
+            currentPlayer.getArmy().addTroop(new Troop());
+        }
+        view.setTroopsDeployed(numTroops);
+        view.deploy();
+        currentPlayer.deploy(numTroops, territory);
     }
 
     /**
@@ -336,7 +335,6 @@ public class GameModel {
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
         setStatus(currentPlayer.getName() + " is attacking " + attack.getName() + " from " + attackFrom.getName());
         view.attack(status);
-        //view.promptChooseAttackFrom();
         int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
@@ -348,7 +346,6 @@ public class GameModel {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
-
             view.attackWon(attack, currentPlayer.findTroops(attackFrom));
             return true;
         }

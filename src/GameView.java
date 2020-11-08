@@ -425,8 +425,7 @@ public class GameView extends JFrame {
     /**
      * method invoked when a player is in the deploy phase
      */
-    public void deploy()
-    {
+    public void deploy() {
         if(troopsDeployed == model.getNumberOfTroops()) {
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(false);
@@ -450,8 +449,7 @@ public class GameView extends JFrame {
             enableAllPlayerButtons();
             chooseDeploy = false;
             chosenAttack = true;
-        } else
-        {
+        } else {
             int troopsLeft = model.getNumberOfTroops() - troopsDeployed;
             setNumTroops(troopsLeft);
             enableAllPlayerButtons();
@@ -579,6 +577,9 @@ public class GameView extends JFrame {
         temp.setSize(15, 15);
     }
 
+    /**
+     * Enables all buttons that relate to the current player's territories
+     */
     public void setDeployButtons() {
         for(Territory t:model.getPlayer().getTerritories()) {
             for(TerritoryButton tb:territoryButtons) {
@@ -589,6 +590,9 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * Enables all buttons related to territories that the current player can attack from
+     */
     public void setAttackFromButtons() {
         for(Territory t:model.getPlayer().getTerritories()) {
             for(TerritoryButton tb:territoryButtons) {
@@ -599,6 +603,10 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * Enables all buttons related to neighbouring enemy territories of attackFrom
+     * @param attackFrom The territory chosen to attack from
+     */
     public void setAttackToButtons(Territory attackFrom) {
         for(TerritoryButton tb:territoryButtons) {
             if((attackFrom.getNeighbourTerritories().contains(tb.getTerritory())) && !tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
@@ -607,12 +615,18 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * Disables all TerritoryButtons
+     */
     public void disableAllButtons() {
         for (TerritoryButton tb:territoryButtons) {
             tb.setEnabled(false);
         }
     }
 
+    /**
+     * Enables all buttons related to the current player's territories
+     */
     public void enableAllPlayerButtons() {
         for (TerritoryButton tb:territoryButtons) {
             if(tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {

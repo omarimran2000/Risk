@@ -52,7 +52,6 @@ public class GameController implements ActionListener {
                 deployTerritory = temp;
                 view.disableAllButtons();
                 view.getDeployToList().setSelectedValue(temp, true);
-
                 view.getDeployButton().setEnabled(true);
             }
             else if(view.isChosenAttack()) {
