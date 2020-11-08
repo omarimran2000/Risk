@@ -661,10 +661,16 @@ public class GameView extends JFrame {
         return model;
     }
 
+    /**
+     * Prompts the user to select a territory to attack from via the text area
+     */
     public void promptChooseAttackFrom(){
         textArea.append("Choose a territory to attack from\nor pass your turn to the next player");
     }
 
+    /**
+     * Prompts the user to select a territory to attack bia the text area
+     */
     public void promptChooseAttackTo(){
         textArea.setText("Choose a territory to attack");
     }

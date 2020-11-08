@@ -22,9 +22,9 @@ public class GameController implements ActionListener {
 
     private GameModel model;
     private GameView view;
-    Territory attackFromTerritory;
-    Territory attackToTerritory;
-    Territory deployTerritory;
+    private Territory attackFromTerritory;
+    private Territory attackToTerritory;
+    private Territory deployTerritory;
 
     /**
      * Constructor for this class
