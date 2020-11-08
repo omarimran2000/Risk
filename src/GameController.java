@@ -65,6 +65,7 @@ public class GameController implements ActionListener {
 
                 view.getAttackToList().setModel(model.defaultListConversion(temp.getNeighbourTerritories(model.getPlayer())));
                 view.getAttackScrollPane().setVisible(true);
+                view.promptChooseAttackTo();
             }
             else if(!view.isChosenAttack()) {
                 view.getAttackToList().clearSelection();
@@ -76,6 +77,7 @@ public class GameController implements ActionListener {
                 view.getNumDicePanel().setVisible(true);
                 view.getAttackToList().setSelectedValue(temp, true);
                 view.getAttackButton().setEnabled(true);
+                view.setTextArea("Click attack button to execute the attack");
             }
         }
         else if (e.getSource() instanceof JButton) {

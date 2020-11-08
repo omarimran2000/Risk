@@ -351,7 +351,7 @@ public class GameView extends JFrame {
      * @param numDeployTroops the number of troops to deploy
      */
     public void turn(Player curr, int numDeployTroops){
-        textArea.setText("It is " + curr.getName() + "'s turn.\n You have " + numDeployTroops + " troops to deploy");
+        textArea.setText("It is " + curr.getName() + "'s turn.\nYou have " + numDeployTroops + " troops to deploy\n");
         textArea.setEditable(false);
 
         continentControl.setText(updateContinent());
@@ -434,8 +434,10 @@ public class GameView extends JFrame {
             deployToScrollPane.setVisible(false);
             numTroopsPanel.setVisible(false);
 
-            textArea.setText("");
-            textArea.setVisible(false);
+            // set up attack phase
+            resetAttackText();
+            promptChooseAttackFrom();
+            textArea.setVisible(true);
             passButton.setVisible(true);
             passButton.setEnabled(true);
             attackButton.setVisible(true);
@@ -480,7 +482,6 @@ public class GameView extends JFrame {
         textArea.setVisible(true);
         continentControl.setText(updateContinent());
         enableAllPlayerButtons();
-
     }
 
     /**
@@ -644,6 +645,14 @@ public class GameView extends JFrame {
 
     public GameModel getModel() {
         return model;
+    }
+
+    public void promptChooseAttackFrom(){
+        textArea.append("Choose a territory to attack from\nor pass your turn to the next player");
+    }
+
+    public void promptChooseAttackTo(){
+        textArea.setText("Choose a territory to attack");
     }
 
     public static void main(String[] args) throws IOException, ParseException {
