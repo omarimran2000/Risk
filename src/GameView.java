@@ -534,14 +534,6 @@ public class GameView extends JFrame {
     }
 
     /**
-     * method is used when user chooses to attack from an invalid territory
-     */
-    public void invalidAttackFrom(){
-        //textArea.setVisible(true);
-        JOptionPane.showMessageDialog(null,"This territory does not have enough troops to attack");
-    }
-
-    /**
      * method is invoked when the game is over
      *
      * @param winner the winner of the game
