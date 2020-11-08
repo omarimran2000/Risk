@@ -96,14 +96,6 @@ public class Territory {
     }
 
     /**
-     * prints territory's name
-     */
-    public void printTerritory()
-    {
-        System.out.println("Territory: "+name);
-    }
-
-    /**
      * Override toString method for JLists
      * @return toString
      */
