@@ -523,7 +523,8 @@ public class GameView extends JFrame {
      * @param attack territory where troops are being moved
      */
     public void move(int numTroops, Territory attack){
-        textArea.setText(model.getPlayer().getName() + " moved " + numTroops + " troop(s) to " + attack.getName());
+        textArea.setText(model.getPlayer().getName() + " moved " + numTroops + " troop(s) to " + attack.getName() + "\n");
+        promptChooseAttackFrom();
         continentControl.setText(updateContinent());
         moveButton.setVisible(false);
         attackButton.setEnabled(true);
