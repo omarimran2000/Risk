@@ -56,7 +56,6 @@ public class GameView extends JFrame {
      * @throws ParseException
      */
     public GameView() throws IOException, ParseException {
-        //ImageIcon icon = new ImageIcon("image_name.png");
         super("Risk Game");
         model = new GameModel();
         controller = new GameController(model, this);
@@ -65,7 +64,6 @@ public class GameView extends JFrame {
         territoryButtons = new ArrayList<TerritoryButton>();
         chosenAttack = false;
         chooseDeploy = false;
-        //setIconImage(icon.getImage());
 
 
         model.setView(this);
@@ -630,22 +628,44 @@ public class GameView extends JFrame {
         this.setVisible(false);
     }
 
+    /**
+     * Set function to update if player is in attack phase or not
+     * @param chosenAttack
+     */
     public void setChosenAttack(boolean chosenAttack) {
         this.chosenAttack = chosenAttack;
     }
 
+    /**
+     * Getter for attack chosen
+     * @return chosen attack
+     */
     public boolean isChosenAttack() {
         return chosenAttack;
     }
 
+    /**
+     * Getter for deploy chosen
+     * @return deploy chosen
+     */
     public boolean isChooseDeploy() {
         return chooseDeploy;
     }
 
+    /**
+     * Getter for the model
+     * @return the model
+     */
     public GameModel getModel() {
         return model;
     }
 
+    /**
+     * Main function
+     * @param args
+     * @throws IOException
+     * @throws ParseException
+     */
     public static void main(String[] args) throws IOException, ParseException {
         new GameView();
     }
