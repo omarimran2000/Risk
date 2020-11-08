@@ -622,6 +622,14 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * Used for testing to make the frame not visible
+     */
+    public void setVisibleFalse()
+    {
+        this.setVisible(false);
+    }
+
     public void setChosenAttack(boolean chosenAttack) {
         this.chosenAttack = chosenAttack;
     }

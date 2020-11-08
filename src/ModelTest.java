@@ -17,20 +17,18 @@ public class ModelTest{
 
     private static GameModel model;
     private static GameView  view;
-
-    private Player player;
     private static int minPlayers = 2;
     private int maxPlayers = 6;
     private int minDeployTroops = 3;
     private static int moveTroops = 1;
     private static ArrayList<Player> players;
 
-
     @Before
     public void setup() throws IOException, ParseException {
 
         try {
             view = new GameView();
+            view.setVisibleFalse();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
@@ -171,8 +169,6 @@ public class ModelTest{
     @Test
     public void testContinent()
     {
-        int intialContinentSize = model.getPlayer().getContinents().size();
-
         for(Territory t:model.getTheMap().getContinents().get(0).getTerritories()) //gives player all territories in South America
         {
             if(!(t.getCurrentPlayer().equals(model.getPlayer())))
@@ -189,9 +185,9 @@ public class ModelTest{
         int numTroopInitial = model.getNumberOfTroops();
         int continentBonus = model.getTheMap().getContinents().get(0).getContinentPoint();
 
-        model.getPlayer().addContinent(model.getTheMap().getContinents().get( intialContinentSize++));
-        assertEquals(model.getPlayer().getContinents().size(), intialContinentSize++);
-        assertEquals(model.getPlayer().getContinents().get(0),model.getTheMap().getContinents().get(0));
+        model.getPlayer().addContinent(model.getTheMap().getContinents().get(0));
+
+        assertTrue(model.getPlayer().getContinents().contains(model.getTheMap().getContinents().get(0)));
         assertEquals(model.getNumberOfTroops(),numTroopInitial+continentBonus);   //checks if continent bonus works
 
     }
