@@ -23,6 +23,11 @@ public class ModelTest{
     private static int moveTroops = 1;
     private static ArrayList<Player> players;
 
+    /**
+     * Sets up the model before each test
+     * @throws IOException
+     * @throws ParseException
+     */
     @Before
     public void setup() throws IOException, ParseException {
 
@@ -45,6 +50,10 @@ public class ModelTest{
         playerNames.add("Player 3");
         model.createPlayers(playerNames);
     }
+
+    /**
+     * Teardown after each test
+     */
     @After
     public void tearDown()
     {
@@ -71,6 +80,9 @@ public class ModelTest{
         assertEquals(model.getPlayer().getArmy().getTroops().size(),50);
     }
 
+    /**
+     * Tests the deploy method of model
+     */
     @Test
     public void testDeploy(){
         int maxTroops = model.getNumberOfTroops();
@@ -88,6 +100,9 @@ public class ModelTest{
 
     }
 
+    /**
+     * Tests the attack method of the model
+     */
     @Test
     public void testAttack(){
         Player player = model.getPlayer();
@@ -131,6 +146,9 @@ public class ModelTest{
         assertEquals(player2,model.getPlayers().get(1));
     }
 
+    /**
+     * Tests the move method of model
+     */
     @Test
     public void testMove()
     {
@@ -166,6 +184,9 @@ public class ModelTest{
 
     }
 
+    /**
+     * Tests to see if player can control a continent properly
+     */
     @Test
     public void testContinent()
     {
@@ -191,6 +212,10 @@ public class ModelTest{
         assertEquals(model.getNumberOfTroops(),numTroopInitial+continentBonus);   //checks if continent bonus works
 
     }
+
+    /**
+     * Tests if player can attack
+     */
     @Test
     public void testCanAttack()
     {
@@ -208,6 +233,10 @@ public class ModelTest{
         assertEquals(model.canAttack(model.getPlayer()),false);
 
     }
+
+    /**
+     * Tests to see if check neighbours works
+     */
     @Test
     public void testCheckNeighbours()
     {
@@ -226,6 +255,9 @@ public class ModelTest{
         assertEquals(model.ownNeighbours(model.getPlayer().getTerritories().get(0)),true);
     }
 
+    /**
+     * Tests to see if game can be ended
+     */
     @Test
     public void testCheckGameOver()
     {
