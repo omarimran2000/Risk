@@ -334,6 +334,7 @@ public class GameView extends JFrame {
     public String updateContinent()
     {
         String text = "";
+        text += "It is " + model.getPlayer().getName() + "'s turn\n";
         text += "You control the following continents:\n";
         for (Continent c: model.getPlayer().getContinents())
         {
@@ -349,7 +350,7 @@ public class GameView extends JFrame {
      * @param numDeployTroops the number of troops to deploy
      */
     public void turn(Player curr, int numDeployTroops){
-        textArea.setText("It is " + curr.getName() + "'s turn.\nYou have " + numDeployTroops + " troops to deploy\n");
+        textArea.setText("You have " + numDeployTroops + " troops to deploy\n");
         textArea.setEditable(false);
 
         continentControl.setText(updateContinent());

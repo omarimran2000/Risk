@@ -107,11 +107,11 @@ public class GameModel {
             defence = defender.getDice()[i];
             if (offence > defence) {
                 defender.removeTroops(LOSE_TROOP, territory);
-                setStatus(defender.getName() + " loses one troop.");
+                setStatus(defender.getName() + " lost one troop.");
                 view.attack(status);
             } else {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
-                setStatus(attacker.getName() + " loses one troop");
+                setStatus(attacker.getName() + " lost one troop");
                 view.attack(status);
             }
         }
@@ -333,7 +333,7 @@ public class GameModel {
      * @param numDice the number of dice the attacker is using
      */
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
-        setStatus(currentPlayer.getName() + " is attacking " + attack.getName() + " from " + attackFrom.getName());
+        setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
         view.attack(status);
         int numDefendDice;
         currentPlayer.rollDice(numDice);
