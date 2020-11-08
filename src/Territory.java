@@ -129,6 +129,10 @@ public class Territory {
         }
     }
 
+    /**
+     * Override toString method for JLists
+     * @return toString
+     */
     public String toString(){
         return name + ": " + currentPlayer.findTroops(this) + " troops";
     }

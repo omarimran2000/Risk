@@ -49,21 +49,41 @@ public class GameModel {
         players.add(player);
     }
 
+    /**
+     * Set the number of players in a game
+     * @param num the number of players
+     */
     public void setNumberOfPlayers(int num){ numberOfPlayers = num;}
 
+    /**
+     * Getter for number of players
+     * @return number of players
+     */
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
+    /**
+     * Getter for the map
+     * @return gets the map
+     */
     public Map getTheMap() {
         return theMap;
     }
 
+    /**
+     * Sets the view that is subscribed to the model
+     * @param view the view
+     */
     public void setView(GameView view)
     {
         this.view = view;
     }
 
+    /**
+     * Sets the status of what is happening to inform view
+     * @param status the updated status
+     */
     public void setStatus(String status){
         this.status = status;
     }
@@ -457,6 +477,12 @@ public class GameModel {
         }
         return null;
     }
+
+    /**
+     * Checks to see if a player owns all neighbours in a territory
+     * @param t the territory
+     * @return true or false if they own it
+     */
     public boolean ownNeighbours(Territory t ) {
         int x = t.getNeighbourTerritories().size() - 1;
         for (Territory territory : t.getNeighbourTerritories()) {
@@ -468,6 +494,10 @@ public class GameModel {
         return true;
     }
 
+    /**
+     * Getter function for players
+     * @return all the players
+     */
     public static List<Player> getPlayers() {
         return players;
     }
