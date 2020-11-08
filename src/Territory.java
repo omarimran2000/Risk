@@ -5,7 +5,6 @@
  * @date October 13 2020
  */
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class Territory {
@@ -105,37 +104,10 @@ public class Territory {
     }
 
     /**
-     * prints all adjacent territories
-     */
-    public void printAdjacentTerritories()
-    {
-        for(Territory t:neighbourTerritories)
-        {
-            t.printTerritory();
-        }
-    }
-
-    /**
-     * prints all adjacent territories that aren't owned by a specific player
-     *
-     * @param player the specific player
-     */
-    public void printAdjacentTerritories(Player player) {
-        for(Territory t:neighbourTerritories)
-        {
-            if (t.currentPlayer != player) {
-                t.printTerritory();
-            }
-        }
-    }
-
-    /**
      * Override toString method for JLists
      * @return toString
      */
     public String toString(){
         return name + ": " + currentPlayer.findTroops(this) + " troops";
     }
-
-
 }
