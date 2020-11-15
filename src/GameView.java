@@ -638,7 +638,34 @@ public class GameView extends JFrame implements GameModelListener {
         }
     }
 
-
+    public void enableAllFortifyFromButtons()
+    {
+        disableAllButtons();
+        for (Territory t:model.getPlayer().getTerritories())
+        {
+            for(TerritoryButton tb:territoryButtons)
+            {
+                if (tb.getTerritory().equals(t) && model.ownANeighbour(t))
+                {
+                    tb.setEnabled(true);
+                }
+            }
+        }
+    }
+    public void enableFortifyToButtons(Territory fortifyFrom)
+    {
+        disableAllButtons();
+        for(Territory t:fortifyFrom.getNeighbourTerritories())
+        {
+            for(TerritoryButton tb:territoryButtons)
+            {
+                if(tb.getTerritory().equals(t) && t.getCurrentPlayer().equals(model.getPlayer()))
+                {
+                    tb.setEnabled(true);
+                }
+            }
+        }
+    }
     /**
      * Set function to update if player is in attack phase or not
      * @param chosenAttack
