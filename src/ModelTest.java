@@ -256,6 +256,39 @@ public class ModelTest{
     }
 
     /**
+     * Tests own a neighbour
+     */
+    @Test
+    public void testOwnANeighbour()
+    {
+        Territory fortifyFromOneTroop = null;
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            if(model.getPlayer().findTroops(t)==1)
+            {
+                fortifyFromOneTroop = t;
+                break;
+            }
+        }
+        assertFalse(model.ownANeighbour(fortifyFromOneTroop));
+
+        Territory fortifyFrom = null;
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            if(model.getPlayer().findTroops(t)>1)
+            {
+                for(Territory tn:t.getNeighbourTerritories())
+                {
+                    if(tn.getCurrentPlayer().equals(model.getPlayer())) {
+                        fortifyFrom = t;
+                        break;
+                    }
+                }
+            }
+        }
+        assertTrue(model.ownANeighbour(fortifyFrom));
+    }
+    /**
      * Tests to see if game can be ended
      */
     @Test
