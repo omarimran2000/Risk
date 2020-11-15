@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  * @version October 25 2020
  */
-public class GameView extends JFrame {
+public class GameView extends JFrame implements GameModelListener {
 
     private GameModel model;
     private JList attackFromList;
@@ -66,7 +66,7 @@ public class GameView extends JFrame {
         chooseDeploy = false;
 
 
-        model.setView(this);
+        model.addListener(this);
         contentPane = getContentPane();
 
         contentPane.setLayout(new BorderLayout());
@@ -447,7 +447,7 @@ public class GameView extends JFrame {
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             attackFromList.setEnabled(false);
             setAttackFromButtons();
-            enableAllPlayerButtons();
+           // enableAllPlayerButtons();
             chooseDeploy = false;
             chosenAttack = true;
         } else {
@@ -596,6 +596,7 @@ public class GameView extends JFrame {
      * Enables all buttons related to territories that the current player can attack from
      */
     public void setAttackFromButtons() {
+        disableAllButtons();
         for(Territory t:model.getPlayer().getTerritories()) {
             for(TerritoryButton tb:territoryButtons) {
                 if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1 && !model.ownNeighbours(t)) {
@@ -637,13 +638,6 @@ public class GameView extends JFrame {
         }
     }
 
-    /**
-     * Used for testing to make the frame not visible
-     */
-    public void setVisibleFalse()
-    {
-        this.setVisible(false);
-    }
 
     /**
      * Set function to update if player is in attack phase or not
@@ -667,14 +661,6 @@ public class GameView extends JFrame {
      */
     public boolean isChooseDeploy() {
         return chooseDeploy;
-    }
-
-    /**
-     * Getter for the model
-     * @return the model
-     */
-    public GameModel getModel() {
-        return model;
     }
 
     /**

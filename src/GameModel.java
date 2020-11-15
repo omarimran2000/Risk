@@ -29,7 +29,7 @@ public class GameModel {
     private final static int DEPLOY_SINGLE_TROOP = 1;
     private final static int[] DICE = {1, 2, 3};
     private static Scanner scanner = new Scanner(System.in);
-    private GameView view;
+    private ArrayList<GameModelListener> listeners;
     private Player currentPlayer;
     private String status;
     private final int MIN_DEPLOY_TROOPS = 3;
@@ -37,6 +37,7 @@ public class GameModel {
 
     public GameModel() {
         theMap = new Map("Global");
+        listeners = new ArrayList<>();
         players = new ArrayList<>();
     }
 
@@ -47,6 +48,10 @@ public class GameModel {
      */
     public static void addPlayer(Player player) {
         players.add(player);
+    }
+    public void addListener(GameModelListener l)
+    {
+        listeners.add(l);
     }
 
     /**
@@ -69,15 +74,6 @@ public class GameModel {
      */
     public Map getTheMap() {
         return theMap;
-    }
-
-    /**
-     * Sets the view that is subscribed to the model
-     * @param view the view
-     */
-    public void setView(GameView view)
-    {
-        this.view = view;
     }
 
     /**
@@ -108,11 +104,15 @@ public class GameModel {
             if (offence > defence) {
                 defender.removeTroops(LOSE_TROOP, territory);
                 setStatus(defender.getName() + " lost one troop.");
-                view.attack(status);
+              //  view.attack(status);
             } else {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
                 setStatus(attacker.getName() + " lost one troop");
-                view.attack(status);
+              //  view.attack(status);
+            }
+            for(GameModelListener l:listeners)
+            {
+                l.attack(status);
             }
         }
         if (defender.findTroops(territory) == 0) {
@@ -120,7 +120,11 @@ public class GameModel {
             territory.setCurrentPlayer(attacker);
             if(defender.getTerritories().size() == 0){
                 setStatus(defender.getName() + " has no more territories and is now out of the game.");
-                view.attack(status);
+              // view.attack(status);
+                for(GameModelListener l:listeners)
+                {
+                    l.attack(status);
+                }
                 defender.setActive(false);
             }
             return true;
@@ -178,7 +182,11 @@ public class GameModel {
                 JSONObject coordinates = (JSONObject) territoriesKeys.get("coordinates");
                 int x = (int)((long) coordinates.get("x"));
                 int y = (int)((long) coordinates.get("y"));
-                view.addButtons(temp,x,y);
+                //view.addButtons(temp,x,y);
+                for(GameModelListener l:listeners)
+                {
+                    l.addButtons(temp,x,y);
+                }
             }
         }
         /*
@@ -320,8 +328,13 @@ public class GameModel {
         for (int i = 0; i < numTroops; i++) {
             currentPlayer.getArmy().addTroop(new Troop());
         }
-        view.setTroopsDeployed(numTroops);
-        view.deploy();
+      //  view.setTroopsDeployed(numTroops);
+       // view.deploy();
+        for(GameModelListener l:listeners)
+        {
+            l.setTroopsDeployed(numTroops);
+            l.deploy();
+        }
         currentPlayer.deploy(numTroops, territory);
     }
 
@@ -334,7 +347,11 @@ public class GameModel {
      */
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
-        view.attack(status);
+        //view.attack(status);
+        for(GameModelListener l:listeners)
+        {
+            l.attack(status);
+        }
         int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
@@ -346,7 +363,11 @@ public class GameModel {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
-            view.attackWon(attack, currentPlayer.findTroops(attackFrom));
+            //view.attackWon(attack, currentPlayer.findTroops(attackFrom));
+            for(GameModelListener l:listeners)
+            {
+                l.attackWon(attack,currentPlayer.findTroops(attackFrom));
+            }
             return true;
         }
         return false;
@@ -426,8 +447,14 @@ public class GameModel {
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
-        view.start();
-        view.turn(currentPlayer, getNumberOfTroops());
+       // view.start();
+      //  view.turn(currentPlayer, getNumberOfTroops());
+        for(GameModelListener l:listeners)
+        {
+            l.start();
+            l.turn(currentPlayer, getNumberOfTroops());
+        }
+
     }
 
     /**

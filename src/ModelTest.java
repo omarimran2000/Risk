@@ -31,14 +31,14 @@ public class ModelTest{
     @Before
     public void setup() throws IOException, ParseException {
 
-        try {
-            view = new GameView();
-            view.setVisibleFalse();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-        model = view.getModel();
-        model.setView(view);
+      //  try {
+         //   view = new GameView();
+         //   view.setVisibleFalse();
+       // } catch (IOException | ParseException e) {
+      //      e.printStackTrace();
+     //   }
+        model = new GameModel();
+       // model.addListener(view);
         model.loadMap("map.json");
 
         int numPlayers = 2;
@@ -67,7 +67,7 @@ public class ModelTest{
      */
     public void testInit(){
         assertNotNull (model);
-        assertNotNull(view);
+      //  assertNotNull(view);
 
         assert (model.getNumberOfPlayers() >= minPlayers);
         assert (model.getNumberOfPlayers() <= maxPlayers);
