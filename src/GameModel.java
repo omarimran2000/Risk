@@ -521,7 +521,7 @@ public class GameModel {
     {
         for (Territory neighbour:t.getNeighbourTerritories())
         {
-            if(neighbour.getCurrentPlayer().equals(currentPlayer))
+            if(neighbour.getCurrentPlayer().equals(currentPlayer) && currentPlayer.findTroops(t)>1)
             {
                 return true;
             }
