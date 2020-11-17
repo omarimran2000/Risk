@@ -31,14 +31,14 @@ public class ModelTest{
     @Before
     public void setup() throws IOException, ParseException {
 
-        try {
-            view = new GameView();
-            view.setVisibleFalse();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-        model = view.getModel();
-        model.setView(view);
+      //  try {
+         //   view = new GameView();
+         //   view.setVisibleFalse();
+       // } catch (IOException | ParseException e) {
+      //      e.printStackTrace();
+     //   }
+        model = new GameModel();
+       // model.addListener(view);
         model.loadMap("map.json");
 
         int numPlayers = 2;
@@ -67,7 +67,7 @@ public class ModelTest{
      */
     public void testInit(){
         assertNotNull (model);
-        assertNotNull(view);
+      //  assertNotNull(view);
 
         assert (model.getNumberOfPlayers() >= minPlayers);
         assert (model.getNumberOfPlayers() <= maxPlayers);
@@ -255,6 +255,39 @@ public class ModelTest{
         assertEquals(model.ownNeighbours(model.getPlayer().getTerritories().get(0)),true);
     }
 
+    /**
+     * Tests own a neighbour
+     */
+    @Test
+    public void testOwnANeighbour()
+    {
+        Territory fortifyFromOneTroop = null;
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            if(model.getPlayer().findTroops(t)==1)
+            {
+                fortifyFromOneTroop = t;
+                break;
+            }
+        }
+        assertFalse(model.ownANeighbour(fortifyFromOneTroop));
+
+        Territory fortifyFrom = null;
+        for(Territory t:model.getPlayer().getTerritories())
+        {
+            if(model.getPlayer().findTroops(t)>1)
+            {
+                for(Territory tn:t.getNeighbourTerritories())
+                {
+                    if(tn.getCurrentPlayer().equals(model.getPlayer())) {
+                        fortifyFrom = t;
+                        break;
+                    }
+                }
+            }
+        }
+        assertTrue(model.ownANeighbour(fortifyFrom));
+    }
     /**
      * Tests to see if game can be ended
      */
