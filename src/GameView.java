@@ -38,6 +38,7 @@ public class GameView extends JFrame implements GameModelListener {
     private JPanel welcomePanel;
     private JScrollPane deployToScrollPane;
     private JScrollPane attackFromScrollPane;
+
     private JScrollPane attackScrollPane;
     private JPanel gameControl;
     private JPanel statusPanel;
@@ -463,7 +464,7 @@ public class GameView extends JFrame implements GameModelListener {
 
             attackFromScrollPane.setVisible(true);
             attackFromScrollPane.setEnabled(true);
-            attackFromList.setEnabled(true);
+            //attackFromList.setEnabled(true);
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             attackFromList.setEnabled(false);
             setAttackFromButtons();
@@ -553,6 +554,9 @@ public class GameView extends JFrame implements GameModelListener {
         attackButton.setEnabled(false);
         disableAllButtons();
         passButton.setEnabled(false);
+        if (model.getPlayer() instanceof AIPlayer) {
+            moveButton.doClick();
+        }
     }
 
     /**
@@ -634,10 +638,11 @@ public class GameView extends JFrame implements GameModelListener {
      * Enables all buttons related to territories that the current player can attack from
      */
     public void setAttackFromButtons() {
+        Player player = model.getPlayer();
         disableAllButtons();
-        for(Territory t:model.getPlayer().getTerritories()) {
+        for(Territory t:player.getTerritories()) {
             for(TerritoryButton tb:territoryButtons) {
-                if (tb.getTerritory().equals(t) && model.getPlayer().findTroops(t) > 1 && !model.ownNeighbours(t)) {
+                if (tb.getTerritory().equals(t) && player.findTroops(t) > 1 && !player.ownNeighbours(t)) {
                     tb.setEnabled(true);
                 }
             }

@@ -27,7 +27,7 @@ public class GameModel {
     private static int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
     private final static int DEPLOY_SINGLE_TROOP = 1;
-    private final static int[] DICE = {1, 2, 3};
+    public final static int[] DICE = {1, 2, 3};
     private final static int MAX_PLAYERS = 6;
     private static Scanner scanner = new Scanner(System.in);
     private ArrayList<GameModelListener> listeners;
@@ -522,7 +522,7 @@ public class GameModel {
      * Checks to see if a player owns all neighbours in a territory
      * @param t the territory
      * @return true or false if they own it
-     */
+
     public boolean ownNeighbours(Territory t ) {
         int x = t.getNeighbourTerritories().size() - 1;
         for (Territory territory : t.getNeighbourTerritories()) {
@@ -532,7 +532,7 @@ public class GameModel {
             x--;
         }
         return true;
-    }
+    }*/
 
     public boolean ownANeighbour(Territory t)
     {
