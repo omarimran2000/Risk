@@ -33,6 +33,7 @@ public class GameView extends JFrame implements GameModelListener {
     private Container contentPane;
     private GameController controller;
     private JTextArea textArea;
+    private JTextArea aiTextArea;
     private JTextArea continentControl;
     private JPanel welcomePanel;
     private JScrollPane deployToScrollPane;
@@ -82,6 +83,7 @@ public class GameView extends JFrame implements GameModelListener {
         welcomePanel.add(welcome);
 
         textArea = new JTextArea();
+        aiTextArea = new JTextArea();
         continentControl = new JTextArea();
 
         attackFromList = new JList();
@@ -139,7 +141,7 @@ public class GameView extends JFrame implements GameModelListener {
 
         troopsDeployed = 0;
 
-        this.setResizable(false);
+        //this.setResizable(false);
         this.setSize(frameSizeX,frameSizeY);
     }
 
@@ -257,6 +259,12 @@ public class GameView extends JFrame implements GameModelListener {
         textArea.setText(message);
     }
 
+    public JTextArea getAITextArea(){
+        return aiTextArea;
+    }
+
+
+
     /**
      * getter method for numTroops
      *
@@ -356,6 +364,9 @@ public class GameView extends JFrame implements GameModelListener {
         continentControl.setText(updateContinent());
         continentControl.setEditable(false);
 
+        aiTextArea.setVisible(false);
+        aiTextArea.setEditable(false);
+
         gameControl = new JPanel();
         gameControl.setLayout(new FlowLayout());
         gameControl.add(attackButton);
@@ -377,6 +388,7 @@ public class GameView extends JFrame implements GameModelListener {
         statusPanel = new JPanel();
         statusPanel.add(continentControl);
         statusPanel.add(textArea);
+        statusPanel.add(aiTextArea);
 
         deployToScrollPane = new JScrollPane(deployToList);
         statusPanel.add(deployToScrollPane);
@@ -398,29 +410,37 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public void pass()
     {
-        deployButton.setEnabled(false);
-        deployToScrollPane.setVisible(true);
-        deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-        deployToList.setEnabled(false);
-        disableAllButtons();
-        setDeployButtons();
-        chooseDeploy = true;
-        numTroopsPanel.setVisible(true);
+        if(!(model.getPlayer() instanceof AIPlayer)) {
 
-        passButton.setVisible(false);
-        attackButton.setEnabled(false);
-        attackFromScrollPane.setVisible(false);
-        attackScrollPane.setVisible(false);
-        numDicePanel.setVisible(false);
 
-        setNumTroops(model.getNumberOfTroops());
-        troopsDeployed= 0;
+            deployButton.setEnabled(false);
+            deployToScrollPane.setVisible(true);
+            deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+            deployToList.setEnabled(false);
+            disableAllButtons();
+            setDeployButtons();
+            chooseDeploy = true;
+            numTroopsPanel.setVisible(true);
 
-        textArea.setText("It is " + model.getPlayer().getName() + " 's turn");
-        textArea.append("\n You have " + model.getNumberOfTroops() + " troops to deploy");
-        textArea.setVisible(true);
+            passButton.setVisible(false);
+            attackButton.setEnabled(false);
+            attackFromScrollPane.setVisible(false);
+            attackScrollPane.setVisible(false);
+            numDicePanel.setVisible(false);
 
-        continentControl.setText(updateContinent());
+            setNumTroops(model.getNumberOfTroops());
+            troopsDeployed = 0;
+
+
+            textArea.setText("It is " + model.getPlayer().getName() + " 's turn");
+            textArea.append("\n You have " + model.getNumberOfTroops() + " troops to deploy");
+            textArea.setVisible(true);
+
+            continentControl.setText(updateContinent());
+        } else {
+            AIPlayer ai = (AIPlayer) model.getPlayer();
+
+        }
     }
 
     /**
@@ -459,6 +479,19 @@ public class GameView extends JFrame implements GameModelListener {
             setTextArea("You have " + troopsLeft + " troops left to deploy");
         }
     }
+    public void aiDeploy(Territory territory, int numTroops){
+        disableAllButtons();
+        passButton.setVisible(false);
+        attackFromScrollPane.setVisible(false);
+        continentControl.setVisible(false);
+        textArea.setVisible(false);
+        aiTextArea.setVisible(true);
+        aiTextArea.append("AI " + model.getPlayer().getName() + " deployed " + numTroops + " troops to "
+        + territory.getName() + "\n");
+
+
+    }
+
 
     /**
      * set the number of deployable troops
@@ -496,6 +529,11 @@ public class GameView extends JFrame implements GameModelListener {
     public void resetAttackText(){
         textArea.setText("");
         textArea.setVisible(false);
+    }
+
+    public void resetAIText(){
+        aiTextArea.setText("");
+        aiTextArea.setVisible(false);
     }
 
     /**

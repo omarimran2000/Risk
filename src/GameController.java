@@ -84,8 +84,10 @@ public class GameController implements ActionListener {
 
             if (buttonPressed.equals(view.getAttackButton())) {
                 try {
+
                     view.resetAttackText();
                     view.getAttackButton().setEnabled(false);
+
 
                     int numDice = (int) view.getNumDice().getValue();
                     if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
@@ -113,7 +115,22 @@ public class GameController implements ActionListener {
                 if(model.playersActive())
                 {
                     model.passTurn();
-                    view.pass();
+
+                    if(!(model.getPlayer() instanceof AIPlayer)) {
+                        view.pass();
+                    }else {
+                        while (model.getPlayer() instanceof AIPlayer) {
+                            AIPlayer ai = (AIPlayer) model.getPlayer();
+                            deployTerritory = ai.findMinTroops();
+                            model.deploy(deployTerritory, model.getNumberOfTroops());
+                            model.passTurn();
+                            view.pass();
+                        }
+                    }
+
+
+
+
                 } else //no players active i.e. game is done
                 {
                     JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
@@ -123,6 +140,7 @@ public class GameController implements ActionListener {
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
                     try {
+                        view.resetAIText();
                         int numTroops = (int) view.getNumTroops().getValue();
                         model.deploy(deployTerritory, numTroops);
                     }
@@ -175,6 +193,7 @@ public class GameController implements ActionListener {
                 view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
                 view.clearAttackFromSelection();
                 view.getAttackButton().setEnabled(false);
+
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
                 view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
