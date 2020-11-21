@@ -16,9 +16,9 @@ public class Player {
     private boolean active;
     private Dice die;
     private int [] diceRolls;
-    private Army army;
+    protected Army army;
     private List<Continent> continents;
-    private List<Territory> territories;
+    protected List<Territory> territories;
 
 
     /**
