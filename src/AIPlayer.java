@@ -3,11 +3,13 @@ import java.util.List;
 
 public class AIPlayer extends Player {
 
+    private Territory tempTerritory;
     /**
      * @param name The player's name
      */
     public AIPlayer(String name) {
         super(name);
+        tempTerritory = new Territory(null, null);
     }
 
     public Territory findMinTroops(List<Territory> territories){
@@ -23,7 +25,7 @@ public class AIPlayer extends Player {
     public Territory findMaxTroops(List<Territory> territories) {
         Territory maxTerritory = territories.get(0);
         for(Territory territory: territories){
-            if(findTroops(territory) > findTroops(maxTerritory)){
+            if(findTroops(territory) > findTroops(maxTerritory) && !ownNeighbours(territory)){
                 maxTerritory = territory;
             }
         }
@@ -47,7 +49,8 @@ public class AIPlayer extends Player {
 
     public boolean checkAvailableAttack() {
         for(Territory territory : territories) {
-            if(findTroops(territory) > 1) {
+            if(findTroops(territory) > 1 && !ownNeighbours(territory)) {
+                tempTerritory = territory;
                 return true;
             }
         }

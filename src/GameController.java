@@ -127,8 +127,14 @@ public class GameController implements ActionListener {
                                 attackFromTerritory = ai.findMaxTroops(ai.getTerritories());
                                 attackToTerritory = ai.getAttackTo(attackFromTerritory);
                                 int dice = ai.getNumDice(attackFromTerritory);
+                                //view.getNumDice().setValue(dice);
                                 model.attack(attackFromTerritory, attackToTerritory, dice);
                             }
+
+                            if (model.checkGameOver()) {
+                                view.gameOver(model.getWinner());
+                            }
+
                             model.passTurn();
                             view.pass();
                         }
