@@ -31,7 +31,7 @@ public class GameModel {
     private final static int MAX_PLAYERS = 6;
     private static Scanner scanner = new Scanner(System.in);
     private ArrayList<GameModelListener> listeners;
-    private Player currentPlayer;
+    protected Player currentPlayer;
     private String status;
     private final int MIN_DEPLOY_TROOPS = 3;
     private final int DEPLOY_TERRITORY_DIVISOR = 3;
@@ -373,12 +373,17 @@ public class GameModel {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
-            //view.attackWon(attack, currentPlayer.findTroops(attackFrom));
-            for(GameModelListener l:listeners)
-            {
-                l.attackWon(attack,currentPlayer.findTroops(attackFrom));
+            if(! (currentPlayer instanceof AIPlayer)) {
+                //view.attackWon(attack, currentPlayer.findTroops(attackFrom));
+                for (GameModelListener l : listeners) {
+                    l.attackWon(attack, currentPlayer.findTroops(attackFrom));
+                }
+                return true;
             }
-            return true;
+            else
+            {
+                currentPlayer.move(DEPLOY_SINGLE_TROOP,attackFrom,attack);
+            }
         }
         return false;
     }
