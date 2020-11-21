@@ -38,6 +38,7 @@ public class GameView extends JFrame implements GameModelListener {
     private JPanel welcomePanel;
     private JScrollPane deployToScrollPane;
     private JScrollPane attackFromScrollPane;
+
     private JScrollPane attackScrollPane;
     private JPanel gameControl;
     private JPanel statusPanel;
@@ -463,7 +464,7 @@ public class GameView extends JFrame implements GameModelListener {
 
             attackFromScrollPane.setVisible(true);
             attackFromScrollPane.setEnabled(true);
-            attackFromList.setEnabled(true);
+            //attackFromList.setEnabled(true);
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             attackFromList.setEnabled(false);
             setAttackFromButtons();

@@ -121,8 +121,14 @@ public class GameController implements ActionListener {
                     }else {
                         while (model.getPlayer() instanceof AIPlayer) {
                             AIPlayer ai = (AIPlayer) model.getPlayer();
-                            deployTerritory = ai.findMinTroops();
+                            deployTerritory = ai.findMinTroops(ai.getTerritories());
                             model.deploy(deployTerritory, model.getNumberOfTroops());
+                            if (ai.checkAvailableAttack()) {
+                                attackFromTerritory = ai.findMaxTroops(ai.getTerritories());
+                                attackToTerritory = ai.getAttackTo(attackFromTerritory);
+                                int dice = ai.getNumDice(attackFromTerritory);
+                                model.attack(attackFromTerritory, attackToTerritory, dice);
+                            }
                             model.passTurn();
                             view.pass();
                         }

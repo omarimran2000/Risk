@@ -27,7 +27,7 @@ public class GameModel {
     private static int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
     private final static int DEPLOY_SINGLE_TROOP = 1;
-    private final static int[] DICE = {1, 2, 3};
+    public final static int[] DICE = {1, 2, 3};
     private final static int MAX_PLAYERS = 6;
     private static Scanner scanner = new Scanner(System.in);
     private ArrayList<GameModelListener> listeners;
