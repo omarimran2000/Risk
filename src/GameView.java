@@ -28,6 +28,8 @@ public class GameView extends JFrame implements GameModelListener {
     private JButton moveButton;
     private JButton startButton;
     private JButton quitButton;
+    private JButton fortifyButton; // m3
+    private JButton passAttackButton; // m3
     private JSpinner numDice;
     private JSpinner numTroops;
     private Container contentPane;
@@ -50,6 +52,8 @@ public class GameView extends JFrame implements GameModelListener {
     private ArrayList<TerritoryButton> territoryButtons;
     private boolean chosenAttack;
     private boolean chooseDeploy;
+    private boolean chosenFortifyTo; // m3
+    private boolean chosenFortifyFrom; // m3
 
     /**
      * Constructor of class GameView
@@ -66,7 +70,8 @@ public class GameView extends JFrame implements GameModelListener {
         territoryButtons = new ArrayList<TerritoryButton>();
         chosenAttack = false;
         chooseDeploy = false;
-
+        chosenFortifyFrom = false;
+        chosenFortifyTo = false;
 
         model.addListener(this);
         contentPane = getContentPane();
@@ -109,6 +114,10 @@ public class GameView extends JFrame implements GameModelListener {
         moveButton.addActionListener(controller);
         moveButton.setEnabled(false);
 
+        fortifyButton = new JButton("FORTIFY");
+        fortifyButton.addActionListener(controller);
+        fortifyButton.setEnabled(false);
+
         startButton = new JButton("START");
         startButton.addActionListener(controller);
         startButton.setEnabled(true);
@@ -117,6 +126,10 @@ public class GameView extends JFrame implements GameModelListener {
         quitButton.addActionListener(controller);
         quitButton.setVisible(false);
         quitButton.setEnabled(true);
+
+        passAttackButton = new JButton("PASS ATTACK");
+        passAttackButton.addActionListener(controller);
+        passAttackButton.setEnabled(false);
 
         startButton.setAlignmentX(Box.CENTER_ALIGNMENT);
         welcomePanel.add(startButton);
@@ -239,6 +252,24 @@ public class GameView extends JFrame implements GameModelListener {
     }
 
     /**
+     * getter method fro fortifyButton
+     *
+     * @return fortifyButton
+     */
+    public JButton getFortifyButton(){
+        return fortifyButton;
+    } // m3
+
+    /**
+     * getter method for passFortifyButton
+     *
+     * @return passFortifyButton
+     */
+    public JButton getPassAttackButton(){
+        return passAttackButton;
+    } // m3
+
+    /**
      * getter method for numDice
      *
      * @return numDice
@@ -334,6 +365,8 @@ public class GameView extends JFrame implements GameModelListener {
         troopsDeployed = 0;
         deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         deployToList.setEnabled(false);
+        fortifyButton.setVisible(true);
+        passAttackButton.setVisible(true);
     }
 
     /**
@@ -375,6 +408,8 @@ public class GameView extends JFrame implements GameModelListener {
         deployButton.setEnabled(false);
 
         gameControl.add(passButton);
+        gameControl.add(passAttackButton);
+        gameControl.add(fortifyButton);
         gameControl.add(moveButton);
         moveButton.setVisible(false);
 
@@ -461,6 +496,8 @@ public class GameView extends JFrame implements GameModelListener {
             passButton.setEnabled(true);
             attackButton.setVisible(true);
             attackButton.setEnabled(false);
+            passAttackButton.setVisible(true);
+            passAttackButton.setEnabled(true);
 
             attackFromScrollPane.setVisible(true);
             attackFromScrollPane.setEnabled(true);
@@ -734,6 +771,22 @@ public class GameView extends JFrame implements GameModelListener {
     }
 
     /**
+     * Getter for fortify from chosen
+     * @return fortify from chosen
+     */
+    public boolean isChosenFortifyFrom(){
+        return chosenFortifyFrom;
+    } // m3
+
+    /**
+     * Getter for fortify to chosen
+     * @return fortify to chosen
+     */
+    public boolean isChosenFortifyTo(){
+        return chosenFortifyTo;
+    } // m3
+
+    /**
      * Prompts the user to select a territory to attack from via the text area
      */
     public void promptChooseAttackFrom(){
@@ -745,6 +798,30 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public void promptChooseAttackTo(){
         textArea.setText("Choose a territory to attack");
+    }
+
+    /**
+     * Passes the attack phase and goes into the Fortify phase
+     */
+    public void passAttack(){
+        disableAllButtons();
+        attackButton.setEnabled(false);
+        passAttackButton.setEnabled(false);
+
+        enableAllFortifyFromButtons();
+        setTextArea("You are now in the fortify phase \nChoose a territory to move troops from");
+    }
+
+    public void setChosenFortifyTo(boolean chosenFortifyTo) {
+        this.chosenFortifyTo = chosenFortifyTo;
+    }
+
+    public void setChosenFortifyFrom(boolean chosenFortifyFrom) {
+        this.chosenFortifyFrom = chosenFortifyFrom;
+    }
+
+    public GameModel getModel() {
+        return model;
     }
 
     /**
