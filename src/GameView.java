@@ -591,6 +591,7 @@ public class GameView extends JFrame implements GameModelListener {
         attackButton.setEnabled(false);
         disableAllButtons();
         passButton.setEnabled(false);
+        passAttackButton.setEnabled(false);
       //  if (model.getPlayer() instanceof AIPlayer) {
         //    moveButton.doClick();
        // }
@@ -609,6 +610,7 @@ public class GameView extends JFrame implements GameModelListener {
         moveButton.setVisible(false);
         attackButton.setEnabled(true);
         passButton.setEnabled(true);
+        passAttackButton.setEnabled(true);
     }
 
     /**
