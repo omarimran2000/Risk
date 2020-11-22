@@ -725,7 +725,7 @@ public class GameView extends JFrame implements GameModelListener {
         {
             for(TerritoryButton tb:territoryButtons)
             {
-                if (tb.getTerritory().equals(t) && model.ownANeighbour(t))
+                if (tb.getTerritory().equals(t) && model.getPlayer().ownANeighbour(t))
                 {
                     tb.setEnabled(true);
                 }

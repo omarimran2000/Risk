@@ -2,14 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AIPlayer extends Player {
-
-    private Territory tempTerritory;
     /**
      * @param name The player's name
      */
     public AIPlayer(String name) {
         super(name);
-        tempTerritory = new Territory(null, null);
     }
 
     public Territory findMinTroops(List<Territory> territories){
@@ -32,33 +29,50 @@ public class AIPlayer extends Player {
         return maxTerritory;
     }
 
-    public void deploy(int numberOfTroops){
-        Territory deployment = findMinTroops(territories);
-        List<Troop> troops = army.getTroops();
-        int count = 0;
-        while(count < numberOfTroops) {
-            for (Troop troop : troops) {
-                if (!troop.isDeployed()) {
-                    troop.setDeployed(true);
-                    troop.setLocation(deployment);
-                    count += 1;
-                }
-            }
-        }
-    }
-
     public boolean checkAvailableAttack() {
         for(Territory territory : territories) {
             if(findTroops(territory) > 1 && !ownNeighbours(territory)) {
-                tempTerritory = territory;
                 return true;
             }
         }
         return false;
     }
+    public boolean checkAvailableFortify()
+    {
+        for(Territory t:territories)
+        {
+            if(findTroops(t)>1 && ownANeighbour(t))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public Territory getFortifyFromTerritory()
+    {
+        for(Territory t:territories)
+        {
+            if(findTroops(t)>1 && ownANeighbour(t))
+            {
+                return t;
+            }
+        }
+        return null;
+    }
+    public Territory getFortifyToTerritory(Territory territory)
+    {
+        for(Territory t:territory.getNeighbourTerritories())
+        {
+            if(t.getCurrentPlayer().equals(this))
+            {
+                return t;
+            }
+        }
+        return null;
+    }
 
     public Territory getAttackTo(Territory attackFrom) {
-        ArrayList<Territory> neighbours = attackFrom.getNeighbourTerritories(this);
+        ArrayList<Territory> neighbours = attackFrom.getAttackNeighbourTerritories(this);
         return findMinTroops(neighbours);
     }
 

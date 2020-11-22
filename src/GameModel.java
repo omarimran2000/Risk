@@ -539,18 +539,6 @@ public class GameModel {
         return true;
     }*/
 
-    public boolean ownANeighbour(Territory t)
-    {
-        for (Territory neighbour:t.getNeighbourTerritories())
-        {
-            if(neighbour.getCurrentPlayer().equals(currentPlayer) && currentPlayer.findTroops(t)>1)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Getter function for players
      * @return all the players

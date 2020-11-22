@@ -30,6 +30,7 @@ public class GameController implements ActionListener {
     private boolean deployPhase;
     private boolean attackPhase;
     private boolean fortifyPhase;
+    private final static int AI_FORTIFY = 1;
 
     /**
      * Constructor for this class
@@ -67,7 +68,7 @@ public class GameController implements ActionListener {
                 view.setChosenAttack(false);
                 view.getAttackFromList().setSelectedValue(temp, true);
 
-                view.getAttackToList().setModel(model.defaultListConversion(temp.getNeighbourTerritories(model.getPlayer())));
+                view.getAttackToList().setModel(model.defaultListConversion(temp.getAttackNeighbourTerritories(model.getPlayer())));
                 view.getAttackScrollPane().setVisible(true);
                 view.promptChooseAttackTo();
             }
@@ -152,6 +153,10 @@ public class GameController implements ActionListener {
 
                             if (model.checkGameOver()) {
                                 view.gameOver(model.getWinner());
+                            }
+                            if(ai.checkAvailableFortify())
+                            {
+                                model.fortify(AI_FORTIFY,ai.getFortifyFromTerritory(), ai.getFortifyToTerritory(ai.getFortifyFromTerritory()));
                             }
 
                             model.passTurn();
