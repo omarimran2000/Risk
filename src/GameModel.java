@@ -104,11 +104,9 @@ public class GameModel {
             if (offence > defence) {
                 defender.removeTroops(LOSE_TROOP, territory);
                 setStatus(defender.getName() + " lost one troop.");
-              //  view.attack(status);
             } else {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
                 setStatus(attacker.getName() + " lost one troop");
-              //  view.attack(status);
             }
             for(GameModelListener l:listeners)
             {
@@ -120,7 +118,6 @@ public class GameModel {
             territory.setCurrentPlayer(attacker);
             if(defender.getTerritories().size() == 0){
                 setStatus(defender.getName() + " has no more territories and is now out of the game.");
-              // view.attack(status);
                 for(GameModelListener l:listeners)
                 {
                     l.attack(status);
@@ -330,8 +327,6 @@ public class GameModel {
         for (int i = 0; i < numTroops; i++) {
             currentPlayer.getArmy().addTroop(new Troop());
         }
-      //  view.setTroopsDeployed(numTroops);
-       // view.deploy();
             if(!(currentPlayer instanceof AIPlayer)) {
                 for (GameModelListener l : listeners) {
 
@@ -358,7 +353,6 @@ public class GameModel {
      */
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
-        //view.attack(status);
         for(GameModelListener l:listeners)
         {
             l.attack(status);
@@ -375,7 +369,6 @@ public class GameModel {
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
             if(! (currentPlayer instanceof AIPlayer)) {
-                //view.attackWon(attack, currentPlayer.findTroops(attackFrom));
                 for (GameModelListener l : listeners) {
                     l.attackWon(attack, currentPlayer.findTroops(attackFrom));
                 }
@@ -470,8 +463,6 @@ public class GameModel {
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
-       // view.start();
-      //  view.turn(currentPlayer, getNumberOfTroops());
         for(GameModelListener l:listeners)
         {
             l.start();
