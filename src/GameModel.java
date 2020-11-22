@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * The main class for RISK where the map is loaded
@@ -49,6 +48,12 @@ public class GameModel {
     public static void addPlayer(Player player) {
         players.add(player);
     }
+
+    /**
+     * Add a GameModelListener
+     *
+     * @param l the GameModelListener
+     */
     public void addListener(GameModelListener l)
     {
         listeners.add(l);
