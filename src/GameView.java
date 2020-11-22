@@ -447,8 +447,6 @@ public class GameView extends JFrame implements GameModelListener {
     public void pass()
     {
         if(!(model.getPlayer() instanceof AIPlayer)) {
-
-
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(true);
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
@@ -463,10 +461,10 @@ public class GameView extends JFrame implements GameModelListener {
             attackFromScrollPane.setVisible(false);
             attackScrollPane.setVisible(false);
             numDicePanel.setVisible(false);
+            passAttackButton.setEnabled(false);
 
             setNumTroops(model.getNumberOfTroops());
             troopsDeployed = 0;
-
 
             textArea.setText("It is " + model.getPlayer().getName() + " 's turn");
             textArea.append("\n You have " + model.getNumberOfTroops() + " troops to deploy");
@@ -475,7 +473,6 @@ public class GameView extends JFrame implements GameModelListener {
             continentControl.setText(updateContinent());
         } else {
             AIPlayer ai = (AIPlayer) model.getPlayer();
-
         }
     }
 
@@ -524,10 +521,8 @@ public class GameView extends JFrame implements GameModelListener {
         continentControl.setVisible(false);
         textArea.setVisible(false);
         aiTextArea.setVisible(true);
-        aiTextArea.append("AI " + model.getPlayer().getName() + " deployed " + numTroops + " troops to "
+        aiTextArea.append(model.getPlayer().getName() + " deployed " + numTroops + " troops to "
         + territory.getName() + "\n");
-
-
     }
 
 
@@ -821,6 +816,14 @@ public class GameView extends JFrame implements GameModelListener {
 
     public void setChosenFortifyFrom(boolean chosenFortifyFrom) {
         this.chosenFortifyFrom = chosenFortifyFrom;
+    }
+
+    public void disableTerritory(Territory territory){
+        for (TerritoryButton tb : territoryButtons){
+            if (tb.getTerritory().equals(territory)){
+                tb.setEnabled(false);
+            }
+        }
     }
 
     public GameModel getModel() {
