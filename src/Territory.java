@@ -59,7 +59,7 @@ public class Territory {
      * @param player the specific player
      * @return the list of neighbouring territories
      */
-    public ArrayList<Territory> getNeighbourTerritories(Player player) {
+    public ArrayList<Territory> getAttackNeighbourTerritories(Player player) {
         ArrayList<Territory> territories = new ArrayList<>();
         for(Territory t:neighbourTerritories)
         {
