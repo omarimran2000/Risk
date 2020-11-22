@@ -523,8 +523,6 @@ public class GameView extends JFrame implements GameModelListener {
         aiTextArea.setVisible(true);
         aiTextArea.append(model.getPlayer().getName() + " deployed " + numTroops + " troops to "
         + territory.getName() + "\n");
-
-
     }
 
 
@@ -818,6 +816,14 @@ public class GameView extends JFrame implements GameModelListener {
 
     public void setChosenFortifyFrom(boolean chosenFortifyFrom) {
         this.chosenFortifyFrom = chosenFortifyFrom;
+    }
+
+    public void disableTerritory(Territory territory){
+        for (TerritoryButton tb : territoryButtons){
+            if (tb.getTerritory().equals(territory)){
+                tb.setEnabled(false);
+            }
+        }
     }
 
     public GameModel getModel() {
