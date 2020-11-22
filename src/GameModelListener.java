@@ -8,4 +8,8 @@ public interface GameModelListener {
     void start();
     void turn(Player p, int numTroops);
     void aiDeploy(Territory territory, int numTroops);
+    void aiAttack(String status);
+    void fortify(String status);
+
+
 }

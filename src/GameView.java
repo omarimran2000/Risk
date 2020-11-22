@@ -35,7 +35,7 @@ public class GameView extends JFrame implements GameModelListener {
     private Container contentPane;
     private GameController controller;
     private JTextArea textArea;
-    private JTextArea aiTextArea;
+    private JTextArea playerTextArea; // m3
     private JTextArea continentControl;
     private JPanel welcomePanel;
     private JScrollPane deployToScrollPane;
@@ -89,7 +89,7 @@ public class GameView extends JFrame implements GameModelListener {
         welcomePanel.add(welcome);
 
         textArea = new JTextArea();
-        aiTextArea = new JTextArea();
+        playerTextArea = new JTextArea();
         continentControl = new JTextArea();
 
         attackFromList = new JList();
@@ -291,11 +291,6 @@ public class GameView extends JFrame implements GameModelListener {
         textArea.setText(message);
     }
 
-    public JTextArea getAITextArea(){
-        return aiTextArea;
-    }
-
-
 
     /**
      * getter method for numTroops
@@ -398,8 +393,8 @@ public class GameView extends JFrame implements GameModelListener {
         continentControl.setText(updateContinent());
         continentControl.setEditable(false);
 
-        aiTextArea.setVisible(false);
-        aiTextArea.setEditable(false);
+        playerTextArea.setVisible(false);
+        playerTextArea.setEditable(false);
 
         gameControl = new JPanel();
         gameControl.setLayout(new FlowLayout());
@@ -424,7 +419,7 @@ public class GameView extends JFrame implements GameModelListener {
         statusPanel = new JPanel();
         statusPanel.add(continentControl);
         statusPanel.add(textArea);
-        statusPanel.add(aiTextArea);
+        statusPanel.add(playerTextArea);
 
         deployToScrollPane = new JScrollPane(deployToList);
         statusPanel.add(deployToScrollPane);
@@ -456,6 +451,7 @@ public class GameView extends JFrame implements GameModelListener {
             chooseDeploy = true;
             numTroopsPanel.setVisible(true);
 
+            resetAttackText();
             passButton.setVisible(false);
             attackButton.setEnabled(false);
             attackFromScrollPane.setVisible(false);
@@ -466,7 +462,10 @@ public class GameView extends JFrame implements GameModelListener {
             setNumTroops(model.getNumberOfTroops());
             troopsDeployed = 0;
 
-            textArea.setText("It is " + model.getPlayer().getName() + " 's turn");
+
+
+
+            textArea.append("It is " + model.getPlayer().getName() + " 's turn");
             textArea.append("\n You have " + model.getNumberOfTroops() + " troops to deploy");
             textArea.setVisible(true);
 
@@ -520,9 +519,19 @@ public class GameView extends JFrame implements GameModelListener {
         attackFromScrollPane.setVisible(false);
         continentControl.setVisible(false);
         textArea.setVisible(false);
-        aiTextArea.setVisible(true);
-        aiTextArea.append(model.getPlayer().getName() + " deployed " + numTroops + " troops to "
+        playerTextArea.setVisible(true);
+        playerTextArea.append(model.getPlayer().getName() + " deployed " + numTroops + " troops to "
         + territory.getName() + "\n");
+    }
+
+    /**
+     * Updates the player text area when the AI
+     * attacks
+     * @param status The new status of game
+     */
+    public void aiAttack(String status){
+        playerTextArea.append(status + "\n");
+
     }
 
 
@@ -541,6 +550,7 @@ public class GameView extends JFrame implements GameModelListener {
      * @param status the status of an attack
      */
     public void attack(String status) {
+
         textArea.append(status + "\n");
         textArea.setVisible(true);
         continentControl.setText(updateContinent());
@@ -564,9 +574,12 @@ public class GameView extends JFrame implements GameModelListener {
         textArea.setVisible(false);
     }
 
-    public void resetAIText(){
-        aiTextArea.setText("");
-        aiTextArea.setVisible(false);
+    /**
+     * Resets the player text
+     */
+    public void resetPlayerText(){
+        playerTextArea.setText("");
+        playerTextArea.setVisible(false);
     }
 
     /**
@@ -607,6 +620,20 @@ public class GameView extends JFrame implements GameModelListener {
         passButton.setEnabled(true);
         passAttackButton.setEnabled(true);
     }
+
+
+
+    /**
+     *
+     * Updates the player text area when a player fortifies
+     * @param status The new status
+     */
+    public void fortify(String status){
+        playerTextArea.append(status + "\n");
+        playerTextArea.setVisible(true);
+    }
+
+
 
     /**
      * method is invoked when the game is over
@@ -788,14 +815,17 @@ public class GameView extends JFrame implements GameModelListener {
      * Prompts the user to select a territory to attack from via the text area
      */
     public void promptChooseAttackFrom(){
-        textArea.append("Choose a territory to attack from\nor pass your turn to the next player");
+        textArea.append("Choose a territory to attack from\nor pass your turn to the next player\n");
     }
 
     /**
      * Prompts the user to select a territory to attack bia the text area
      */
-    public void promptChooseAttackTo(){
+    public void promptChooseAttackTo() {
+
         textArea.setText("Choose a territory to attack");
+        passButton.setVisible(false);
+        passAttackButton.setVisible(false);
     }
 
     /**
@@ -805,6 +835,7 @@ public class GameView extends JFrame implements GameModelListener {
         disableAllButtons();
         attackButton.setEnabled(false);
         passAttackButton.setEnabled(false);
+        passButton.setVisible(false);
 
         enableAllFortifyFromButtons();
         setTextArea("You are now in the fortify phase \nChoose a territory to move troops from");

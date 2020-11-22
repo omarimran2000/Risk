@@ -99,7 +99,7 @@ public class GameController implements ActionListener {
                 view.setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory)-1);
                 view.getNumTroops().setEnabled(true);
                 view.getNumTroopsPanel().setVisible(true);
-                view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory + " from " + fortifyFromTerritory);
+                view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory.getName() + " from " + fortifyFromTerritory.getName());
             }
         }
         else if (e.getSource() instanceof JButton) {
@@ -109,6 +109,8 @@ public class GameController implements ActionListener {
                 try {
                     view.resetAttackText();
                     view.getAttackButton().setEnabled(false);
+                    view.getPassAttackButton().setVisible(true);
+                    view.getPassButton().setVisible(true);
 
                     int numDice = (int) view.getNumDice().getValue();
                     if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
@@ -164,7 +166,7 @@ public class GameController implements ActionListener {
                             view.pass();
                         }
                     }
-                    view.pass();
+                    //view.pass();
 
                     deployPhase = true;
                     attackPhase = false;
@@ -178,7 +180,7 @@ public class GameController implements ActionListener {
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
                     try {
-                        view.resetAIText();
+                        view.resetPlayerText();
                         int numTroops = (int) view.getNumTroops().getValue();
                         model.deploy(deployTerritory, numTroops);
                         deployPhase = false;
@@ -248,6 +250,7 @@ public class GameController implements ActionListener {
                     view.getFortifyButton().setEnabled(false);
                     int numTroops = (int) view.getNumTroops().getValue();
                     model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
+
                     view.getPassButton().doClick();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);

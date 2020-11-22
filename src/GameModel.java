@@ -110,9 +110,16 @@ public class GameModel {
                 setStatus(attacker.getName() + " lost one troop");
               //  view.attack(status);
             }
-            for(GameModelListener l:listeners)
-            {
-                l.attack(status);
+
+            if(attacker instanceof AIPlayer){
+                for(GameModelListener l: listeners){
+                    l.aiAttack(status);
+                }
+            } else {
+
+                for (GameModelListener l : listeners) {
+                    l.attack(status);
+                }
             }
         }
         if (defender.findTroops(territory) == 0) {
@@ -359,10 +366,17 @@ public class GameModel {
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
         //view.attack(status);
-        for(GameModelListener l:listeners)
-        {
-            l.attack(status);
+        if (currentPlayer instanceof AIPlayer) {
+            for (GameModelListener l : listeners) {
+                l.aiAttack(status);
+            }
+        } else {
+            for (GameModelListener l : listeners) {
+                l.attack(status);
+            }
         }
+
+
         int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
@@ -383,6 +397,7 @@ public class GameModel {
             }
             else
             {
+
                 currentPlayer.move(DEPLOY_SINGLE_TROOP,attackFrom,attack);
             }
         }
@@ -556,5 +571,12 @@ public class GameModel {
      */
     public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
         currentPlayer.move(numTroops, fortifyFrom, fortifyTo);
+        setStatus(currentPlayer.getName() + " fortified " + fortifyTo.getName() + " with " + numTroops + " troop(s)");
+
+            for(GameModelListener l : listeners){
+                l.fortify(status);
+            }
+
+        }
     }
-}
+
