@@ -466,7 +466,6 @@ public class GameView extends JFrame implements GameModelListener {
             setNumTroops(model.getNumberOfTroops());
             troopsDeployed = 0;
 
-
             textArea.setText("It is " + model.getPlayer().getName() + " 's turn");
             textArea.append("\n You have " + model.getNumberOfTroops() + " troops to deploy");
             textArea.setVisible(true);
@@ -474,7 +473,6 @@ public class GameView extends JFrame implements GameModelListener {
             continentControl.setText(updateContinent());
         } else {
             AIPlayer ai = (AIPlayer) model.getPlayer();
-
         }
     }
 
@@ -523,7 +521,7 @@ public class GameView extends JFrame implements GameModelListener {
         continentControl.setVisible(false);
         textArea.setVisible(false);
         aiTextArea.setVisible(true);
-        aiTextArea.append("AI " + model.getPlayer().getName() + " deployed " + numTroops + " troops to "
+        aiTextArea.append(model.getPlayer().getName() + " deployed " + numTroops + " troops to "
         + territory.getName() + "\n");
 
 
