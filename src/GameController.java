@@ -275,8 +275,9 @@ public class GameController implements ActionListener {
                     if(model.canFortify()) {
                         view.getPassAttackButton().setEnabled(false);
                         view.passAttack();
-                        attackPhase = false;
-                        fortifyPhase = true;
+                        //attackPhase = false;
+                        //fortifyPhase = true;
+                        setPhase(Phase.FORTIFY);
                         view.setChosenFortifyFrom(false);
                     }
                     else
