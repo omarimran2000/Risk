@@ -1,12 +1,11 @@
+import java.util.ArrayList;
+
 /**
  * The territory class that represents a territory on the board
  *
  * @author Omar Imran
  * @date October 13 2020
  */
-
-import java.util.ArrayList;
-
 public class Territory {
 
     private String name;
@@ -59,7 +58,7 @@ public class Territory {
      * @param player the specific player
      * @return the list of neighbouring territories
      */
-    public ArrayList<Territory> getNeighbourTerritories(Player player) {
+    public ArrayList<Territory> getAttackNeighbourTerritories(Player player) {
         ArrayList<Territory> territories = new ArrayList<>();
         for(Territory t:neighbourTerritories)
         {

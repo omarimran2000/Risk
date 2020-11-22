@@ -271,15 +271,32 @@ public class Player {
      * @param t the territory
      * @return true or false if they own it
      */
-    public boolean ownNeighbours(Territory t ) {
+    public boolean ownNeighbours(Territory t) {
         int x = t.getNeighbourTerritories().size() - 1;
         for (Territory territory : t.getNeighbourTerritories()) {
-            if (!(territory.getCurrentPlayer() == this)) {
+            if (!(territory.getCurrentPlayer().equals(this))) {
                 return false;
             }
             x--;
         }
         return true;
+    }
+
+    /**
+     * Checks to see if player owns a territory with a neighbour that they own
+     * @param t territory
+     * @return true or false
+     */
+    public boolean ownANeighbour(Territory t)
+    {
+        for (Territory neighbour:t.getNeighbourTerritories())
+        {
+            if(neighbour.getCurrentPlayer().equals(this) && findTroops(t)>1)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

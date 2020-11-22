@@ -77,7 +77,7 @@ public class GameController implements ActionListener {
                 view.setChosenAttack(false);
                 view.getAttackFromList().setSelectedValue(temp, true);
 
-                view.getAttackToList().setModel(model.defaultListConversion(temp.getNeighbourTerritories(model.getPlayer())));
+                view.getAttackToList().setModel(model.defaultListConversion(temp.getAttackNeighbourTerritories(model.getPlayer())));
                 view.getAttackScrollPane().setVisible(true);
                 view.promptChooseAttackTo();
             }
@@ -272,6 +272,17 @@ public class GameController implements ActionListener {
                     //fortifyPhase = true;
                     setPhase(Phase.FORTIFY);
                     view.setChosenFortifyFrom(false);
+                    if(model.canFortify()) {
+                        view.getPassAttackButton().setEnabled(false);
+                        view.passAttack();
+                        attackPhase = false;
+                        fortifyPhase = true;
+                        view.setChosenFortifyFrom(false);
+                    }
+                    else
+                    {
+                        view.getPassButton().doClick();
+                    }
                 }
                 catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
