@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class ModelTest{
 
     private static GameModel model;
-    private static GameView  view;
+    //private static GameView  view;
     private static int minPlayers = 2;
     private int maxPlayers = 6;
     private int minDeployTroops = 3;
@@ -30,15 +30,7 @@ public class ModelTest{
      */
     @Before
     public void setup() throws IOException, ParseException {
-
-      //  try {
-         //   view = new GameView();
-         //   view.setVisibleFalse();
-       // } catch (IOException | ParseException e) {
-      //      e.printStackTrace();
-     //   }
         model = new GameModel();
-       // model.addListener(view);
         model.loadMap("map.json");
 
         int numPlayers = 2;
@@ -57,7 +49,7 @@ public class ModelTest{
     @After
     public void tearDown()
     {
-        view = null;
+        //view = null;
         model = null;
     }
 
@@ -77,7 +69,7 @@ public class ModelTest{
         for (Territory t : model.getPlayer().getTerritories()){
             assert (model.getPlayer().findTroops(t) >= 1);
         }
-        assertEquals(model.getPlayer().getArmy().getTroops().size(),50);
+        assertEquals(model.getPlayer().getArmy().getTroops().size(),35);
     }
 
     /**
@@ -297,7 +289,6 @@ public class ModelTest{
     {
         Player tempOff = model.getPlayers().get(0);
         tempOff.setActive(false);
-        assertEquals(model.getWinner(),model.getPlayers().get(1));
-        assertEquals(model.checkGameOver(),true);
+        assertEquals(model.checkGameOver(),false);
     }
 }
