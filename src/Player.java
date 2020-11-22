@@ -271,7 +271,7 @@ public class Player {
      * @param t the territory
      * @return true or false if they own it
      */
-    public boolean ownNeighbours(Territory t ) {
+    public boolean ownNeighbours(Territory t) {
         int x = t.getNeighbourTerritories().size() - 1;
         for (Territory territory : t.getNeighbourTerritories()) {
             if (!(territory.getCurrentPlayer().equals(this))) {

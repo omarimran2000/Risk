@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AIPlayer extends Player {
+    public final static int AI_FORTIFY = 1;
     /**
      * @param name The player's name
      */

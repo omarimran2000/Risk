@@ -6,6 +6,6 @@ public interface GameModelListener {
     void deploy();
     void attackWon(Territory newTerritory, int numAttackTroops);
     void start();
-    void turn(Player p,int numTroops);
+    void turn(Player p, int numTroops);
     void aiDeploy(Territory territory, int numTroops);
 }
