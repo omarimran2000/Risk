@@ -37,7 +37,7 @@ public class GameController implements ActionListener {
      * The phases of a turn are Deploy, Attack and Fortify
      * @param phase The current phase of the game
      */
-    public void setPhase(Phase phase){
+    private void setPhase(Phase phase){
         this.phase = phase;
     }
 
