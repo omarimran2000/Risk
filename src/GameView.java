@@ -471,8 +471,6 @@ public class GameView extends JFrame implements GameModelListener {
             textArea.setVisible(true);
 
             continentControl.setText(updateContinent());
-        } else {
-            AIPlayer ai = (AIPlayer) model.getPlayer();
         }
     }
 
@@ -498,11 +496,9 @@ public class GameView extends JFrame implements GameModelListener {
 
             attackFromScrollPane.setVisible(true);
             attackFromScrollPane.setEnabled(true);
-            //attackFromList.setEnabled(true);
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             attackFromList.setEnabled(false);
             setAttackFromButtons();
-           // enableAllPlayerButtons();
             chooseDeploy = false;
             chosenAttack = true;
         } else {
@@ -587,9 +583,6 @@ public class GameView extends JFrame implements GameModelListener {
         disableAllButtons();
         passButton.setEnabled(false);
         passAttackButton.setEnabled(false);
-      //  if (model.getPlayer() instanceof AIPlayer) {
-        //    moveButton.doClick();
-       // }
     }
 
     /**
@@ -731,7 +724,6 @@ public class GameView extends JFrame implements GameModelListener {
     }
     public void enableFortifyToButtons(Territory fortifyFrom)
     {
-        //disableAllButtons();
         for(Territory t:fortifyFrom.getNeighbourTerritories())
         {
             for(TerritoryButton tb:territoryButtons)

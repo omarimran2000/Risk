@@ -263,7 +263,9 @@ public class ModelTest{
                 break;
             }
         }
-        assertFalse(model.getPlayer().ownANeighbour(fortifyFromOneTroop));
+        if(fortifyFromOneTroop!=null) {
+            assertFalse(model.getPlayer().ownANeighbour(fortifyFromOneTroop));
+        }
 
         Territory fortifyFrom = null;
         for(Territory t:model.getPlayer().getTerritories())
@@ -279,7 +281,9 @@ public class ModelTest{
                 }
             }
         }
-        assertTrue(model.getPlayer().ownANeighbour(fortifyFrom));
+        if(fortifyFrom!=null) {
+            assertTrue(model.getPlayer().ownANeighbour(fortifyFrom));
+        }
     }
     /**
      * Tests to see if game can be ended

@@ -256,11 +256,17 @@ public class GameController implements ActionListener {
 
             else if (buttonPressed.equals(view.getPassAttackButton())){
                 try{
-                    view.getPassAttackButton().setEnabled(false);
-                    view.passAttack();
-                    attackPhase = false;
-                    fortifyPhase = true;
-                    view.setChosenFortifyFrom(false);
+                    if(model.canFortify()) {
+                        view.getPassAttackButton().setEnabled(false);
+                        view.passAttack();
+                        attackPhase = false;
+                        fortifyPhase = true;
+                        view.setChosenFortifyFrom(false);
+                    }
+                    else
+                    {
+                        view.getPassButton().doClick();
+                    }
                 }
                 catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
