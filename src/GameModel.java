@@ -536,4 +536,14 @@ public class GameModel {
     public static List<Player> getPlayers() {
         return players;
     }
+
+    /**
+     * Fortifies a chosen territory by moving troops from a connected territory
+     * @param numTroops Number of troops being moved
+     * @param fortifyFrom Territory donating troops
+     * @param fortifyTo Territory receiving troops
+     */
+    public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
+        getPlayer().move(numTroops, fortifyFrom, fortifyTo);
+    }
 }

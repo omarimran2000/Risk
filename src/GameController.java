@@ -25,6 +25,11 @@ public class GameController implements ActionListener {
     private Territory attackFromTerritory;
     private Territory attackToTerritory;
     private Territory deployTerritory;
+    private Territory fortifyFromTerritory;
+    private Territory fortifyToTerritory;
+    private boolean deployPhase;
+    private boolean attackPhase;
+    private boolean fortifyPhase;
 
     /**
      * Constructor for this class
@@ -47,14 +52,14 @@ public class GameController implements ActionListener {
         if (e.getSource() instanceof TerritoryButton) {
             TerritoryButton territoryButton = (TerritoryButton) e.getSource();
             Territory temp = territoryButton.getTerritory();
-            if(view.isChooseDeploy()) {
+            if(view.isChooseDeploy() && deployPhase) {
                 view.getDeployToList().clearSelection();
                 deployTerritory = temp;
                 view.disableAllButtons();
                 view.getDeployToList().setSelectedValue(temp, true);
                 view.getDeployButton().setEnabled(true);
             }
-            else if(view.isChosenAttack()) {
+            else if(view.isChosenAttack() && attackPhase) {
                 view.getAttackFromList().clearSelection();
                 view.disableAllButtons();
                 view.setAttackToButtons(temp);
@@ -66,7 +71,7 @@ public class GameController implements ActionListener {
                 view.getAttackScrollPane().setVisible(true);
                 view.promptChooseAttackTo();
             }
-            else if(!view.isChosenAttack()) {
+            else if(!view.isChosenAttack() && attackPhase) {
                 view.getAttackToList().clearSelection();
                 attackToTerritory = temp;
                 view.getAttackButton().setEnabled(true);
@@ -77,6 +82,19 @@ public class GameController implements ActionListener {
                 view.getAttackToList().setSelectedValue(temp, true);
                 view.getAttackButton().setEnabled(true);
                 view.setTextArea("Choose number of dice to roll and \nclick attack button to execute the attack");
+            }
+            else if (view.isChosenFortifyFrom() && fortifyPhase){
+                fortifyFromTerritory = temp;
+                view.enableFortifyToButtons(fortifyFromTerritory);
+                view.setTextArea("Choose a territory to fortify");
+                System.out.println("clicked");
+            }
+            else if (view.isChosenFortifyTo() && fortifyPhase){
+                fortifyToTerritory = temp;
+                view.getFortifyButton().setEnabled(true);
+                view.disableAllButtons();
+                view.setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory));
+                view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory + " from " + fortifyFromTerritory);
             }
         }
         else if (e.getSource() instanceof JButton) {
@@ -114,6 +132,10 @@ public class GameController implements ActionListener {
                 {
                     model.passTurn();
                     view.pass();
+
+                    deployPhase = true;
+                    attackPhase = false;
+                    fortifyPhase = false;
                 } else //no players active i.e. game is done
                 {
                     JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
@@ -125,6 +147,8 @@ public class GameController implements ActionListener {
                     try {
                         int numTroops = (int) view.getNumTroops().getValue();
                         model.deploy(deployTerritory, numTroops);
+                        deployPhase = false;
+                        attackPhase = true;
                     }
                     catch(Exception ex) {
                         JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
@@ -156,6 +180,10 @@ public class GameController implements ActionListener {
                     view.setUpMap();
                     model.createPlayers(names);
 
+                    deployPhase = true;
+                    attackPhase = false;
+                    fortifyPhase = false;
+
                 } catch (IOException | ParseException ioException) {
                     ioException.printStackTrace();
                 }
@@ -178,6 +206,25 @@ public class GameController implements ActionListener {
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
                 view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
+            }
+
+            else if (buttonPressed.equals(view.getFortifyButton())){
+                try {
+                    //model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);
+                }
+            }
+
+            else if (buttonPressed.equals(view.getPassAttackButton())){
+                try{
+                    view.passAttack();
+                    attackPhase = false;
+                    fortifyPhase = true;
+                }
+                catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
+                }
             }
         }
     }
