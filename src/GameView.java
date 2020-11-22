@@ -734,14 +734,15 @@ public class GameView extends JFrame implements GameModelListener {
     }
     public void enableFortifyToButtons(Territory fortifyFrom)
     {
-        disableAllButtons();
+        //disableAllButtons();
         for(Territory t:fortifyFrom.getNeighbourTerritories())
         {
             for(TerritoryButton tb:territoryButtons)
             {
-                if(tb.getTerritory().equals(t) && t.getCurrentPlayer().equals(model.getPlayer()))
+                if(tb.getTerritory().equals(t) && t.getCurrentPlayer().equals(model.getPlayer()) && !tb.isEnabled())
                 {
                     tb.setEnabled(true);
+                    enableFortifyToButtons(t);
                 }
             }
         }

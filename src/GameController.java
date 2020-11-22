@@ -87,6 +87,7 @@ public class GameController implements ActionListener {
                 view.setChosenFortifyFrom(true);
                 view.setChosenFortifyTo(false);
                 fortifyFromTerritory = temp;
+                view.disableAllButtons();
                 view.enableFortifyToButtons(fortifyFromTerritory);
                 view.setTextArea("Choose a territory to fortify");
             }
