@@ -16,9 +16,9 @@ public class Player {
     private boolean active;
     private Dice die;
     private int [] diceRolls;
-    private Army army;
+    protected Army army;
     private List<Continent> continents;
-    private List<Territory> territories;
+    protected List<Territory> territories;
 
 
     /**
@@ -264,6 +264,22 @@ public class Player {
         }
         return count;
 
+    }
+
+    /**
+     * Checks to see if a player owns all neighbours in a territory
+     * @param t the territory
+     * @return true or false if they own it
+     */
+    public boolean ownNeighbours(Territory t ) {
+        int x = t.getNeighbourTerritories().size() - 1;
+        for (Territory territory : t.getNeighbourTerritories()) {
+            if (!(territory.getCurrentPlayer() == this)) {
+                return false;
+            }
+            x--;
+        }
+        return true;
     }
 
 }

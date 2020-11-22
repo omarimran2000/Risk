@@ -131,6 +131,34 @@ public class GameController implements ActionListener {
                 if(model.playersActive())
                 {
                     model.passTurn();
+
+                    if(!(model.getPlayer() instanceof AIPlayer)) {
+                        view.pass();
+                    }else {
+                        while (model.getPlayer() instanceof AIPlayer) {
+                            AIPlayer ai = (AIPlayer) model.getPlayer();
+                            deployTerritory = ai.findMinTroops(ai.getTerritories());
+                            model.deploy(deployTerritory, model.getNumberOfTroops());
+                            if (ai.checkAvailableAttack()) {
+                                attackFromTerritory = ai.findMaxTroops(ai.getTerritories());
+                                attackToTerritory = ai.getAttackTo(attackFromTerritory);
+                                int dice = ai.getNumDice(attackFromTerritory);
+                                //view.getNumDice().setValue(dice);
+                                model.attack(attackFromTerritory, attackToTerritory, dice);
+                            }
+
+                            if (model.checkGameOver()) {
+                                view.gameOver(model.getWinner());
+                            }
+
+                            model.passTurn();
+                            view.pass();
+                        }
+                    }
+
+
+
+
                     view.pass();
 
                     deployPhase = true;
@@ -145,6 +173,7 @@ public class GameController implements ActionListener {
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
                     try {
+                        view.resetAIText();
                         int numTroops = (int) view.getNumTroops().getValue();
                         model.deploy(deployTerritory, numTroops);
                         deployPhase = false;
@@ -203,6 +232,7 @@ public class GameController implements ActionListener {
                 view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
                 view.clearAttackFromSelection();
                 view.getAttackButton().setEnabled(false);
+
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
                 view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));

@@ -27,7 +27,8 @@ public class GameModel {
     private static int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
     private final static int DEPLOY_SINGLE_TROOP = 1;
-    private final static int[] DICE = {1, 2, 3};
+    public final static int[] DICE = {1, 2, 3};
+    private final static int MAX_PLAYERS = 6;
     private static Scanner scanner = new Scanner(System.in);
     private ArrayList<GameModelListener> listeners;
     private Player currentPlayer;
@@ -330,12 +331,21 @@ public class GameModel {
         }
       //  view.setTroopsDeployed(numTroops);
        // view.deploy();
-        for(GameModelListener l:listeners)
-        {
-            l.setTroopsDeployed(numTroops);
-            l.deploy();
-        }
-        currentPlayer.deploy(numTroops, territory);
+            if(!(currentPlayer instanceof AIPlayer)) {
+                for (GameModelListener l : listeners) {
+
+                    l.setTroopsDeployed(numTroops);
+                    l.deploy();
+
+                }
+            }
+           currentPlayer.deploy(numTroops, territory);
+            if(currentPlayer instanceof AIPlayer){
+                for(GameModelListener l: listeners){
+                    l.aiDeploy(territory, numTroops);
+                }
+            }
+
     }
 
     /**
@@ -444,6 +454,13 @@ public class GameModel {
             player.setActive(true);
             addPlayer(player);
         }
+        if(numberOfPlayers < MAX_PLAYERS) {
+            AIPlayer ai = new AIPlayer("X");
+            ai.setActive(true);
+            addPlayer(ai);
+            setNumberOfPlayers(numberOfPlayers + 1);
+        }
+
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
@@ -505,7 +522,7 @@ public class GameModel {
      * Checks to see if a player owns all neighbours in a territory
      * @param t the territory
      * @return true or false if they own it
-     */
+
     public boolean ownNeighbours(Territory t ) {
         int x = t.getNeighbourTerritories().size() - 1;
         for (Territory territory : t.getNeighbourTerritories()) {
@@ -515,7 +532,7 @@ public class GameModel {
             x--;
         }
         return true;
-    }
+    }*/
 
     public boolean ownANeighbour(Territory t)
     {

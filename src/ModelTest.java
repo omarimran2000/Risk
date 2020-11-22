@@ -110,7 +110,7 @@ public class ModelTest{
         Territory defend = attack.getNeighbourTerritories().get(0);
         for(Territory t:player.getTerritories())
         {
-            if(!model.ownNeighbours(t) && player.findTroops(t)>1)
+            if(!player.ownNeighbours(t) && player.findTroops(t)>1)
             {
                 attack = t;
                 for(Territory neighbour:t.getNeighbourTerritories())
@@ -152,12 +152,13 @@ public class ModelTest{
     @Test
     public void testMove()
     {
+        Player player = model.getPlayer();
         Territory empty = null;
         Territory attackFrom = null;
         int moveTroops =1;
         for(Territory t:model.getPlayer().getTerritories())
         {
-            if(!model.ownNeighbours(t) && model.getPlayer().findTroops(t)>2)  //generates a scenario for move
+            if(!player.ownNeighbours(t) && player.findTroops(t)>2)  //generates a scenario for move
             {
                 attackFrom = t;
                 for(Territory neighbour:t.getNeighbourTerritories())
@@ -252,7 +253,7 @@ public class ModelTest{
                 model.getPlayer().deploy(moveTroops, t);
             }
         }
-        assertEquals(model.ownNeighbours(model.getPlayer().getTerritories().get(0)),true);
+        assertEquals(model.getPlayer().ownNeighbours(model.getPlayer().getTerritories().get(0)),true);
     }
 
     /**
