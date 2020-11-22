@@ -447,8 +447,6 @@ public class GameView extends JFrame implements GameModelListener {
     public void pass()
     {
         if(!(model.getPlayer() instanceof AIPlayer)) {
-
-
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(true);
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
@@ -463,6 +461,7 @@ public class GameView extends JFrame implements GameModelListener {
             attackFromScrollPane.setVisible(false);
             attackScrollPane.setVisible(false);
             numDicePanel.setVisible(false);
+            passAttackButton.setEnabled(false);
 
             setNumTroops(model.getNumberOfTroops());
             troopsDeployed = 0;
