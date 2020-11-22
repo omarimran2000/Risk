@@ -516,22 +516,6 @@ public class GameModel {
     }
 
     /**
-     * Checks to see if a player owns all neighbours in a territory
-     * @param t the territory
-     * @return true or false if they own it
-
-    public boolean ownNeighbours(Territory t ) {
-        int x = t.getNeighbourTerritories().size() - 1;
-        for (Territory territory : t.getNeighbourTerritories()) {
-            if (!(territory.getCurrentPlayer() == currentPlayer)) {
-                return false;
-            }
-            x--;
-        }
-        return true;
-    }*/
-
-    /**
      * Getter function for players
      * @return all the players
      */
@@ -547,5 +531,21 @@ public class GameModel {
      */
     public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
         currentPlayer.move(numTroops, fortifyFrom, fortifyTo);
+    }
+
+    /**
+     * Checks to see if a player is able to fortify
+     * @return true or false
+     */
+    public boolean canFortify()
+    {
+        for(Territory t:currentPlayer.getTerritories())
+        {
+            if(currentPlayer.ownANeighbour(t))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
