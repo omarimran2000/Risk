@@ -30,7 +30,6 @@ public class GameController implements ActionListener {
     private boolean deployPhase;
     private boolean attackPhase;
     private boolean fortifyPhase;
-    private final static int AI_FORTIFY = 1;
 
     /**
      * Constructor for this class
@@ -158,7 +157,7 @@ public class GameController implements ActionListener {
                             }
                             if(ai.checkAvailableFortify())
                             {
-                                model.fortify(AI_FORTIFY,ai.getFortifyFromTerritory(), ai.getFortifyToTerritory(ai.getFortifyFromTerritory()));
+                                model.fortify(ai.AI_FORTIFY,ai.getFortifyFromTerritory(), ai.getFortifyToTerritory(ai.getFortifyFromTerritory()));
                             }
 
                             model.passTurn();

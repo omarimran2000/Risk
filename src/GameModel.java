@@ -29,7 +29,6 @@ public class GameModel {
     private final static int DEPLOY_SINGLE_TROOP = 1;
     public final static int[] DICE = {1, 2, 3};
     private final static int MAX_PLAYERS = 6;
-    private static Scanner scanner = new Scanner(System.in);
     private ArrayList<GameModelListener> listeners;
     protected Player currentPlayer;
     private String status;
@@ -273,6 +272,8 @@ public class GameModel {
             }
         }
     }
+
+
 
     /**
      * Function to pass turn
