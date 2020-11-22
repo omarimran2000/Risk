@@ -83,17 +83,20 @@ public class GameController implements ActionListener {
                 view.getAttackButton().setEnabled(true);
                 view.setTextArea("Choose number of dice to roll and \nclick attack button to execute the attack");
             }
-            else if (view.isChosenFortifyFrom() && fortifyPhase){
+            else if (!view.isChosenFortifyFrom() && fortifyPhase){
+                view.setChosenFortifyFrom(true);
+                view.setChosenFortifyTo(false);
                 fortifyFromTerritory = temp;
                 view.enableFortifyToButtons(fortifyFromTerritory);
                 view.setTextArea("Choose a territory to fortify");
-                System.out.println("clicked");
             }
-            else if (view.isChosenFortifyTo() && fortifyPhase){
+            else if (!view.isChosenFortifyTo() && fortifyPhase){
                 fortifyToTerritory = temp;
                 view.getFortifyButton().setEnabled(true);
                 view.disableAllButtons();
-                view.setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory));
+                view.setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory)-1);
+                view.getNumTroops().setEnabled(true);
+                view.getNumTroopsPanel().setVisible(true);
                 view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory + " from " + fortifyFromTerritory);
             }
         }
@@ -155,10 +158,6 @@ public class GameController implements ActionListener {
                             view.pass();
                         }
                     }
-
-
-
-
                     view.pass();
 
                     deployPhase = true;
@@ -240,7 +239,10 @@ public class GameController implements ActionListener {
 
             else if (buttonPressed.equals(view.getFortifyButton())){
                 try {
-                    //model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
+                    view.getFortifyButton().setEnabled(false);
+                    int numTroops = (int) view.getNumTroops().getValue();
+                    model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
+                    view.getPassButton().doClick();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);
                 }
@@ -248,9 +250,12 @@ public class GameController implements ActionListener {
 
             else if (buttonPressed.equals(view.getPassAttackButton())){
                 try{
+                    view.getFortifyButton().setEnabled(true);
+                    view.getPassAttackButton().setEnabled(false);
                     view.passAttack();
                     attackPhase = false;
                     fortifyPhase = true;
+                    view.setChosenFortifyFrom(false);
                 }
                 catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);

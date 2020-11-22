@@ -561,6 +561,6 @@ public class GameModel {
      * @param fortifyTo Territory receiving troops
      */
     public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
-        getPlayer().move(numTroops, fortifyFrom, fortifyTo);
+        currentPlayer.move(numTroops, fortifyFrom, fortifyTo);
     }
 }

@@ -812,6 +812,18 @@ public class GameView extends JFrame implements GameModelListener {
         setTextArea("You are now in the fortify phase \nChoose a territory to move troops from");
     }
 
+    public void setChosenFortifyTo(boolean chosenFortifyTo) {
+        this.chosenFortifyTo = chosenFortifyTo;
+    }
+
+    public void setChosenFortifyFrom(boolean chosenFortifyFrom) {
+        this.chosenFortifyFrom = chosenFortifyFrom;
+    }
+
+    public GameModel getModel() {
+        return model;
+    }
+
     /**
      * Main function
      * @param args
