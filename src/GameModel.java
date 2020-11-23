@@ -33,6 +33,8 @@ public class GameModel {
     private String status;
     private final int MIN_DEPLOY_TROOPS = 3;
     private final int DEPLOY_TERRITORY_DIVISOR = 3;
+    public enum Phase {DEPLOY, ATTACK, FORTIFY};
+    private Phase phase;
 
     public GameModel() {
         theMap = new Map("Global");
@@ -552,5 +554,18 @@ public class GameModel {
             }
         }
         return false;
+    }
+
+    /**
+     * Sets the phase
+     * The phases of a turn are Deploy, Attack and Fortify
+     * @param phase The current phase of the game
+     */
+    public void setPhase(GameModel.Phase phase){
+        this.phase = phase;
+    }
+
+    public GameModel.Phase getPhase(){
+        return phase;
     }
 }
