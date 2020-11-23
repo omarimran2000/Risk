@@ -252,7 +252,7 @@ public class GameView extends JFrame implements GameModelListener {
     }
 
     /**
-     * getter method fro fortifyButton
+     * getter method for fortifyButton
      *
      * @return fortifyButton
      */
@@ -287,6 +287,11 @@ public class GameView extends JFrame implements GameModelListener {
         return deployToList;
     }
 
+    /**
+     * set the text area
+     *
+     * @param message the message to display
+     */
     public void setTextArea(String message){
         textArea.setText(message);
     }
@@ -462,16 +467,11 @@ public class GameView extends JFrame implements GameModelListener {
             setNumTroops(model.getNumberOfTroops());
             troopsDeployed = 0;
 
-
-
-
             textArea.append("It is " + model.getPlayer().getName() + " 's turn");
             textArea.append("\n You have " + model.getNumberOfTroops() + " troops to deploy");
             textArea.setVisible(true);
 
             continentControl.setText(updateContinent());
-        } else {
-            AIPlayer ai = (AIPlayer) model.getPlayer();
         }
     }
 
@@ -497,11 +497,9 @@ public class GameView extends JFrame implements GameModelListener {
 
             attackFromScrollPane.setVisible(true);
             attackFromScrollPane.setEnabled(true);
-            //attackFromList.setEnabled(true);
             attackFromList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             attackFromList.setEnabled(false);
             setAttackFromButtons();
-           // enableAllPlayerButtons();
             chooseDeploy = false;
             chosenAttack = true;
         } else {
@@ -513,6 +511,13 @@ public class GameView extends JFrame implements GameModelListener {
             setTextArea("You have " + troopsLeft + " troops left to deploy");
         }
     }
+
+    /**
+     * deploy phase for an AI player
+     *
+     * @param territory Territory to deploy to
+     * @param numTroops number of troops to deploy
+     */
     public void aiDeploy(Territory territory, int numTroops){
         disableAllButtons();
         passButton.setVisible(false);
@@ -550,7 +555,6 @@ public class GameView extends JFrame implements GameModelListener {
      * @param status the status of an attack
      */
     public void attack(String status) {
-
         textArea.append(status + "\n");
         textArea.setVisible(true);
         continentControl.setText(updateContinent());
@@ -600,9 +604,6 @@ public class GameView extends JFrame implements GameModelListener {
         disableAllButtons();
         passButton.setEnabled(false);
         passAttackButton.setEnabled(false);
-      //  if (model.getPlayer() instanceof AIPlayer) {
-        //    moveButton.doClick();
-       // }
     }
 
     /**
@@ -621,8 +622,6 @@ public class GameView extends JFrame implements GameModelListener {
         passAttackButton.setEnabled(true);
     }
 
-
-
     /**
      *
      * Updates the player text area when a player fortifies
@@ -632,8 +631,6 @@ public class GameView extends JFrame implements GameModelListener {
         playerTextArea.append(status + "\n");
         playerTextArea.setVisible(true);
     }
-
-
 
     /**
      * method is invoked when the game is over
@@ -661,17 +658,17 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @param max the max number
      */
-
     public void setNumTroops(int max) {
         SpinnerNumberModel troopsModel = new SpinnerNumberModel(1, 1, max, 1);
         numTroops.setModel(troopsModel);
     }
 
     /**
+     * add a territory button on the map
      *
-     * @param t
-     * @param x
-     * @param y
+     * @param t the territory it represents
+     * @param x the x coordinate
+     * @param y the y coordinate
      */
     public void addButtons(Territory t, int x, int y) {
         TerritoryButton temp = new TerritoryButton(t);
@@ -742,6 +739,9 @@ public class GameView extends JFrame implements GameModelListener {
         }
     }
 
+    /**
+     * Enables all buttons related to territories that player can fortify from
+     */
     public void enableAllFortifyFromButtons()
     {
         disableAllButtons();
@@ -756,9 +756,14 @@ public class GameView extends JFrame implements GameModelListener {
             }
         }
     }
+
+    /**
+     * Enables all buttons related to territories that the player can fortify to
+     *
+     * @param fortifyFrom the selected territory that the player is fortifying from
+     */
     public void enableFortifyToButtons(Territory fortifyFrom)
     {
-        //disableAllButtons();
         for(Territory t:fortifyFrom.getNeighbourTerritories())
         {
             for(TerritoryButton tb:territoryButtons)
@@ -771,6 +776,7 @@ public class GameView extends JFrame implements GameModelListener {
             }
         }
     }
+
     /**
      * Set function to update if player is in attack phase or not
      * @param chosenAttack
@@ -815,17 +821,14 @@ public class GameView extends JFrame implements GameModelListener {
      * Prompts the user to select a territory to attack from via the text area
      */
     public void promptChooseAttackFrom(){
-        textArea.append("Choose a territory to attack from\nor pass your turn to the next player\n");
+        textArea.append("Choose a territory to attack from\nor pass your turn to the next player");
     }
 
     /**
      * Prompts the user to select a territory to attack bia the text area
      */
-    public void promptChooseAttackTo() {
-
+    public void promptChooseAttackTo(){
         textArea.setText("Choose a territory to attack");
-        passButton.setVisible(false);
-        passAttackButton.setVisible(false);
     }
 
     /**
@@ -841,14 +844,28 @@ public class GameView extends JFrame implements GameModelListener {
         setTextArea("You are now in the fortify phase \nChoose a territory to move troops from");
     }
 
+    /**
+     * setter for chosenFortifyTo
+     *
+     * @param chosenFortifyTo the boolean value
+     */
     public void setChosenFortifyTo(boolean chosenFortifyTo) {
         this.chosenFortifyTo = chosenFortifyTo;
     }
 
+    /**
+     * setter for chosenFortifyFrom
+     *
+     * @param chosenFortifyFrom the boolean value
+     */
     public void setChosenFortifyFrom(boolean chosenFortifyFrom) {
         this.chosenFortifyFrom = chosenFortifyFrom;
     }
 
+    /**
+     * Disables a specific territory button
+     * @param territory the territory the button represents
+     */
     public void disableTerritory(Territory territory){
         for (TerritoryButton tb : territoryButtons){
             if (tb.getTerritory().equals(territory)){
@@ -857,9 +874,9 @@ public class GameView extends JFrame implements GameModelListener {
         }
     }
 
-    public GameModel getModel() {
+    /*public GameModel getModel() {
         return model;
-    }
+    }*/
 
     /**
      * Main function

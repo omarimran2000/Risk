@@ -1,12 +1,11 @@
+import java.util.ArrayList;
+
 /**
  * The territory class that represents a territory on the board
  *
  * @author Omar Imran
  * @date October 13 2020
  */
-
-import java.util.ArrayList;
-
 public class Territory {
 
     private String name;
