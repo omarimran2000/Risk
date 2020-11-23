@@ -171,10 +171,6 @@ public class GameController implements ActionListener {
                         }
                     }
                     view.pass();
-
-                    //deployPhase = true;
-                    //attackPhase = false;
-                    //fortifyPhase = false;
                     setPhase(Phase.DEPLOY);
                 } else //no players active i.e. game is done
                 {
@@ -188,8 +184,6 @@ public class GameController implements ActionListener {
                         view.resetAIText();
                         int numTroops = (int) view.getNumTroops().getValue();
                         model.deploy(deployTerritory, numTroops);
-                        //deployPhase = false;
-                        //attackPhase = true;
                         setPhase(Phase.ATTACK);
                     }
                     catch(Exception ex) {
@@ -221,10 +215,6 @@ public class GameController implements ActionListener {
                     }
                     view.setUpMap();
                     model.createPlayers(names);
-
-                    //deployPhase = true;
-                    //attackPhase = false;
-                    //fortifyPhase = false;
                     setPhase(Phase.DEPLOY);
 
                 } catch (IOException | ParseException ioException) {
@@ -268,15 +258,11 @@ public class GameController implements ActionListener {
                     view.getFortifyButton().setEnabled(true);
                     view.getPassAttackButton().setEnabled(false);
                     view.passAttack();
-                    //attackPhase = false;
-                    //fortifyPhase = true;
                     setPhase(Phase.FORTIFY);
                     view.setChosenFortifyFrom(false);
                     if(model.canFortify()) {
                         view.getPassAttackButton().setEnabled(false);
                         view.passAttack();
-                        //attackPhase = false;
-                        //fortifyPhase = true;
                         setPhase(Phase.FORTIFY);
                         view.setChosenFortifyFrom(false);
                     }
