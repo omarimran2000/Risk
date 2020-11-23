@@ -586,11 +586,11 @@ public class GameModel {
      * The phases of a turn are Deploy, Attack and Fortify
      * @param phase The current phase of the game
      */
-    public void setPhase(GameModel.Phase phase){
+    public void setPhase(Phase phase){
         this.phase = phase;
     }
 
-    public GameModel.Phase getPhase(){
+    public Phase getPhase(){
         return phase;
     }
 }
