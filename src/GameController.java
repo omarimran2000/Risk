@@ -163,6 +163,10 @@ public class GameController implements ActionListener {
                                 //view.getNumDice().setValue(dice);
                                 model.attack(attackFromTerritory, attackToTerritory, dice);
                             }
+                            if(ai.checkAvailableFortify())
+                            {
+                                model.fortify(ai.AI_FORTIFY,ai.getFortifyFromTerritory(), ai.getFortifyToTerritory(ai.getFortifyFromTerritory()));
+                            }
 
                             if (model.checkGameOver()) {
                                 view.gameOver(model.getWinner());
