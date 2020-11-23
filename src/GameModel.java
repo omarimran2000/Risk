@@ -590,6 +590,10 @@ public class GameModel {
         this.phase = phase;
     }
 
+    /**
+     * Getter method for phase
+     * @return phase The current phase of the game
+     */
     public GameModel.Phase getPhase(){
         return phase;
     }
