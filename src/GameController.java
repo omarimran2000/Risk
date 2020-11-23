@@ -268,7 +268,7 @@ public class GameController implements ActionListener {
 
             else if (buttonPressed.equals(view.getPassAttackButton())){
                 try{
-                    view.getFortifyButton().setEnabled(true);
+                    view.getFortifyButton().setEnabled(false);
                     view.getPassAttackButton().setEnabled(false);
                     view.passAttack();
                     //attackPhase = false;
