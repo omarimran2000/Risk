@@ -115,9 +115,16 @@ public class GameModel {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
                 setStatus(attacker.getName() + " lost one troop");
             }
-            for(GameModelListener l:listeners)
-            {
-                l.attack(status);
+
+            if(attacker instanceof AIPlayer){
+                for(GameModelListener l: listeners){
+                    l.aiAttack(status);
+                }
+            } else {
+
+                for (GameModelListener l : listeners) {
+                    l.attack(status);
+                }
             }
         }
         if (defender.findTroops(territory) == 0) {
@@ -125,6 +132,7 @@ public class GameModel {
             territory.setCurrentPlayer(attacker);
             if(defender.getTerritories().size() == 0){
                 setStatus(defender.getName() + " has no more territories and is now out of the game.");
+              // view.attack(status);
                 for(GameModelListener l:listeners)
                 {
                     l.attack(status);
@@ -334,6 +342,8 @@ public class GameModel {
         for (int i = 0; i < numTroops; i++) {
             currentPlayer.getArmy().addTroop(new Troop());
         }
+      //  view.setTroopsDeployed(numTroops);
+       // view.deploy();
             if(!(currentPlayer instanceof AIPlayer)) {
                 for (GameModelListener l : listeners) {
 
@@ -360,9 +370,15 @@ public class GameModel {
      */
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
-        for(GameModelListener l:listeners)
-        {
-            l.attack(status);
+
+        if (currentPlayer instanceof AIPlayer) {
+            for (GameModelListener l : listeners) {
+                l.aiAttack(status);
+            }
+        } else {
+            for (GameModelListener l : listeners) {
+                l.attack(status);
+            }
         }
         int numDefendDice;
         currentPlayer.rollDice(numDice);
@@ -538,7 +554,16 @@ public class GameModel {
      */
     public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
         currentPlayer.move(numTroops, fortifyFrom, fortifyTo);
-    }
+        setStatus(currentPlayer.getName() + " fortified " + fortifyTo.getName() + " with " + numTroops + " troop(s)");
+
+            for(GameModelListener l : listeners){
+                l.fortify(status);
+            }
+
+        }
+
+
+
 
     /**
      * Checks to see if a player is able to fortify
