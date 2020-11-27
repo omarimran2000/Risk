@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class AIPlayer extends Player {
     public final static int AI_FORTIFY = 1;
+    private final static int MAX_DICE = 3;
 
     /**
      * Constructor for class AI player
@@ -140,8 +141,8 @@ public class AIPlayer extends Player {
      */
     public int getNumDice(Territory attackFrom) {
         int dice = findTroops(attackFrom) - 1;
-        if (dice > 3) {
-            dice = 3;
+        if (dice > MAX_DICE) {
+            dice = MAX_DICE;
         }
         return dice;
     }
