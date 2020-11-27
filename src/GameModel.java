@@ -180,7 +180,7 @@ public class GameModel {
      * Helper method to set territories of the map
      * @param continents the JSON object representing continents
      */
-    private void setTerritories(JSONObject continents)
+    private void setTerritories(JSONObject continents)  //M4
     {
         for (int i = 0; i < continents.keySet().size(); i++)  //adding all continents and associated territories
         {
@@ -217,7 +217,7 @@ public class GameModel {
      * @param continents the JSON object representing continents
      *
      */
-    private void setAdjacentTerritories(JSONObject continents)
+    private void setAdjacentTerritories(JSONObject continents)  //M4
     {
         for (int i = 0; i < continents.keySet().size(); i++)   //adding adjacent territories
         {

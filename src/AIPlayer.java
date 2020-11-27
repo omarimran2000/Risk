@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class AIPlayer extends Player {
     public final static int AI_FORTIFY = 1;
-    private final static int MAX_DICE = 3;
+    private final static int MAX_DICE = 3; //M4
 
     /**
      * Constructor for class AI player
