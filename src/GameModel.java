@@ -174,6 +174,11 @@ public class GameModel {
 
         setTerritories(continents);
         setAdjacentTerritories(continents);
+
+        if(! theMap.checkValidMap())
+        {
+            throw new IOException();
+        }
     }
 
     /**

@@ -69,11 +69,41 @@ public class Map {
         return null;
     }
 
+    /**
+     * Setting the file path for map
+     * @param filePath the filepath
+     */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Getter for the filepath
+     * @return the filepath
+     */
     public String getFilePath() {
         return filePath;
+    }
+
+    /**
+     * Checks to see if the map is valid
+     * @return true or false
+     */
+    public boolean checkValidMap() {
+        for (Continent c : continents) {
+            for (Territory t : c.getTerritories()) {
+                if (t.getNeighbourTerritories().size() == 0) {
+                    return false;
+                }
+                for(Territory neighbour:t.getNeighbourTerritories())
+                {
+                    if(! neighbour.getNeighbourTerritories().contains(t))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
