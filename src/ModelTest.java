@@ -295,4 +295,32 @@ public class ModelTest{
         tempOff.setActive(false);
         assertEquals(model.checkGameOver(),false);
     }
+
+    /**
+     * Tests to see if valid map works
+     */
+    @Test
+    public void testValidMap()
+    {
+        Map correctMap = new Map("Correct");
+        Continent correctContinent = new Continent("Correct",2);
+        Territory t1 = new Territory("t1",correctContinent);
+        Territory t2 = new Territory("t2",correctContinent);
+        t1.addNeighbour(t2);
+        t2.addNeighbour(t1);
+        correctContinent.addTerritories(t1);
+        correctContinent.addTerritories(t2);
+        correctMap.addContinents(correctContinent);
+        assertTrue(correctMap.checkValidMap());
+
+        Map incorrectMap = new Map("incorrect");
+        Continent incorrectContinent = new Continent("incorrect",2);
+        Territory t3 = new Territory("t3",incorrectContinent);
+        Territory t4 = new Territory("t4",incorrectContinent);
+        t3.addNeighbour(t4);
+        incorrectContinent.addTerritories(t3);
+        incorrectContinent.addTerritories(t4);
+        incorrectMap.addContinents(incorrectContinent);
+        assertFalse(incorrectMap.checkValidMap());
+    }
 }
