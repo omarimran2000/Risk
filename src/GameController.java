@@ -50,225 +50,272 @@ public class GameController implements ActionListener {
             TerritoryButton territoryButton = (TerritoryButton) e.getSource();
             Territory temp = territoryButton.getTerritory();
             if(view.isChooseDeploy() && model.getPhase().equals(GameModel.Phase.DEPLOY)) {
-                view.getDeployToList().clearSelection();
-                deployTerritory = temp;
-                view.disableAllButtons();
-                view.getDeployToList().setSelectedValue(temp, true);
-                view.getDeployButton().setEnabled(true);
+                deployTerritoryAction(temp);
             }
             else if(view.isChosenAttack() && model.getPhase().equals(GameModel.Phase.ATTACK)) {
-                view.getAttackFromList().clearSelection();
-                view.disableAllButtons();
-                view.setAttackToButtons(temp);
-                attackFromTerritory = temp;
-                view.setChosenAttack(false);
-                view.getAttackFromList().setSelectedValue(temp, true);
-
-                view.getAttackToList().setModel(model.defaultListConversion(temp.getAttackNeighbourTerritories(model.getPlayer())));
-                view.getAttackScrollPane().setVisible(true);
-                view.promptChooseAttackTo();
+                attackFromTerritoryAction(temp);
             }
             else if(!view.isChosenAttack() && model.getPhase().equals(GameModel.Phase.ATTACK)) {
-                view.getAttackToList().clearSelection();
-                attackToTerritory = temp;
-                view.getAttackButton().setEnabled(true);
-                view.disableAllButtons();
-                SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
-                view.getNumDice().setModel(numDiceModel);
-                view.getNumDicePanel().setVisible(true);
-                view.getAttackToList().setSelectedValue(temp, true);
-                view.getAttackButton().setEnabled(true);
-                view.setTextArea("Choose number of dice to roll and \nclick attack button to execute the attack");
+                attackToTerritoryAction(temp);
             }
             else if (!view.isChosenFortifyFrom() && model.getPhase().equals(GameModel.Phase.FORTIFY)){
-                view.setChosenFortifyFrom(true);
-                view.setChosenFortifyTo(false);
-                fortifyFromTerritory = temp;
-                view.disableAllButtons();
-                view.enableFortifyToButtons(fortifyFromTerritory);
-                view.disableTerritory(fortifyFromTerritory);
-                view.setTextArea("Choose a territory to fortify");
+                fortifyFromTerritoryAction(temp);
             }
             else if (!view.isChosenFortifyTo() && model.getPhase().equals(GameModel.Phase.FORTIFY)){
-                fortifyToTerritory = temp;
-                view.getFortifyButton().setEnabled(true);
-                view.disableAllButtons();
-                view.setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory)-1);
-                view.getNumTroops().setEnabled(true);
-                view.getNumTroopsPanel().setVisible(true);
-                view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory.getName() + " from " + fortifyFromTerritory.getName());
+               fortifyToTerritoryAction(temp);
             }
         }
         else if (e.getSource() instanceof JButton) {
             JButton buttonPressed = (JButton) e.getSource();
 
             if (buttonPressed.equals(view.getAttackButton())) {
-                try {
-                    view.resetAttackText();
-                    view.getAttackButton().setEnabled(false);
-                    view.getPassAttackButton().setVisible(true);
-                    view.getPassButton().setVisible(true);
-
-                    int numDice = (int) view.getNumDice().getValue();
-                    if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
-                        view.disableAllButtons();
-                        view.clearAttackFromSelection();
-                    }
-                    view.getNumDicePanel().setVisible(false);
-                    view.getAttackScrollPane().setVisible(false);
-
-                    if (model.checkGameOver()) {
-                        view.gameOver(model.getWinner());
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null,"Not enough parameters to attack with. Error: " + ex);
-                }
-
-                if (!model.canAttack(model.getPlayer())){
-                    model.passTurn();
-                    view.pass();
-                }
+                attackButtonAction();
             }
 
             else if (buttonPressed.equals(view.getPassButton()))
             {
-                if(model.playersActive())
-                {
-                    model.passTurn();
-
-                    if(!(model.getPlayer() instanceof AIPlayer)) {
-                        view.pass();
-                    }else {
-                        while (model.getPlayer() instanceof AIPlayer) {
-                            AIPlayer ai = (AIPlayer) model.getPlayer();
-                            deployTerritory = ai.findMinTroops(ai.getTerritories());
-                            model.deploy(deployTerritory, model.getNumberOfTroops());
-                            if (ai.checkAvailableAttack()) {
-                                attackFromTerritory = ai.findMaxTroops(ai.getTerritories());
-                                attackToTerritory = ai.getAttackTo(attackFromTerritory);
-                                int dice = ai.getNumDice(attackFromTerritory);
-                                //view.getNumDice().setValue(dice);
-                                model.attack(attackFromTerritory, attackToTerritory, dice);
-                            }
-                            if(ai.checkAvailableFortify())
-                            {
-                                model.fortify(ai.AI_FORTIFY,ai.getFortifyFromTerritory(), ai.getFortifyToTerritory(ai.getFortifyFromTerritory()));
-                            }
-
-                            if (model.checkGameOver()) {
-                                view.gameOver(model.getWinner());
-                            }
-
-                            model.passTurn();
-                            view.pass();
-                        }
-                    }
-                    view.pass();
-                    model.setPhase(GameModel.Phase.DEPLOY);
-                } else //no players active i.e. game is done
-                {
-                    JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
-                    view.setVisible(false);
-                    view.dispose();
-                }
+                passButtonAction();
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
-                    try {
-                        view.resetPlayerText();
-                        int numTroops = (int) view.getNumTroops().getValue();
-                        model.deploy(deployTerritory, numTroops);
-                        model.setPhase(GameModel.Phase.ATTACK);
-                    }
-                    catch(Exception ex) {
-                        JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
-                    }
+                deployButtonAction();
 
             } else if (buttonPressed.equals(view.getStartButton())) {
-                try {
-                    ArrayList<String> names = new ArrayList<>();
-                    String name = "";
-                    int numOfPlayers = 0;
-                    SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
-                    JSpinner numPlayers = new JSpinner(playersModel);
-                    JOptionPane.showMessageDialog(null, numPlayers, "Enter the number of players", JOptionPane.QUESTION_MESSAGE);
-                    try {
-                        numOfPlayers = (int) numPlayers.getValue();
-                        model.setNumberOfPlayers(numOfPlayers);
-                    }
-                    catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null,"Spinner is not returning an integer. Error: " + ex);
-                    }
-
-                    for (int i = 0; i < numOfPlayers; i++) {
-                        while(name == null || name.equals("")) {
-                            name = JOptionPane.showInputDialog("Player #" + (i+1) + ": What is your name?");
-                        }
-                        names.add(name);
-                        name = "";
-                    }
-                    view.setUpMap();
-                    model.createPlayers(names);
-                    model.setPhase(GameModel.Phase.DEPLOY);
-
-                } catch (IOException | ParseException ioException) {
-                    ioException.printStackTrace();
-                }
+                startButtonAction();
 
             } else if (buttonPressed.equals(view.getMoveButton())) {
-                try {
-                    int numTroops = (int) view.getNumTroops().getValue();
-                    model.getPlayer().attackWin(numTroops, attackFromTerritory, attackToTerritory);
-                    view.getDeployToScrollPane().setVisible(false);
-                    view.getAttackFromScrollPane().setVisible(true);
-                    view.move(numTroops, attackToTerritory);
-                }catch (Exception ex)
-                {
-                    JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
-                }
-                view.getNumTroopsPanel().setVisible(false);
-                view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
-                view.clearAttackFromSelection();
-                view.getAttackButton().setEnabled(false);
-
+                moveButtonAction();
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
                 view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
             }
 
             else if (buttonPressed.equals(view.getFortifyButton())){
-                try {
-                    view.getFortifyButton().setEnabled(false);
-                    int numTroops = (int) view.getNumTroops().getValue();
-                    model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
-
-                    view.getPassButton().doClick();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);
-                }
+                fortifyButtonAction();
             }
 
             else if (buttonPressed.equals(view.getPassAttackButton())){
-                try{
-                    view.getFortifyButton().setEnabled(false);
-                    view.getPassAttackButton().setEnabled(false);
-                    view.passAttack();
-                    model.setPhase(GameModel.Phase.FORTIFY);
-                    view.setChosenFortifyFrom(false);
-                    if(model.canFortify()) {
-                        view.getPassAttackButton().setEnabled(false);
-                        view.passAttack();
-                        model.setPhase(GameModel.Phase.FORTIFY);
-                        view.setChosenFortifyFrom(false);
+                passAttackButtonAction();
+            }
+        }
+    }
+    private void deployTerritoryAction(Territory temp)
+    {
+        view.getDeployToList().clearSelection();
+        deployTerritory = temp;
+        view.disableAllButtons();
+        view.getDeployToList().setSelectedValue(temp, true);
+        view.getDeployButton().setEnabled(true);
+    }
+    private void attackFromTerritoryAction(Territory temp)
+    {
+        view.getAttackFromList().clearSelection();
+        view.disableAllButtons();
+        view.setAttackToButtons(temp);
+        attackFromTerritory = temp;
+        view.setChosenAttack(false);
+        view.getAttackFromList().setSelectedValue(temp, true);
+
+        view.getAttackToList().setModel(model.defaultListConversion(temp.getAttackNeighbourTerritories(model.getPlayer())));
+        view.getAttackScrollPane().setVisible(true);
+        view.promptChooseAttackTo();
+    }
+    private void attackToTerritoryAction(Territory temp)
+    {
+        view.getAttackToList().clearSelection();
+        attackToTerritory = temp;
+        view.getAttackButton().setEnabled(true);
+        view.disableAllButtons();
+        SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
+        view.getNumDice().setModel(numDiceModel);
+        view.getNumDicePanel().setVisible(true);
+        view.getAttackToList().setSelectedValue(temp, true);
+        view.getAttackButton().setEnabled(true);
+        view.setTextArea("Choose number of dice to roll and \nclick attack button to execute the attack");
+    }
+    private void fortifyFromTerritoryAction(Territory temp)
+    {
+        view.setChosenFortifyFrom(true);
+        view.setChosenFortifyTo(false);
+        fortifyFromTerritory = temp;
+        view.disableAllButtons();
+        view.enableFortifyToButtons(fortifyFromTerritory);
+        view.disableTerritory(fortifyFromTerritory);
+        view.setTextArea("Choose a territory to fortify");
+    }
+    private void fortifyToTerritoryAction(Territory temp)
+    {
+        fortifyToTerritory = temp;
+        view.getFortifyButton().setEnabled(true);
+        view.disableAllButtons();
+        view.setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory)-1);
+        view.getNumTroops().setEnabled(true);
+        view.getNumTroopsPanel().setVisible(true);
+        view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory.getName() + " from " + fortifyFromTerritory.getName());
+    }
+    private void attackButtonAction()
+    {
+        try {
+            view.resetAttackText();
+            view.getAttackButton().setEnabled(false);
+            view.getPassAttackButton().setVisible(true);
+            view.getPassButton().setVisible(true);
+
+            int numDice = (int) view.getNumDice().getValue();
+            if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
+                view.disableAllButtons();
+                view.clearAttackFromSelection();
+            }
+            view.getNumDicePanel().setVisible(false);
+            view.getAttackScrollPane().setVisible(false);
+
+            if (model.checkGameOver()) {
+                view.gameOver(model.getWinner());
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Not enough parameters to attack with. Error: " + ex);
+        }
+
+        if (!model.canAttack(model.getPlayer())){
+            model.passTurn();
+            view.pass();
+        }
+    }
+    private void passButtonAction()
+    {
+        if(model.playersActive())
+        {
+            model.passTurn();
+
+            if(!(model.getPlayer() instanceof AIPlayer)) {
+                view.pass();
+            }else {
+                while (model.getPlayer() instanceof AIPlayer) {
+                    AIPlayer ai = (AIPlayer) model.getPlayer();
+                    deployTerritory = ai.findMinTroops(ai.getTerritories());
+                    model.deploy(deployTerritory, model.getNumberOfTroops());
+                    if (ai.checkAvailableAttack()) {
+                        attackFromTerritory = ai.findMaxTroops(ai.getTerritories());
+                        attackToTerritory = ai.getAttackTo(attackFromTerritory);
+                        int dice = ai.getNumDice(attackFromTerritory);
+                        //view.getNumDice().setValue(dice);
+                        model.attack(attackFromTerritory, attackToTerritory, dice);
                     }
-                    else
+                    if(ai.checkAvailableFortify())
                     {
-                        view.getPassButton().doClick();
+                        model.fortify(ai.AI_FORTIFY,ai.getFortifyFromTerritory(), ai.getFortifyToTerritory(ai.getFortifyFromTerritory()));
                     }
-                }
-                catch (Exception ex){
-                    JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
+
+                    if (model.checkGameOver()) {
+                        view.gameOver(model.getWinner());
+                    }
+
+                    model.passTurn();
+                    view.pass();
                 }
             }
+            view.pass();
+            model.setPhase(GameModel.Phase.DEPLOY);
+        } else //no players active i.e. game is done
+        {
+            JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
+            view.setVisible(false);
+            view.dispose();
+        }
+    }
+    private void deployButtonAction()
+    {
+        try {
+            view.resetPlayerText();
+            int numTroops = (int) view.getNumTroops().getValue();
+            model.deploy(deployTerritory, numTroops);
+            model.setPhase(GameModel.Phase.ATTACK);
+        }
+        catch(Exception ex) {
+            JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
+        }
+    }
+    private void startButtonAction()
+    {
+        try {
+            ArrayList<String> names = new ArrayList<>();
+            String name = "";
+            int numOfPlayers = 0;
+            SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
+            JSpinner numPlayers = new JSpinner(playersModel);
+            JOptionPane.showMessageDialog(null, numPlayers, "Enter the number of players", JOptionPane.QUESTION_MESSAGE);
+            try {
+                numOfPlayers = (int) numPlayers.getValue();
+                model.setNumberOfPlayers(numOfPlayers);
+            }
+            catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,"Spinner is not returning an integer. Error: " + ex);
+            }
+
+            for (int i = 0; i < numOfPlayers; i++) {
+                while(name == null || name.equals("")) {
+                    name = JOptionPane.showInputDialog("Player #" + (i+1) + ": What is your name?");
+                }
+                names.add(name);
+                name = "";
+            }
+            view.setUpMap();
+            model.createPlayers(names);
+            model.setPhase(GameModel.Phase.DEPLOY);
+
+        } catch (IOException | ParseException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+    private void moveButtonAction()
+    {
+        try {
+            int numTroops = (int) view.getNumTroops().getValue();
+            model.getPlayer().attackWin(numTroops, attackFromTerritory, attackToTerritory);
+            view.getDeployToScrollPane().setVisible(false);
+            view.getAttackFromScrollPane().setVisible(true);
+            view.move(numTroops, attackToTerritory);
+        }catch (Exception ex)
+        {
+            JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
+        }
+        view.getNumTroopsPanel().setVisible(false);
+        view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        view.clearAttackFromSelection();
+        view.getAttackButton().setEnabled(false);
+    }
+    private void fortifyButtonAction()
+    {
+        try {
+            view.getFortifyButton().setEnabled(false);
+            int numTroops = (int) view.getNumTroops().getValue();
+            model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
+
+            view.getPassButton().doClick();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);
+        }
+    }
+    private void passAttackButtonAction()
+    {
+        try{
+            view.getFortifyButton().setEnabled(false);
+            view.getPassAttackButton().setEnabled(false);
+            view.passAttack();
+            model.setPhase(GameModel.Phase.FORTIFY);
+            view.setChosenFortifyFrom(false);
+            if(model.canFortify()) {
+                view.getPassAttackButton().setEnabled(false);
+                view.passAttack();
+                model.setPhase(GameModel.Phase.FORTIFY);
+                view.setChosenFortifyFrom(false);
+            }
+            else
+            {
+                view.getPassButton().doClick();
+            }
+        }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
         }
     }
 }

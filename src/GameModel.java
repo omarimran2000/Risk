@@ -172,6 +172,21 @@ public class GameModel {
         JSONObject continents = (JSONObject) mapObject.get("continents"); //getting all the continent keys
         theMap.setFilePath((String) mapObject.get("filepath"));
 
+        setTerritories(continents);
+        setAdjacentTerritories(continents);
+
+        if(! theMap.checkValidMap())
+        {
+            throw new IOException();
+        }
+    }
+
+    /**
+     * Helper method to set territories of the map
+     * @param continents the JSON object representing continents
+     */
+    private void setTerritories(JSONObject continents)  //M4
+    {
         for (int i = 0; i < continents.keySet().size(); i++)  //adding all continents and associated territories
         {
             //adding continents to map
@@ -201,10 +216,14 @@ public class GameModel {
                 }
             }
         }
-        /*
-        Now that all territories and continents are created, the adjacent territories can be added by doing a similar
-        process
-         */
+    }
+    /**
+     * Helper method to set adjacent territories of the map
+     * @param continents the JSON object representing continents
+     *
+     */
+    private void setAdjacentTerritories(JSONObject continents)  //M4
+    {
         for (int i = 0; i < continents.keySet().size(); i++)   //adding adjacent territories
         {
             String continentName = (String) continents.keySet().toArray()[i];  //gets current continent name
@@ -586,10 +605,14 @@ public class GameModel {
      * The phases of a turn are Deploy, Attack and Fortify
      * @param phase The current phase of the game
      */
-    public void setPhase(Phase phase){
+    public void setPhase(GameModel.Phase phase){
         this.phase = phase;
     }
 
+    /**
+     * Getter method for phase
+     * @return phase The current phase of the game
+     */
     public Phase getPhase(){
         return phase;
     }
