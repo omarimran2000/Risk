@@ -25,7 +25,7 @@ public class GameModel {
     private static List<Player> players;
     private static int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
-    private final static int DEPLOY_SINGLE_TROOP = 1;
+    public final static int DEPLOY_SINGLE_TROOP = 1;
     public final static int[] DICE = {1, 2, 3};
     private final static int MAX_PLAYERS = 6;
     private ArrayList<GameModelListener> listeners;
@@ -379,7 +379,7 @@ public class GameModel {
      * @param attack the Territory the player is attacking
      * @param numDice the number of dice the attacker is using
      */
-    public boolean attack(Territory attackFrom,Territory attack,int numDice) {
+    public boolean attack(Territory attackFrom, Territory attack, int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
 
         for (GameModelListener l : listeners) {

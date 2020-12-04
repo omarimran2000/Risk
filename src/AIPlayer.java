@@ -160,7 +160,9 @@ public class AIPlayer extends Player {
             Territory attackToTerritory = getAttackTo(attackFromTerritory);
             int dice = getNumDice(attackFromTerritory);
 
-            model.attack(attackFromTerritory, attackToTerritory, dice);
+            if(model.attack(attackFromTerritory, attackToTerritory, dice)) {
+                move(model.DEPLOY_SINGLE_TROOP, attackFromTerritory, attackToTerritory);
+            }
         }
         if (model.checkGameOver()) {
             for (GameModelListener l: listeners) {
