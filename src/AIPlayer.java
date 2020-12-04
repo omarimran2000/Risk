@@ -171,6 +171,6 @@ public class AIPlayer extends Player {
         {
             model.fortify(AI_FORTIFY, getFortifyFromTerritory(), getFortifyToTerritory(getFortifyFromTerritory()));
         }
-
+        model.passTurn();
     }
 }
