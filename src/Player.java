@@ -19,6 +19,7 @@ public class Player {
     protected Army army;
     private List<Continent> continents;
     protected List<Territory> territories;
+    protected ArrayList<GameModelListener> listeners;
 
 
     /**
@@ -33,6 +34,7 @@ public class Player {
         territories = new ArrayList<>();
         die = new Dice();
         diceRolls = new int[3];
+        listeners = new ArrayList<>();
     }
 
     /**
@@ -52,6 +54,16 @@ public class Player {
      */
     public boolean isActive(){
         return active;
+    }
+
+    /**
+     * Add a GameModelListener
+     *
+     * @param l the GameModelListener
+     */
+    public void addListener(GameModelListener l)
+    {
+        listeners.add(l);
     }
 
     /**
@@ -135,6 +147,7 @@ public class Player {
         }
         territories.remove(deletedTerritory);
     }
+
     /**
      * Gets the territories the player owns
      *
@@ -299,6 +312,14 @@ public class Player {
         return false;
     }
 
+    /**
+     *  sets up the view for the deploy phase
+     */
+    public void deployPhase() {
+        for (GameModelListener l: listeners) {
+            l.pass();
+        }
+    }
 }
 
 

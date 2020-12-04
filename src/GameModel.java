@@ -325,6 +325,7 @@ public class GameModel {
             if(players.get(i).isActive())
             {
                 currentPlayer = players.get(i);
+                currentPlayer.deployPhase();
                 return;
             }
             if(i==players.size()-1)
@@ -361,24 +362,22 @@ public class GameModel {
         for (int i = 0; i < numTroops; i++) {
             currentPlayer.getArmy().addTroop(new Troop());
         }
-      //  view.setTroopsDeployed(numTroops);
-       // view.deploy();
-            if(!(currentPlayer instanceof AIPlayer)) {
-                for (GameModelListener l : listeners) {
-
-                    l.setTroopsDeployed(numTroops);
-                    l.deploy();
-
-                }
+        //  view.setTroopsDeployed(numTroops);
+        // view.deploy();
+        if (!(currentPlayer instanceof AIPlayer)) {
+            for (GameModelListener l : listeners) {
+                l.setTroopsDeployed(numTroops);
+                l.deploy();
             }
-           currentPlayer.deploy(numTroops, territory);
-            if(currentPlayer instanceof AIPlayer){
-                for(GameModelListener l: listeners){
-                    l.aiDeploy(territory, numTroops);
-                }
+        }
+        currentPlayer.deploy(numTroops, territory);
+        if (currentPlayer instanceof AIPlayer) {
+            for (GameModelListener l : listeners) {
+                l.aiDeploy(territory, numTroops);
             }
-
+        }
     }
+
 
     /**
      * Attacking phase
@@ -492,11 +491,15 @@ public class GameModel {
     public void createPlayers(ArrayList<String> names) {
         for (int i = 0; i < numberOfPlayers; i++) {
             Player player = new Player(names.get(i));
+            for(GameModelListener l:listeners)
+            {
+                player.addListener(l);
+            }
             player.setActive(true);
             addPlayer(player);
         }
         if(numberOfPlayers < MAX_PLAYERS) {
-            AIPlayer ai = new AIPlayer("AI X");
+            AIPlayer ai = new AIPlayer("AI X", this);
             ai.setActive(true);
             addPlayer(ai);
             setNumberOfPlayers(numberOfPlayers + 1);
@@ -574,12 +577,10 @@ public class GameModel {
     public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
         currentPlayer.move(numTroops, fortifyFrom, fortifyTo);
         setStatus(currentPlayer.getName() + " fortified " + fortifyTo.getName() + " with " + numTroops + " troop(s)");
-
-            for(GameModelListener l : listeners){
-                l.fortify(status);
-            }
-
+        for(GameModelListener l : listeners){
+            l.fortify(status);
         }
+    }
 
 
 

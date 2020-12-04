@@ -14,14 +14,16 @@ import java.util.List;
 public class AIPlayer extends Player {
     public final static int AI_FORTIFY = 1;
     private final static int MAX_DICE = 3; //M4
+    private GameModel model;
 
     /**
      * Constructor for class AI player
      *
      * @param name The player's name
      */
-    public AIPlayer(String name) {
+    public AIPlayer(String name, GameModel model) {
         super(name);
+        this.model = model;
     }
 
     /**
@@ -61,7 +63,7 @@ public class AIPlayer extends Player {
      *
      * @return true if player can attack, false otherwise
      */
-    public boolean checkAvailableAttack() {
+    private boolean checkAvailableAttack() {
         for(Territory territory : territories) {
             if(findTroops(territory) > 1 && !ownNeighbours(territory)) {
                 return true;
@@ -75,7 +77,7 @@ public class AIPlayer extends Player {
      *
      * @return true if player can fortify, false otherwise
      */
-    public boolean checkAvailableFortify()
+    private boolean checkAvailableFortify()
     {
         for(Territory t:territories)
         {
@@ -145,5 +147,30 @@ public class AIPlayer extends Player {
             dice = MAX_DICE;
         }
         return dice;
+    }
+
+    /**
+     *  sets up the view for the deploy phase
+     */
+    public void deployPhase() {
+        Territory deployTerritory = findMinTroops(getTerritories());
+        super.deploy(model.getNumberOfTroops(), deployTerritory);
+        if (checkAvailableAttack()) {
+            Territory attackFromTerritory = findMaxTroops(getTerritories());
+            Territory attackToTerritory = getAttackTo(attackFromTerritory);
+            int dice = getNumDice(attackFromTerritory);
+
+            model.attack(attackFromTerritory, attackToTerritory, dice);
+        }
+        if (model.checkGameOver()) {
+            for (GameModelListener l: listeners) {
+                l.gameOver(model.getWinner());
+            }
+        }
+        if(checkAvailableFortify())
+        {
+            model.fortify(AI_FORTIFY, getFortifyFromTerritory(), getFortifyToTerritory(getFortifyFromTerritory()));
+        }
+
     }
 }
