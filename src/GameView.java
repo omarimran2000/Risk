@@ -166,7 +166,17 @@ public class GameView extends JFrame implements GameModelListener {
      * @throws ParseException
      */
     public void setUpMap() throws IOException, ParseException {
-        model.loadMap("map.json");
+        JOptionPane.showMessageDialog(null,"Please choose a JSON map now");
+        JFileChooser chooser = new JFileChooser();
+        int approve = 1;
+
+        while (approve != chooser.APPROVE_OPTION)
+        {
+            File currentDir = new File(System.getProperty("user.dir"));
+            chooser.setCurrentDirectory(currentDir);
+            approve = chooser.showOpenDialog(null);
+        }
+        model.loadMap(chooser.getSelectedFile().getAbsolutePath());
         for(TerritoryButton tb:territoryButtons) {
             tb.setEnabled(false);
             contentPane.add(tb);
