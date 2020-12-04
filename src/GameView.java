@@ -19,41 +19,52 @@ import java.util.ArrayList;
 public class GameView extends JFrame implements GameModelListener {
 
     private GameModel model;
+    private GameController controller;
+
     private JList attackFromList;
     private JList attackToList;
     private JList deployToList;
+
     private JButton attackButton;
     private JButton passButton;
     private JButton deployButton;
     private JButton moveButton;
     private JButton startButton;
     private JButton quitButton;
-    private JButton fortifyButton; // m3
-    private JButton passAttackButton; // m3
+    private JButton fortifyButton;
+    private JButton passAttackButton;
+    private JButton saveButton; //m4
+    private JButton loadButton; //m4
+    private JButton customMapButton; //m4
+    private ArrayList<TerritoryButton> territoryButtons;
+
     private JSpinner numDice;
     private JSpinner numTroops;
+
     private Container contentPane;
-    private GameController controller;
+
     private JTextArea textArea;
-    private JTextArea playerTextArea; // m3
+    private JTextArea playerTextArea;
     private JTextArea continentControl;
-    private JPanel welcomePanel;
+
     private JScrollPane deployToScrollPane;
     private JScrollPane attackFromScrollPane;
-
     private JScrollPane attackScrollPane;
+
+    private JPanel welcomePanel;
     private JPanel gameControl;
     private JPanel statusPanel;
     private JPanel numDicePanel;
     private JPanel numTroopsPanel;
+
     private int troopsDeployed;
     private final int frameSizeX = 1200;
     private final int frameSizeY = 750;
-    private ArrayList<TerritoryButton> territoryButtons;
+
     private boolean chosenAttack;
     private boolean chooseDeploy;
-    private boolean chosenFortifyTo; // m3
-    private boolean chosenFortifyFrom; // m3
+    private boolean chosenFortifyTo;
+    private boolean chosenFortifyFrom;
 
     /**
      * Constructor of class GameView
@@ -258,7 +269,7 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public JButton getFortifyButton(){
         return fortifyButton;
-    } // m3
+    }
 
     /**
      * getter method for passFortifyButton
@@ -267,7 +278,34 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public JButton getPassAttackButton(){
         return passAttackButton;
-    } // m3
+    }
+
+    /**
+     * getter method for saveButton
+     *
+     * @return saveButton
+     */
+    public JButton getSaveButton() {
+        return saveButton;
+    } //m4
+
+    /**
+     * getter method for loadButton
+     *
+     * @return loadButton
+     */
+    public JButton getLoadButton() {
+        return loadButton;
+    } //m4
+
+    /**
+     * getter method for customMapButton
+     *
+     * @return customMapButton
+     */
+    public JButton getCustomMapButton() {
+        return customMapButton;
+    } //m4
 
     /**
      * getter method for numDice
@@ -807,7 +845,7 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public boolean isChosenFortifyFrom(){
         return chosenFortifyFrom;
-    } // m3
+    }
 
     /**
      * Getter for fortify to chosen
@@ -815,7 +853,7 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public boolean isChosenFortifyTo(){
         return chosenFortifyTo;
-    } // m3
+    }
 
     /**
      * Prompts the user to select a territory to attack from via the text area

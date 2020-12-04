@@ -1,4 +1,5 @@
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * @version October 17, 2020
  *
  */
-public class Player {
+public class Player implements Serializable {
 
     private String name;
     private boolean active;

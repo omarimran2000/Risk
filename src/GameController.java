@@ -96,8 +96,33 @@ public class GameController implements ActionListener {
             else if (buttonPressed.equals(view.getPassAttackButton())){
                 passAttackButtonAction();
             }
+
+            else if (buttonPressed.equals(view.getSaveButton())){
+                saveButtonAction();
+            } //m4
+
+            else if (buttonPressed.equals(view.getLoadButton())){
+                loadButtonAction();
+            } //m4
+
+            else if (buttonPressed.equals((view.getCustomMapButton()))){
+                customMapButtonAction();
+            } //m4
         }
     }
+
+    private void saveButtonAction() {
+        ...
+    } //m4
+
+    private void loadButtonAction() {
+        ...
+    } //m4
+
+    private void customMapButtonAction() {
+        ...
+    } //m4
+
     private void deployTerritoryAction(Territory temp)
     {
         view.getDeployToList().clearSelection();

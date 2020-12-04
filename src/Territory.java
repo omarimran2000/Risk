@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -6,7 +7,7 @@ import java.util.ArrayList;
  * @author Omar Imran
  * @date October 13 2020
  */
-public class Territory {
+public class Territory implements Serializable {
 
     private String name;
     private Continent continent;

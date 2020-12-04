@@ -19,7 +19,7 @@ import java.util.Random;
  *
  * @version October 25 2020
  */
-public class GameModel {
+public class GameModel implements Serializable {
 
     private final Map theMap;
     private static List<Player> players;
@@ -265,7 +265,6 @@ public class GameModel {
 
             tempPlayer.addTerritory(tempTerritory);
             tempTerritory.setCurrentPlayer(tempPlayer);
-
         }
     }
 
@@ -361,23 +360,18 @@ public class GameModel {
         for (int i = 0; i < numTroops; i++) {
             currentPlayer.getArmy().addTroop(new Troop());
         }
-      //  view.setTroopsDeployed(numTroops);
-       // view.deploy();
-            if(!(currentPlayer instanceof AIPlayer)) {
-                for (GameModelListener l : listeners) {
-
-                    l.setTroopsDeployed(numTroops);
-                    l.deploy();
-
+        if(!(currentPlayer instanceof AIPlayer)) {
+            for (GameModelListener l : listeners) {
+                l.setTroopsDeployed(numTroops);
+                l.deploy();
                 }
             }
-           currentPlayer.deploy(numTroops, territory);
-            if(currentPlayer instanceof AIPlayer){
-                for(GameModelListener l: listeners){
-                    l.aiDeploy(territory, numTroops);
-                }
+        currentPlayer.deploy(numTroops, territory);
+        if(currentPlayer instanceof AIPlayer){
+            for(GameModelListener l: listeners){
+                l.aiDeploy(territory, numTroops);
             }
-
+        }
     }
 
     /**
@@ -501,7 +495,6 @@ public class GameModel {
             addPlayer(ai);
             setNumberOfPlayers(numberOfPlayers + 1);
         }
-
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
@@ -510,7 +503,6 @@ public class GameModel {
             l.start();
             l.turn(currentPlayer, getNumberOfTroops());
         }
-
     }
 
     /**
@@ -578,11 +570,7 @@ public class GameModel {
             for(GameModelListener l : listeners){
                 l.fortify(status);
             }
-
         }
-
-
-
 
     /**
      * Checks to see if a player is able to fortify
