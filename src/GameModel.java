@@ -364,18 +364,11 @@ public class GameModel {
         }
         //  view.setTroopsDeployed(numTroops);
         // view.deploy();
-        if (!(currentPlayer instanceof AIPlayer)) {
-            for (GameModelListener l : listeners) {
-                l.setTroopsDeployed(numTroops);
-                l.deploy();
-            }
+        for (GameModelListener l : listeners) {
+            l.setTroopsDeployed(numTroops);
+            l.deploy();
         }
         currentPlayer.deploy(numTroops, territory);
-        if (currentPlayer instanceof AIPlayer) {
-            for (GameModelListener l : listeners) {
-                l.aiDeploy(territory, numTroops);
-            }
-        }
     }
 
 
@@ -389,14 +382,8 @@ public class GameModel {
     public boolean attack(Territory attackFrom,Territory attack,int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
 
-        if (currentPlayer instanceof AIPlayer) {
-            for (GameModelListener l : listeners) {
-                l.aiAttack(status);
-            }
-        } else {
-            for (GameModelListener l : listeners) {
-                l.attack(status);
-            }
+        for (GameModelListener l : listeners) {
+            l.attack(status);
         }
         int numDefendDice;
         currentPlayer.rollDice(numDice);
@@ -409,16 +396,10 @@ public class GameModel {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
-            if(! (currentPlayer instanceof AIPlayer)) {
-                for (GameModelListener l : listeners) {
-                    l.attackWon(attack, currentPlayer.findTroops(attackFrom));
-                }
-                return true;
+            for (GameModelListener l : listeners) {
+                l.attackWon(attack, currentPlayer.findTroops(attackFrom));
             }
-            else
-            {
-                currentPlayer.move(DEPLOY_SINGLE_TROOP,attackFrom,attack);
-            }
+            return true;
         }
         return false;
     }

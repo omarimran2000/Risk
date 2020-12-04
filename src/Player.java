@@ -222,13 +222,11 @@ public class Player {
      */
     public void deploy(int numberOfTroops, Territory deployment){
         List<Troop> troops = army.getTroops();
-        int count = 0;
-        while(count < numberOfTroops){
+        for (int count = 0; count < numberOfTroops; count++){
             for(Troop troop: troops){
                 if(!troop.isDeployed()) {
                     troop.setDeployed(true);
                     troop.setLocation(deployment);
-                    count += 1;
                 }
             }
 
