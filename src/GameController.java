@@ -111,18 +111,35 @@ public class GameController implements ActionListener {
         }
     }
 
+    /**
+     * Action for when saveButton is clicked
+     * Saves the state of the game in a file
+     */
     private void saveButtonAction() {
-        ...
+        //model.saveGame();
     } //m4
 
+    /**
+     * Action for when loadButton is clicked
+     * Loads a saved game from a file
+     */
     private void loadButtonAction() {
-        ...
+        //model.loadGame(file);
     } //m4
 
+    /**
+     * Action for when customMapButton is clicked
+     * Loads a custom map
+     */
     private void customMapButtonAction() {
-        ...
+        //JOptionPane.getChosenMap;
+        //model.loadMap(file);
     } //m4
 
+    /**
+     * Action for when the territory to deploy to is chosen
+     * @param temp The territory chosen to deploy to
+     */
     private void deployTerritoryAction(Territory temp)
     {
         view.getDeployToList().clearSelection();
@@ -131,6 +148,11 @@ public class GameController implements ActionListener {
         view.getDeployToList().setSelectedValue(temp, true);
         view.getDeployButton().setEnabled(true);
     }
+
+    /**
+     * Action for when the territory to attack from is chosen
+     * @param temp The territory chosen to attack from
+     */
     private void attackFromTerritoryAction(Territory temp)
     {
         view.getAttackFromList().clearSelection();
@@ -144,6 +166,11 @@ public class GameController implements ActionListener {
         view.getAttackScrollPane().setVisible(true);
         view.promptChooseAttackTo();
     }
+
+    /**
+     * Action for when the territory to attack is chosen
+     * @param temp The territory to attack
+     */
     private void attackToTerritoryAction(Territory temp)
     {
         view.getAttackToList().clearSelection();
@@ -157,6 +184,11 @@ public class GameController implements ActionListener {
         view.getAttackButton().setEnabled(true);
         view.setTextArea("Choose number of dice to roll and \nclick attack button to execute the attack");
     }
+
+    /**
+     * Action for when the territory to fortify from is chosen
+     * @param temp The territory to fortify from
+     */
     private void fortifyFromTerritoryAction(Territory temp)
     {
         view.setChosenFortifyFrom(true);
@@ -167,6 +199,11 @@ public class GameController implements ActionListener {
         view.disableTerritory(fortifyFromTerritory);
         view.setTextArea("Choose a territory to fortify");
     }
+
+    /**
+     * Action for when the territory to fortify is chosen
+     * @param temp The territory to fortify
+     */
     private void fortifyToTerritoryAction(Territory temp)
     {
         fortifyToTerritory = temp;
@@ -177,6 +214,10 @@ public class GameController implements ActionListener {
         view.getNumTroopsPanel().setVisible(true);
         view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory.getName() + " from " + fortifyFromTerritory.getName());
     }
+
+    /**
+     * Action for when the attack button is clicked
+     */
     private void attackButtonAction()
     {
         try {
@@ -205,6 +246,10 @@ public class GameController implements ActionListener {
             view.pass();
         }
     }
+
+    /**
+     * Action for when the pass button is clicked
+     */
     private void passButtonAction()
     {
         if(model.playersActive())
@@ -247,6 +292,10 @@ public class GameController implements ActionListener {
             view.dispose();
         }
     }
+
+    /**
+     * Action for when the deploy button is clicked
+     */
     private void deployButtonAction()
     {
         try {
@@ -259,6 +308,10 @@ public class GameController implements ActionListener {
             JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
         }
     }
+
+    /**
+     * Action for when the start button is clicked
+     */
     private void startButtonAction()
     {
         try {
@@ -291,6 +344,10 @@ public class GameController implements ActionListener {
             ioException.printStackTrace();
         }
     }
+
+    /**
+     * Action for when the move button is clicked
+     */
     private void moveButtonAction()
     {
         try {
@@ -308,6 +365,10 @@ public class GameController implements ActionListener {
         view.clearAttackFromSelection();
         view.getAttackButton().setEnabled(false);
     }
+
+    /**
+     * Action for when the fortify button is clicked
+     */
     private void fortifyButtonAction()
     {
         try {
@@ -320,6 +381,10 @@ public class GameController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);
         }
     }
+
+    /**
+     * Action for when the passAttack button is clicked
+     */
     private void passAttackButtonAction()
     {
         try{
