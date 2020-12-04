@@ -221,6 +221,9 @@ public class Player {
      * @param deployment The territory the troops go
      */
     public void deploy(int numberOfTroops, Territory deployment){
+        for (int i = 0; i < numberOfTroops; i++) {
+            getArmy().addTroop(new Troop());
+        }
         List<Troop> troops = army.getTroops();
         for (int count = 0; count < numberOfTroops; count++){
             for(Troop troop: troops){

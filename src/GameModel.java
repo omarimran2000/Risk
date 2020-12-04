@@ -359,9 +359,7 @@ public class GameModel {
      * @param numTroops The number of troops to be deployed
      */
     public void deploy(Territory territory, int numTroops) {
-        for (int i = 0; i < numTroops; i++) {
-            currentPlayer.getArmy().addTroop(new Troop());
-        }
+
         //  view.setTroopsDeployed(numTroops);
         // view.deploy();
         for (GameModelListener l : listeners) {
