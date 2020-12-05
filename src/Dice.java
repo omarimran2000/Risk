@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -6,7 +7,7 @@ import java.util.Random;
  * @author Santhosh Pradeepan
  * @version October 13, 2020
  */
-public class Dice {
+public class Dice implements Serializable {
     private Random random;
 
     /**

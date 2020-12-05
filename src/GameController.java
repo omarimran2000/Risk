@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  *
  * @version October 25 2020
  */
-public class GameController implements ActionListener {
+public class GameController implements ActionListener, Serializable {
 
     private GameModel model;
     private GameView view;
@@ -109,6 +110,14 @@ public class GameController implements ActionListener {
                 customMapButtonAction();
             } //m4
         }
+        else if(e.getSource() instanceof JMenuItem){
+            JMenuItem menuItem = (JMenuItem) e.getSource();
+            if(menuItem.equals(view.getSaveMenuItem())){
+                saveMenuItemAction();
+            } else if(menuItem.equals(view.getLoadGameMenuItem())){
+                loadButtonAction();
+            }
+        } // m4
     }
 
     /**
@@ -116,15 +125,26 @@ public class GameController implements ActionListener {
      * Saves the state of the game in a file
      */
     private void saveButtonAction() {
-        model.saveGame();
+     //   model.saveGame();
     } //m4
+
+    private void saveMenuItemAction(){
+        view.saveGame();
+        view.getLoadGameMenuItem().setEnabled(true);
+
+
+    } //m4
+
+
 
     /**
      * Action for when loadButton is clicked
      * Loads a saved game from a file
      */
     private void loadButtonAction() {
-        model.loadGame(file);
+        view = view.loadGame();
+        view.setVisible(true);
+
     } //m4
 
     /**
@@ -132,8 +152,8 @@ public class GameController implements ActionListener {
      * Loads a custom map
      */
     private void customMapButtonAction() {
-        getChosenMap();
-        model.loadMap(file);
+        //getChosenMap();
+       // model.loadMap(file);
     } //m4
 
     /**

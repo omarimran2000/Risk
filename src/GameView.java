@@ -38,6 +38,10 @@ public class GameView extends JFrame implements GameModelListener {
     private JButton customMapButton; //m4
     private ArrayList<TerritoryButton> territoryButtons;
 
+    private JMenuItem saveGame; //m4
+    private JMenuItem loadGame; //m4
+
+
     private JSpinner numDice;
     private JSpinner numTroops;
 
@@ -142,6 +146,19 @@ public class GameView extends JFrame implements GameModelListener {
         passAttackButton.addActionListener(controller);
         passAttackButton.setEnabled(false);
 
+        JMenuBar menubar = new JMenuBar();
+        saveGame = new JMenuItem("Save Game");
+        loadGame = new JMenuItem("Load Game");
+        saveGame.addActionListener(controller);
+        loadGame.addActionListener(controller);
+
+        //m4
+        JMenu menu = new JMenu("Risk");
+        menu.add(saveGame);
+        menu.add(loadGame);
+        menubar.add(menu);
+        this.setJMenuBar(menubar);
+
         startButton.setAlignmentX(Box.CENTER_ALIGNMENT);
         welcomePanel.add(startButton);
 
@@ -167,7 +184,7 @@ public class GameView extends JFrame implements GameModelListener {
         troopsDeployed = 0;
 
         this.setResizable(false);
-        this.setSize(frameSizeX,frameSizeY);
+        this.setSize(frameSizeX, frameSizeY);
     }
 
     /**
@@ -178,14 +195,14 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public void setUpMap() throws IOException, ParseException {
         model.loadMap("map.json");
-        for(TerritoryButton tb:territoryButtons) {
+        for (TerritoryButton tb : territoryButtons) {
             tb.setEnabled(false);
             contentPane.add(tb);
         }
         try { //for IDE
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(new File(model.getTheMap().getFilePath())))));
         } catch (Exception ex) { //for JAR
-            InputStream in = getClass().getResourceAsStream("/"+model.getTheMap().getFilePath());
+            InputStream in = getClass().getResourceAsStream("/" + model.getTheMap().getFilePath());
             contentPane.add(new JLabel(new ImageIcon(ImageIO.read(in))));
         }
     }
@@ -249,7 +266,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return moveButton
      */
-    public JButton getMoveButton(){
+    public JButton getMoveButton() {
         return moveButton;
     }
 
@@ -258,7 +275,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return quitButton
      */
-    public JButton getQuitButton(){
+    public JButton getQuitButton() {
         return quitButton;
     }
 
@@ -267,7 +284,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return fortifyButton
      */
-    public JButton getFortifyButton(){
+    public JButton getFortifyButton() {
         return fortifyButton;
     }
 
@@ -276,7 +293,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return passFortifyButton
      */
-    public JButton getPassAttackButton(){
+    public JButton getPassAttackButton() {
         return passAttackButton;
     }
 
@@ -307,6 +324,14 @@ public class GameView extends JFrame implements GameModelListener {
         return customMapButton;
     } //m4
 
+    public JMenuItem getSaveMenuItem() {
+        return saveGame;
+    }
+
+    public JMenuItem getLoadGameMenuItem(){
+        return loadGame;
+    }
+
     /**
      * getter method for numDice
      *
@@ -330,7 +355,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @param message the message to display
      */
-    public void setTextArea(String message){
+    public void setTextArea(String message) {
         textArea.setText(message);
     }
 
@@ -349,7 +374,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return attackFromScrollPane
      */
-    public JScrollPane getAttackFromScrollPane(){
+    public JScrollPane getAttackFromScrollPane() {
         return attackFromScrollPane;
     }
 
@@ -358,7 +383,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return attackScrollPane
      */
-    public JScrollPane getAttackScrollPane(){
+    public JScrollPane getAttackScrollPane() {
         return attackScrollPane;
     }
 
@@ -367,7 +392,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return deployToScrollPane
      */
-    public JScrollPane getDeployToScrollPane(){
+    public JScrollPane getDeployToScrollPane() {
         return deployToScrollPane;
     }
 
@@ -376,7 +401,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return numDicePanel
      */
-    public JPanel getNumDicePanel(){
+    public JPanel getNumDicePanel() {
         return numDicePanel;
     }
 
@@ -385,14 +410,14 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @return numTroopsPanel
      */
-    public JPanel getNumTroopsPanel(){
+    public JPanel getNumTroopsPanel() {
         return numTroopsPanel;
     }
 
     /**
      * method invoked to show starting GUI components
      */
-    public void start()  {
+    public void start() {
         welcomePanel.setVisible(false);
         startButton.setEnabled(false);
         deployButton.setEnabled(true);
@@ -409,16 +434,15 @@ public class GameView extends JFrame implements GameModelListener {
 
     /**
      * Method to update the continent area
+     *
      * @return string to put in JTextArea
      */
-    public String updateContinent()
-    {
+    public String updateContinent() {
         String text = "";
         text += "It is " + model.getPlayer().getName() + "'s turn\n";
         text += "You control the following continents:\n";
-        for (Continent c: model.getPlayer().getContinents())
-        {
-            text+= c.getName() + "\n";
+        for (Continent c : model.getPlayer().getContinents()) {
+            text += c.getName() + "\n";
         }
         return text;
     }
@@ -426,10 +450,10 @@ public class GameView extends JFrame implements GameModelListener {
     /**
      * method used to show the current player and number of troops they can deploy
      *
-     * @param curr the current player
+     * @param curr            the current player
      * @param numDeployTroops the number of troops to deploy
      */
-    public void turn(Player curr, int numDeployTroops){
+    public void turn(Player curr, int numDeployTroops) {
         textArea.setText("You have " + numDeployTroops + " troops to deploy\n");
         textArea.setEditable(false);
 
@@ -480,11 +504,10 @@ public class GameView extends JFrame implements GameModelListener {
     }
 
     /**
-     *  method invoked when player ends their turn
+     * method invoked when player ends their turn
      */
-    public void pass()
-    {
-        if(!(model.getPlayer() instanceof AIPlayer)) {
+    public void pass() {
+        if (!(model.getPlayer() instanceof AIPlayer)) {
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(true);
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
@@ -517,7 +540,7 @@ public class GameView extends JFrame implements GameModelListener {
      * method invoked when a player is in the deploy phase
      */
     public void deploy() {
-        if(troopsDeployed == model.getNumberOfTroops()) {
+        if (troopsDeployed == model.getNumberOfTroops()) {
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(false);
             numTroopsPanel.setVisible(false);
@@ -556,7 +579,7 @@ public class GameView extends JFrame implements GameModelListener {
      * @param territory Territory to deploy to
      * @param numTroops number of troops to deploy
      */
-    public void aiDeploy(Territory territory, int numTroops){
+    public void aiDeploy(Territory territory, int numTroops) {
         disableAllButtons();
         passButton.setVisible(false);
         attackFromScrollPane.setVisible(false);
@@ -564,15 +587,16 @@ public class GameView extends JFrame implements GameModelListener {
         textArea.setVisible(false);
         playerTextArea.setVisible(true);
         playerTextArea.append(model.getPlayer().getName() + " deployed " + numTroops + " troops to "
-        + territory.getName() + "\n");
+                + territory.getName() + "\n");
     }
 
     /**
      * Updates the player text area when the AI
      * attacks
+     *
      * @param status The new status of game
      */
-    public void aiAttack(String status){
+    public void aiAttack(String status) {
         playerTextArea.append(status + "\n");
 
     }
@@ -602,7 +626,7 @@ public class GameView extends JFrame implements GameModelListener {
     /**
      * method used to remove a selected territory
      */
-    public void clearAttackFromSelection(){
+    public void clearAttackFromSelection() {
         attackFromList.clearSelection();
         setAttackFromButtons();
         setChosenAttack(true);
@@ -611,7 +635,7 @@ public class GameView extends JFrame implements GameModelListener {
     /**
      * method used to reset the attack text+
      */
-    public void resetAttackText(){
+    public void resetAttackText() {
         textArea.setText("");
         textArea.setVisible(false);
     }
@@ -619,7 +643,7 @@ public class GameView extends JFrame implements GameModelListener {
     /**
      * Resets the player text
      */
-    public void resetPlayerText(){
+    public void resetPlayerText() {
         playerTextArea.setText("");
         playerTextArea.setVisible(false);
     }
@@ -627,10 +651,10 @@ public class GameView extends JFrame implements GameModelListener {
     /**
      * method used for to move troops into new territory after successful attacks
      *
-     * @param newTerritory the new territory to move into
+     * @param newTerritory    the new territory to move into
      * @param numAttackTroops number of troops to move
      */
-    public void attackWon(Territory newTerritory, int numAttackTroops){
+    public void attackWon(Territory newTerritory, int numAttackTroops) {
         textArea.append("\nSelect the number of troops to move to " + newTerritory.getName());
         setNumTroops(numAttackTroops - 1);
         attackToList.setEnabled(false);
@@ -648,9 +672,9 @@ public class GameView extends JFrame implements GameModelListener {
      * moving troops into a territory
      *
      * @param numTroops number of troops to move
-     * @param attack territory where troops are being moved
+     * @param attack    territory where troops are being moved
      */
-    public void move(int numTroops, Territory attack){
+    public void move(int numTroops, Territory attack) {
         textArea.setText(model.getPlayer().getName() + " moved " + numTroops + " troop(s) to " + attack.getName() + "\n");
         promptChooseAttackFrom();
         continentControl.setText(updateContinent());
@@ -661,11 +685,11 @@ public class GameView extends JFrame implements GameModelListener {
     }
 
     /**
-     *
      * Updates the player text area when a player fortifies
+     *
      * @param status The new status
      */
-    public void fortify(String status){
+    public void fortify(String status) {
         playerTextArea.append(status + "\n");
         playerTextArea.setVisible(true);
     }
@@ -675,7 +699,7 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @param winner the winner of the game
      */
-    public void gameOver(Player winner){
+    public void gameOver(Player winner) {
         JOptionPane.showMessageDialog(contentPane, "GAME OVER!\n" + winner.getName() + " is the winner!");
         JOptionPane.showMessageDialog(contentPane, "Click QUIT to exit");
 
@@ -710,7 +734,7 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public void addButtons(Territory t, int x, int y) {
         TerritoryButton temp = new TerritoryButton(t);
-        temp.setBounds(x,y,10,10);
+        temp.setBounds(x, y, 10, 10);
         temp.addActionListener(controller);
         temp.setEnabled(false);
         territoryButtons.add(temp);
@@ -721,8 +745,8 @@ public class GameView extends JFrame implements GameModelListener {
      * Enables all buttons that relate to the current player's territories
      */
     public void setDeployButtons() {
-        for(Territory t:model.getPlayer().getTerritories()) {
-            for(TerritoryButton tb:territoryButtons) {
+        for (Territory t : model.getPlayer().getTerritories()) {
+            for (TerritoryButton tb : territoryButtons) {
                 if (tb.getTerritory().equals(t)) {
                     tb.setEnabled(true);
                 }
@@ -736,8 +760,8 @@ public class GameView extends JFrame implements GameModelListener {
     public void setAttackFromButtons() {
         Player player = model.getPlayer();
         disableAllButtons();
-        for(Territory t:player.getTerritories()) {
-            for(TerritoryButton tb:territoryButtons) {
+        for (Territory t : player.getTerritories()) {
+            for (TerritoryButton tb : territoryButtons) {
                 if (tb.getTerritory().equals(t) && player.findTroops(t) > 1 && !player.ownNeighbours(t)) {
                     tb.setEnabled(true);
                 }
@@ -747,11 +771,12 @@ public class GameView extends JFrame implements GameModelListener {
 
     /**
      * Enables all buttons related to neighbouring enemy territories of attackFrom
+     *
      * @param attackFrom The territory chosen to attack from
      */
     public void setAttackToButtons(Territory attackFrom) {
-        for(TerritoryButton tb:territoryButtons) {
-            if((attackFrom.getNeighbourTerritories().contains(tb.getTerritory())) && !tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
+        for (TerritoryButton tb : territoryButtons) {
+            if ((attackFrom.getNeighbourTerritories().contains(tb.getTerritory())) && !tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
                 tb.setEnabled(true);
             }
         }
@@ -761,7 +786,7 @@ public class GameView extends JFrame implements GameModelListener {
      * Disables all TerritoryButtons
      */
     public void disableAllButtons() {
-        for (TerritoryButton tb:territoryButtons) {
+        for (TerritoryButton tb : territoryButtons) {
             tb.setEnabled(false);
         }
     }
@@ -770,8 +795,8 @@ public class GameView extends JFrame implements GameModelListener {
      * Enables all buttons related to the current player's territories
      */
     public void enableAllPlayerButtons() {
-        for (TerritoryButton tb:territoryButtons) {
-            if(tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
+        for (TerritoryButton tb : territoryButtons) {
+            if (tb.getTerritory().getCurrentPlayer().equals(model.getPlayer())) {
                 tb.setEnabled(true);
             }
         }
@@ -780,15 +805,11 @@ public class GameView extends JFrame implements GameModelListener {
     /**
      * Enables all buttons related to territories that player can fortify from
      */
-    public void enableAllFortifyFromButtons()
-    {
+    public void enableAllFortifyFromButtons() {
         disableAllButtons();
-        for (Territory t:model.getPlayer().getTerritories())
-        {
-            for(TerritoryButton tb:territoryButtons)
-            {
-                if (tb.getTerritory().equals(t) && model.getPlayer().ownANeighbour(t))
-                {
+        for (Territory t : model.getPlayer().getTerritories()) {
+            for (TerritoryButton tb : territoryButtons) {
+                if (tb.getTerritory().equals(t) && model.getPlayer().ownANeighbour(t)) {
                     tb.setEnabled(true);
                 }
             }
@@ -800,14 +821,10 @@ public class GameView extends JFrame implements GameModelListener {
      *
      * @param fortifyFrom the selected territory that the player is fortifying from
      */
-    public void enableFortifyToButtons(Territory fortifyFrom)
-    {
-        for(Territory t:fortifyFrom.getNeighbourTerritories())
-        {
-            for(TerritoryButton tb:territoryButtons)
-            {
-                if(tb.getTerritory().equals(t) && t.getCurrentPlayer().equals(model.getPlayer()) && !tb.isEnabled())
-                {
+    public void enableFortifyToButtons(Territory fortifyFrom) {
+        for (Territory t : fortifyFrom.getNeighbourTerritories()) {
+            for (TerritoryButton tb : territoryButtons) {
+                if (tb.getTerritory().equals(t) && t.getCurrentPlayer().equals(model.getPlayer()) && !tb.isEnabled()) {
                     tb.setEnabled(true);
                     enableFortifyToButtons(t);
                 }
@@ -817,6 +834,7 @@ public class GameView extends JFrame implements GameModelListener {
 
     /**
      * Set function to update if player is in attack phase or not
+     *
      * @param chosenAttack
      */
     public void setChosenAttack(boolean chosenAttack) {
@@ -825,6 +843,7 @@ public class GameView extends JFrame implements GameModelListener {
 
     /**
      * Getter for attack chosen
+     *
      * @return chosen attack
      */
     public boolean isChosenAttack() {
@@ -833,6 +852,7 @@ public class GameView extends JFrame implements GameModelListener {
 
     /**
      * Getter for deploy chosen
+     *
      * @return deploy chosen
      */
     public boolean isChooseDeploy() {
@@ -841,38 +861,40 @@ public class GameView extends JFrame implements GameModelListener {
 
     /**
      * Getter for fortify from chosen
+     *
      * @return fortify from chosen
      */
-    public boolean isChosenFortifyFrom(){
+    public boolean isChosenFortifyFrom() {
         return chosenFortifyFrom;
     }
 
     /**
      * Getter for fortify to chosen
+     *
      * @return fortify to chosen
      */
-    public boolean isChosenFortifyTo(){
+    public boolean isChosenFortifyTo() {
         return chosenFortifyTo;
     }
 
     /**
      * Prompts the user to select a territory to attack from via the text area
      */
-    public void promptChooseAttackFrom(){
+    public void promptChooseAttackFrom() {
         textArea.append("Choose a territory to attack from\nor pass your turn to the next player");
     }
 
     /**
      * Prompts the user to select a territory to attack bia the text area
      */
-    public void promptChooseAttackTo(){
+    public void promptChooseAttackTo() {
         textArea.setText("Choose a territory to attack");
     }
 
     /**
      * Passes the attack phase and goes into the Fortify phase
      */
-    public void passAttack(){
+    public void passAttack() {
         disableAllButtons();
         attackButton.setEnabled(false);
         passAttackButton.setEnabled(false);
@@ -902,15 +924,40 @@ public class GameView extends JFrame implements GameModelListener {
 
     /**
      * Disables a specific territory button
+     *
      * @param territory the territory the button represents
      */
-    public void disableTerritory(Territory territory){
-        for (TerritoryButton tb : territoryButtons){
-            if (tb.getTerritory().equals(territory)){
+    public void disableTerritory(Territory territory) {
+        for (TerritoryButton tb : territoryButtons) {
+            if (tb.getTerritory().equals(territory)) {
                 tb.setEnabled(false);
             }
         }
     }
+
+    public void saveGame() {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("Game.ser"));
+            outputStream.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public GameView loadGame(){
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("Game.ser"));
+            return (GameView) inputStream.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
 
     /*public GameModel getModel() {
         return model;

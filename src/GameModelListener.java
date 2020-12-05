@@ -1,3 +1,4 @@
+
 public interface GameModelListener {
 
     void addButtons(Territory t,int x,int y);
