@@ -273,14 +273,14 @@ public class GameModel {
             int armiesCount = num_armies;
             for (Territory t : p.getTerritories()) //puts one army in every territory owned by player
             {
-                p.getArmy().addTroop(new Troop());
+                //p.getArmy().addTroop(new Troop());
                 p.deploy(DEPLOY_SINGLE_TROOP, t);
                 armiesCount--;
             }
             while(armiesCount!=0)
             {
                 int index = random.nextInt(p.getTerritories().size());
-                p.getArmy().addTroop(new Troop());
+                //p.getArmy().addTroop(new Troop());
                 p.deploy(DEPLOY_SINGLE_TROOP, p.getTerritories().get(index));
                 armiesCount--;
             }
