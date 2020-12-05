@@ -180,4 +180,14 @@ public class AIPlayer extends Player {
         }
         model.passTurn();
     }
+    /**
+     *  Override attack phase method from Player
+     * @status is the status
+     */
+    public void attackPhase(String status)
+    {
+        for(GameModelListener l: listeners){
+            l.aiAttack(status);
+        }
+    }
 }

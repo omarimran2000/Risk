@@ -321,6 +321,15 @@ public class Player {
             l.pass();
         }
     }
+    /**
+     *  Sets up the attack win phase for view
+     * @param status is the status
+     */
+    public void attackPhase(String status){
+        for (GameModelListener l : listeners) {
+            l.attack(status);
+        }
+    }
 }
 
 

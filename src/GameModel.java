@@ -115,17 +115,7 @@ public class GameModel {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
                 setStatus(attacker.getName() + " lost one troop");
             }
-
-            if(attacker instanceof AIPlayer){
-                for(GameModelListener l: listeners){
-                    l.aiAttack(status);
-                }
-            } else {
-
-                for (GameModelListener l : listeners) {
-                    l.attack(status);
-                }
-            }
+            attacker.attackPhase(status);
         }
         if (defender.findTroops(territory) == 0) {
             defender.removeTerritory(territory);
@@ -380,9 +370,7 @@ public class GameModel {
     public boolean attack(Territory attackFrom, Territory attack, int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
 
-        for (GameModelListener l : listeners) {
-            l.attack(status);
-        }
+        currentPlayer.attackPhase(status);
         int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
