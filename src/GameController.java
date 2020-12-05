@@ -116,7 +116,7 @@ public class GameController implements ActionListener {
      * Saves the state of the game in a file
      */
     private void saveButtonAction() {
-        //model.saveGame();
+        model.saveGame();
     } //m4
 
     /**
@@ -124,7 +124,7 @@ public class GameController implements ActionListener {
      * Loads a saved game from a file
      */
     private void loadButtonAction() {
-        //model.loadGame(file);
+        model.loadGame(file);
     } //m4
 
     /**
@@ -132,8 +132,8 @@ public class GameController implements ActionListener {
      * Loads a custom map
      */
     private void customMapButtonAction() {
-        //JOptionPane.getChosenMap;
-        //model.loadMap(file);
+        getChosenMap();
+        model.loadMap(file);
     } //m4
 
     /**
