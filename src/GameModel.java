@@ -25,7 +25,7 @@ public class GameModel {
     private static List<Player> players;
     private static int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
-    private final static int DEPLOY_SINGLE_TROOP = 1;
+    public final static int DEPLOY_SINGLE_TROOP = 1;
     public final static int[] DICE = {1, 2, 3};
     private final static int MAX_PLAYERS = 6;
     private ArrayList<GameModelListener> listeners;
@@ -115,17 +115,7 @@ public class GameModel {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
                 setStatus(attacker.getName() + " lost one troop");
             }
-
-            if(attacker instanceof AIPlayer){
-                for(GameModelListener l: listeners){
-                    l.aiAttack(status);
-                }
-            } else {
-
-                for (GameModelListener l : listeners) {
-                    l.attack(status);
-                }
-            }
+            attacker.attackPhase(status);
         }
         if (defender.findTroops(territory) == 0) {
             defender.removeTerritory(territory);
@@ -283,14 +273,14 @@ public class GameModel {
             int armiesCount = num_armies;
             for (Territory t : p.getTerritories()) //puts one army in every territory owned by player
             {
-                p.getArmy().addTroop(new Troop());
+                //p.getArmy().addTroop(new Troop());
                 p.deploy(DEPLOY_SINGLE_TROOP, t);
                 armiesCount--;
             }
             while(armiesCount!=0)
             {
                 int index = random.nextInt(p.getTerritories().size());
-                p.getArmy().addTroop(new Troop());
+                //p.getArmy().addTroop(new Troop());
                 p.deploy(DEPLOY_SINGLE_TROOP, p.getTerritories().get(index));
                 armiesCount--;
             }
@@ -325,6 +315,7 @@ public class GameModel {
             if(players.get(i).isActive())
             {
                 currentPlayer = players.get(i);
+                currentPlayer.deployPhase();
                 return;
             }
             if(i==players.size()-1)
@@ -358,27 +349,17 @@ public class GameModel {
      * @param numTroops The number of troops to be deployed
      */
     public void deploy(Territory territory, int numTroops) {
-        for (int i = 0; i < numTroops; i++) {
-            currentPlayer.getArmy().addTroop(new Troop());
+
+        //  view.setTroopsDeployed(numTroops);
+        // view.deploy();
+        for (GameModelListener l : listeners) {
+            l.setTroopsDeployed(numTroops);
+            setStatus(currentPlayer.getName()+" deployed "+numTroops+" troops to "+territory.getName());
+            l.deploy(status);
         }
-      //  view.setTroopsDeployed(numTroops);
-       // view.deploy();
-            if(!(currentPlayer instanceof AIPlayer)) {
-                for (GameModelListener l : listeners) {
-
-                    l.setTroopsDeployed(numTroops);
-                    l.deploy();
-
-                }
-            }
-           currentPlayer.deploy(numTroops, territory);
-            if(currentPlayer instanceof AIPlayer){
-                for(GameModelListener l: listeners){
-                    l.aiDeploy(territory, numTroops);
-                }
-            }
-
+        currentPlayer.deploy(numTroops, territory);
     }
+
 
     /**
      * Attacking phase
@@ -387,18 +368,10 @@ public class GameModel {
      * @param attack the Territory the player is attacking
      * @param numDice the number of dice the attacker is using
      */
-    public boolean attack(Territory attackFrom,Territory attack,int numDice) {
+    public boolean attack(Territory attackFrom, Territory attack, int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
 
-        if (currentPlayer instanceof AIPlayer) {
-            for (GameModelListener l : listeners) {
-                l.aiAttack(status);
-            }
-        } else {
-            for (GameModelListener l : listeners) {
-                l.attack(status);
-            }
-        }
+        currentPlayer.attackPhase(status);
         int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
@@ -410,16 +383,10 @@ public class GameModel {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
-            if(! (currentPlayer instanceof AIPlayer)) {
-                for (GameModelListener l : listeners) {
-                    l.attackWon(attack, currentPlayer.findTroops(attackFrom));
-                }
-                return true;
+            for (GameModelListener l : listeners) {
+                l.attackWon(attack, currentPlayer.findTroops(attackFrom));
             }
-            else
-            {
-                currentPlayer.move(DEPLOY_SINGLE_TROOP,attackFrom,attack);
-            }
+            return true;
         }
         return false;
     }
@@ -492,12 +459,20 @@ public class GameModel {
     public void createPlayers(ArrayList<String> names) {
         for (int i = 0; i < numberOfPlayers; i++) {
             Player player = new Player(names.get(i));
+            for(GameModelListener l:listeners)
+            {
+                player.addListener(l);
+            }
             player.setActive(true);
             addPlayer(player);
         }
         if(numberOfPlayers < MAX_PLAYERS) {
-            AIPlayer ai = new AIPlayer("AI X");
+            AIPlayer ai = new AIPlayer("AI X", this);
             ai.setActive(true);
+            for(GameModelListener l:listeners)
+            {
+                ai.addListener(l);
+            }
             addPlayer(ai);
             setNumberOfPlayers(numberOfPlayers + 1);
         }
@@ -574,12 +549,10 @@ public class GameModel {
     public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
         currentPlayer.move(numTroops, fortifyFrom, fortifyTo);
         setStatus(currentPlayer.getName() + " fortified " + fortifyTo.getName() + " with " + numTroops + " troop(s)");
-
-            for(GameModelListener l : listeners){
-                l.fortify(status);
-            }
-
+        for(GameModelListener l : listeners){
+            l.fortify(status);
         }
+    }
 
 
 
