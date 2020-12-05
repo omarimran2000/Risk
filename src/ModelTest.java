@@ -217,8 +217,6 @@ public class ModelTest{
             {
                 Player occupant = t.getCurrentPlayer();
                 occupant.removeTroops(occupant.findTroops(t),t);
-
-                occupant.getArmy().addTroop(new Troop());
                 occupant.deploy(moveTroops,t);
 
             }
