@@ -354,7 +354,8 @@ public class GameModel {
         // view.deploy();
         for (GameModelListener l : listeners) {
             l.setTroopsDeployed(numTroops);
-            l.deploy();
+            setStatus(currentPlayer.getName()+" deployed "+numTroops+" troops to "+territory.getName());
+            l.deploy(status);
         }
         currentPlayer.deploy(numTroops, territory);
     }

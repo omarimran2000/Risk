@@ -446,7 +446,6 @@ public class GameView extends JFrame implements GameModelListener {
      */
     public void pass()
     {
-        if(!(model.getPlayer() instanceof AIPlayer)) {
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(true);
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
@@ -472,20 +471,20 @@ public class GameView extends JFrame implements GameModelListener {
             textArea.setVisible(true);
 
             continentControl.setText(updateContinent());
-        }
     }
 
     /**
      * method invoked when a player is in the deploy phase
      */
-    public void deploy() {
+    public void deploy(String status) {
+
         if(troopsDeployed == model.getNumberOfTroops()) {
             deployButton.setEnabled(false);
             deployToScrollPane.setVisible(false);
             numTroopsPanel.setVisible(false);
 
             // set up attack phase
-            resetAttackText();
+            setTextArea(status+"\n");
             promptChooseAttackFrom();
             textArea.setVisible(true);
             passButton.setVisible(true);
@@ -508,7 +507,7 @@ public class GameView extends JFrame implements GameModelListener {
             enableAllPlayerButtons();
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             deployToList.setEnabled(false);
-            setTextArea("You have " + troopsLeft + " troops left to deploy");
+            setTextArea(status+"\n"+"You have " + troopsLeft + " troops left to deploy");
         }
     }
 

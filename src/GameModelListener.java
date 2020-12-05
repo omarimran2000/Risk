@@ -4,7 +4,7 @@ public interface GameModelListener {
     void attack(String status);
     void setTroopsDeployed(int numTroops);
     void pass();
-    void deploy();
+    void deploy(String status);
     void attackWon(Territory newTerritory, int numAttackTroops);
     void start();
     void turn(Player p, int numTroops);
