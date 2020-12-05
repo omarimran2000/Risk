@@ -480,6 +480,10 @@ public class GameModel {
         if(numberOfPlayers < MAX_PLAYERS) {
             AIPlayer ai = new AIPlayer("AI X", this);
             ai.setActive(true);
+            for(GameModelListener l:listeners)
+            {
+                ai.addListener(l);
+            }
             addPlayer(ai);
             setNumberOfPlayers(numberOfPlayers + 1);
         }

@@ -69,7 +69,7 @@ public class ModelTest{
         for (Territory t : model.getPlayer().getTerritories()){
             assert (model.getPlayer().findTroops(t) >= 1);
         }
-        assertEquals(model.getPlayer().getArmy().getTroops().size(),35);
+        assertEquals(35,model.getPlayer().getArmy().getTroops().size());
     }
 
     /**

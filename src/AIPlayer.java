@@ -154,7 +154,12 @@ public class AIPlayer extends Player {
      */
     public void deployPhase() {
         Territory deployTerritory = findMinTroops(getTerritories());
-        super.deploy(model.getNumberOfTroops(), deployTerritory);
+        int deployTroops = model.getNumberOfTroops();
+        super.deploy(deployTroops, deployTerritory);
+        for(GameModelListener l:listeners)
+        {
+            l.aiDeploy(deployTerritory,deployTroops);
+        }
         if (checkAvailableAttack()) {
             Territory attackFromTerritory = findMaxTroops(getTerritories());
             Territory attackToTerritory = getAttackTo(attackFromTerritory);
