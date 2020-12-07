@@ -173,7 +173,7 @@ public class GameModel implements Serializable {
 
         if(! theMap.checkValidMap())
         {
-            throw new IOException();
+            throw new IOException("Invalid input");
         }
     }
 
@@ -308,13 +308,13 @@ public class GameModel implements Serializable {
     public void passTurn()
     {
         int temp = 0;
-        System.out.println("help");
-        System.out.println(players.size());
-        System.out.println(currentPlayer.getArmy().getTroops().size());
-        System.out.println(players.get(0).getArmy().getTroops().size());
-        System.out.println(players.get(0).getArmy().equals(currentPlayer.getArmy()));
-        System.out.println(players.get(0).getName());
-        System.out.println(players.get(0).equals(currentPlayer));
+        //System.out.println("help");
+        //System.out.println(players.size());
+       // System.out.println(currentPlayer.getArmy().getTroops().size());
+        //System.out.println(players.get(0).getArmy().getTroops().size());
+        //System.out.println(players.get(0).getArmy().equals(currentPlayer.getArmy()));
+        //System.out.println(players.get(0).getName());
+        //System.out.println(players.get(0).equals(currentPlayer));
         for (int i=0;i<players.size();i++) //find index of current player
         {
             if(players.get(i).equals(currentPlayer))

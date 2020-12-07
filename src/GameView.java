@@ -189,16 +189,27 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
      */
     public void setUpMap() throws IOException, ParseException {
         JOptionPane.showMessageDialog(null,"Please choose a JSON map now");
-        JFileChooser chooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
         int approve = 1;
-
-        while (approve != chooser.APPROVE_OPTION)
+        fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
+        FileFilter fileFilter = new FileNameExtensionFilter("Text files", "json"); // only JSON files
+        fileChooser.addChoosableFileFilter(fileFilter);
+        fileChooser.setFileFilter(fileFilter);
+        fileChooser.setMultiSelectionEnabled(false); // only one file
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // no folders
+        while (approve != fileChooser.APPROVE_OPTION)
         {
             File currentDir = new File(System.getProperty("user.dir"));
-            chooser.setCurrentDirectory(currentDir);
-            approve = chooser.showOpenDialog(null);
+            fileChooser.setCurrentDirectory(currentDir);
+            approve = fileChooser.showOpenDialog(null);
         }
-        model.loadMap(chooser.getSelectedFile().getAbsolutePath());
+        try {
+            model.loadMap(fileChooser.getSelectedFile().getAbsolutePath());
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(null,ex);
+            this.dispose();
+        }
         for(TerritoryButton tb:territoryButtons) {
             tb.setEnabled(false);
             contentPane.add(tb);
@@ -970,6 +981,8 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         fileChooser.setMultiSelectionEnabled(false); // only one file
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // no folders
         fileChooser.setControlButtonsAreShown(false);
+        File currentDir = new File(System.getProperty("user.dir"));
+        fileChooser.setCurrentDirectory(currentDir);
 
 
         fileChooser.showOpenDialog(this);
