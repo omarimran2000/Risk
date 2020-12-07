@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +20,7 @@ import java.util.ArrayList;
  *
  * @version October 25 2020
  */
-public class GameController implements ActionListener {
+public class GameController implements ActionListener, Serializable {
 
     private GameModel model;
     private GameView view;
@@ -97,34 +99,54 @@ public class GameController implements ActionListener {
                 passAttackButtonAction();
             }
 
-            else if (buttonPressed.equals(view.getSaveButton())){
-                saveButtonAction();
-            } //m4
-
-            else if (buttonPressed.equals(view.getLoadButton())){
-                loadButtonAction();
-            } //m4
 
             else if (buttonPressed.equals((view.getCustomMapButton()))){
                 customMapButtonAction();
             } //m4
         }
+        else if(e.getSource() instanceof JMenuItem){
+            JMenuItem menuItem = (JMenuItem) e.getSource();
+            if(menuItem.equals(view.getSaveMenuItem())){
+                saveMenuItemAction();
+            } else if(menuItem.equals(view.getLoadGameMenuItem())){
+                loadMenuItemAction();
+            }
+        } // m4
     }
 
-    /**
-     * Action for when saveButton is clicked
-     * Saves the state of the game in a file
-     */
-    private void saveButtonAction() {
-        model.saveGame();
-    } //m4
 
     /**
-     * Action for when loadButton is clicked
+     * Action for when save menu item
+     * is clicked
+     * Saves a game to a file
+     */
+    private void saveMenuItemAction(){
+
+        String filename = view.saveGame();
+        model.saveGame(filename);
+
+
+
+    } //m4
+
+
+
+    /**
+     * Action for when load menu item is clicked
      * Loads a saved game from a file
      */
-    private void loadButtonAction() {
-        model.loadGame(file);
+    private void loadMenuItemAction() {
+
+
+       String filename = view.loadGame();
+       view.setVisible(false);
+       model.loadGame(filename);
+
+
+
+
+
+
     } //m4
 
     /**
@@ -132,8 +154,8 @@ public class GameController implements ActionListener {
      * Loads a custom map
      */
     private void customMapButtonAction() {
-        getChosenMap();
-        model.loadMap(file);
+        //getChosenMap();
+       // model.loadMap(file);
     } //m4
 
     /**
@@ -255,35 +277,6 @@ public class GameController implements ActionListener {
         if(model.playersActive())
         {
             model.passTurn();
-
-            if(!(model.getPlayer() instanceof AIPlayer)) {
-                view.pass();
-            }else {
-                while (model.getPlayer() instanceof AIPlayer) {
-                    AIPlayer ai = (AIPlayer) model.getPlayer();
-                    deployTerritory = ai.findMinTroops(ai.getTerritories());
-                    model.deploy(deployTerritory, model.getNumberOfTroops());
-                    if (ai.checkAvailableAttack()) {
-                        attackFromTerritory = ai.findMaxTroops(ai.getTerritories());
-                        attackToTerritory = ai.getAttackTo(attackFromTerritory);
-                        int dice = ai.getNumDice(attackFromTerritory);
-                        //view.getNumDice().setValue(dice);
-                        model.attack(attackFromTerritory, attackToTerritory, dice);
-                    }
-                    if(ai.checkAvailableFortify())
-                    {
-                        model.fortify(ai.AI_FORTIFY,ai.getFortifyFromTerritory(), ai.getFortifyToTerritory(ai.getFortifyFromTerritory()));
-                    }
-
-                    if (model.checkGameOver()) {
-                        view.gameOver(model.getWinner());
-                    }
-
-                    model.passTurn();
-                    view.pass();
-                }
-            }
-            view.pass();
             model.setPhase(GameModel.Phase.DEPLOY);
         } else //no players active i.e. game is done
         {
@@ -408,4 +401,5 @@ public class GameController implements ActionListener {
             JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
         }
     }
+
 }

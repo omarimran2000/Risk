@@ -4,9 +4,10 @@
  * @author Omar Imran
  * @date October 13 2020
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Map {
+public class Map implements Serializable {
     private String name;
     private ArrayList<Continent> continents;
     private String filePath;

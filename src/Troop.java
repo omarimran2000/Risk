@@ -1,10 +1,12 @@
+import java.io.Serializable;
+
 /**
  * Troop class for each member of a player's army
  *
  * @author Wintana Yosief
  * @version  October 15, 2020
  */
-public class Troop {
+public class Troop implements Serializable {
     private Territory location;
     private boolean deployed;
 

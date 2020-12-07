@@ -11,15 +11,16 @@ import java.util.ArrayList;
  * @version October 17, 2020
  *
  */
-public class Player implements Serializable {
+public class Player implements Serializable  {
 
     private String name;
     private boolean active;
-    private Dice die;
-    private int [] diceRolls;
+     private Dice die;
+     private int [] diceRolls;
     protected Army army;
     private List<Continent> continents;
     protected List<Territory> territories;
+    protected ArrayList<GameModelListener> listeners;
 
 
     /**
@@ -34,6 +35,7 @@ public class Player implements Serializable {
         territories = new ArrayList<>();
         die = new Dice();
         diceRolls = new int[3];
+        listeners = new ArrayList<>();
     }
 
     /**
@@ -53,6 +55,16 @@ public class Player implements Serializable {
      */
     public boolean isActive(){
         return active;
+    }
+
+    /**
+     * Add a GameModelListener
+     *
+     * @param l the GameModelListener
+     */
+    public void addListener(GameModelListener l)
+    {
+        listeners.add(l);
     }
 
     /**
@@ -136,6 +148,7 @@ public class Player implements Serializable {
         }
         territories.remove(deletedTerritory);
     }
+
     /**
      * Gets the territories the player owns
      *
@@ -209,14 +222,15 @@ public class Player implements Serializable {
      * @param deployment The territory the troops go
      */
     public void deploy(int numberOfTroops, Territory deployment){
+        for (int i = 0; i < numberOfTroops; i++) {
+            getArmy().addTroop(new Troop());
+        }
         List<Troop> troops = army.getTroops();
-        int count = 0;
-        while(count < numberOfTroops){
+        for (int count = 0; count < numberOfTroops; count++){
             for(Troop troop: troops){
                 if(!troop.isDeployed()) {
                     troop.setDeployed(true);
                     troop.setLocation(deployment);
-                    count += 1;
                 }
             }
 
@@ -300,6 +314,23 @@ public class Player implements Serializable {
         return false;
     }
 
+    /**
+     *  sets up the view for the deploy phase
+     */
+    public void deployPhase() {
+        for (GameModelListener l: listeners) {
+            l.pass();
+        }
+    }
+    /**
+     *  Sets up the attack win phase for view
+     * @param status is the status
+     */
+    public void attackPhase(String status){
+        for (GameModelListener l : listeners) {
+            l.attack(status);
+        }
+    }
 }
 
 

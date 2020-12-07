@@ -1,7 +1,7 @@
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-import javax.swing.DefaultListModel;
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,12 @@ import java.util.Random;
 public class GameModel implements Serializable {
 
     private final Map theMap;
-    private static List<Player> players;
-    private static int numberOfPlayers;
+    //private static List<Player> players;
+    //private static int numberOfPlayers;
+    private List<Player> players;
+    private int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
-    private final static int DEPLOY_SINGLE_TROOP = 1;
+    public final static int DEPLOY_SINGLE_TROOP = 1;
     public final static int[] DICE = {1, 2, 3};
     private final static int MAX_PLAYERS = 6;
     private ArrayList<GameModelListener> listeners;
@@ -33,7 +35,7 @@ public class GameModel implements Serializable {
     private String status;
     private final int MIN_DEPLOY_TROOPS = 3;
     private final int DEPLOY_TERRITORY_DIVISOR = 3;
-    public enum Phase {DEPLOY, ATTACK, FORTIFY};
+    public enum Phase {DEPLOY, ATTACK, FORTIFY}
     private Phase phase;
 
     public GameModel() {
@@ -47,7 +49,11 @@ public class GameModel implements Serializable {
      *
      * @param player the player to be added
      */
-    public static void addPlayer(Player player) {
+    //public static void addPlayer(Player player) {
+    //    players.add(player);
+    //}
+
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
@@ -115,17 +121,7 @@ public class GameModel implements Serializable {
                 attacker.removeTroops(LOSE_TROOP, attackFrom);
                 setStatus(attacker.getName() + " lost one troop");
             }
-
-            if(attacker instanceof AIPlayer){
-                for(GameModelListener l: listeners){
-                    l.aiAttack(status);
-                }
-            } else {
-
-                for (GameModelListener l : listeners) {
-                    l.attack(status);
-                }
-            }
+            attacker.attackPhase(status);
         }
         if (defender.findTroops(territory) == 0) {
             defender.removeTerritory(territory);
@@ -265,6 +261,7 @@ public class GameModel implements Serializable {
 
             tempPlayer.addTerritory(tempTerritory);
             tempTerritory.setCurrentPlayer(tempPlayer);
+
         }
     }
 
@@ -282,14 +279,14 @@ public class GameModel implements Serializable {
             int armiesCount = num_armies;
             for (Territory t : p.getTerritories()) //puts one army in every territory owned by player
             {
-                p.getArmy().addTroop(new Troop());
+                //p.getArmy().addTroop(new Troop());
                 p.deploy(DEPLOY_SINGLE_TROOP, t);
                 armiesCount--;
             }
             while(armiesCount!=0)
             {
                 int index = random.nextInt(p.getTerritories().size());
-                p.getArmy().addTroop(new Troop());
+                //p.getArmy().addTroop(new Troop());
                 p.deploy(DEPLOY_SINGLE_TROOP, p.getTerritories().get(index));
                 armiesCount--;
             }
@@ -311,6 +308,13 @@ public class GameModel implements Serializable {
     public void passTurn()
     {
         int temp = 0;
+        System.out.println("help");
+        System.out.println(players.size());
+        System.out.println(currentPlayer.getArmy().getTroops().size());
+        System.out.println(players.get(0).getArmy().getTroops().size());
+        System.out.println(players.get(0).getArmy().equals(currentPlayer.getArmy()));
+        System.out.println(players.get(0).getName());
+        System.out.println(players.get(0).equals(currentPlayer));
         for (int i=0;i<players.size();i++) //find index of current player
         {
             if(players.get(i).equals(currentPlayer))
@@ -324,6 +328,7 @@ public class GameModel implements Serializable {
             if(players.get(i).isActive())
             {
                 currentPlayer = players.get(i);
+                currentPlayer.deployPhase();
                 return;
             }
             if(i==players.size()-1)
@@ -357,22 +362,17 @@ public class GameModel implements Serializable {
      * @param numTroops The number of troops to be deployed
      */
     public void deploy(Territory territory, int numTroops) {
-        for (int i = 0; i < numTroops; i++) {
-            currentPlayer.getArmy().addTroop(new Troop());
+
+        //  view.setTroopsDeployed(numTroops);
+        // view.deploy();
+        for (GameModelListener l : listeners) {
+            l.setTroopsDeployed(numTroops);
+            setStatus(currentPlayer.getName()+" deployed "+numTroops+" troops to "+territory.getName());
+            l.deploy(status);
         }
-        if(!(currentPlayer instanceof AIPlayer)) {
-            for (GameModelListener l : listeners) {
-                l.setTroopsDeployed(numTroops);
-                l.deploy();
-                }
-            }
         currentPlayer.deploy(numTroops, territory);
-        if(currentPlayer instanceof AIPlayer){
-            for(GameModelListener l: listeners){
-                l.aiDeploy(territory, numTroops);
-            }
-        }
     }
+
 
     /**
      * Attacking phase
@@ -381,18 +381,10 @@ public class GameModel implements Serializable {
      * @param attack the Territory the player is attacking
      * @param numDice the number of dice the attacker is using
      */
-    public boolean attack(Territory attackFrom,Territory attack,int numDice) {
+    public boolean attack(Territory attackFrom, Territory attack, int numDice) {
         setStatus(currentPlayer.getName() + " attacked " + attack.getName() + " from " + attackFrom.getName());
 
-        if (currentPlayer instanceof AIPlayer) {
-            for (GameModelListener l : listeners) {
-                l.aiAttack(status);
-            }
-        } else {
-            for (GameModelListener l : listeners) {
-                l.attack(status);
-            }
-        }
+        currentPlayer.attackPhase(status);
         int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
@@ -404,16 +396,10 @@ public class GameModel implements Serializable {
         defender.rollDice(numDefendDice);
 
         if (checkWinner(currentPlayer, defender, numDefendDice, attack, attackFrom)) {
-            if(! (currentPlayer instanceof AIPlayer)) {
-                for (GameModelListener l : listeners) {
-                    l.attackWon(attack, currentPlayer.findTroops(attackFrom));
-                }
-                return true;
+            for (GameModelListener l : listeners) {
+                l.attackWon(attack, currentPlayer.findTroops(attackFrom));
             }
-            else
-            {
-                currentPlayer.move(DEPLOY_SINGLE_TROOP,attackFrom,attack);
-            }
+            return true;
         }
         return false;
     }
@@ -486,15 +472,24 @@ public class GameModel implements Serializable {
     public void createPlayers(ArrayList<String> names) {
         for (int i = 0; i < numberOfPlayers; i++) {
             Player player = new Player(names.get(i));
+            for(GameModelListener l:listeners)
+            {
+                player.addListener(l);
+            }
             player.setActive(true);
             addPlayer(player);
         }
         if(numberOfPlayers < MAX_PLAYERS) {
-            AIPlayer ai = new AIPlayer("AI X");
+            AIPlayer ai = new AIPlayer("AI X", this);
             ai.setActive(true);
+            for(GameModelListener l:listeners)
+            {
+                ai.addListener(l);
+            }
             addPlayer(ai);
             setNumberOfPlayers(numberOfPlayers + 1);
         }
+
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
@@ -503,6 +498,7 @@ public class GameModel implements Serializable {
             l.start();
             l.turn(currentPlayer, getNumberOfTroops());
         }
+
     }
 
     /**
@@ -553,7 +549,11 @@ public class GameModel implements Serializable {
      * Getter function for players
      * @return all the players
      */
-    public static List<Player> getPlayers() {
+   // public static List<Player> getPlayers() {
+   //     return players;
+   // }
+
+    public List<Player> getPlayers(){
         return players;
     }
 
@@ -566,11 +566,13 @@ public class GameModel implements Serializable {
     public void fortify(int numTroops, Territory fortifyFrom, Territory fortifyTo){
         currentPlayer.move(numTroops, fortifyFrom, fortifyTo);
         setStatus(currentPlayer.getName() + " fortified " + fortifyTo.getName() + " with " + numTroops + " troop(s)");
-
-            for(GameModelListener l : listeners){
-                l.fortify(status);
-            }
+        for(GameModelListener l : listeners){
+            l.fortify(status);
         }
+    }
+
+
+
 
     /**
      * Checks to see if a player is able to fortify
@@ -593,7 +595,7 @@ public class GameModel implements Serializable {
      * The phases of a turn are Deploy, Attack and Fortify
      * @param phase The current phase of the game
      */
-    public void setPhase(GameModel.Phase phase){
+    public void setPhase(Phase phase){
         this.phase = phase;
     }
 
@@ -604,4 +606,63 @@ public class GameModel implements Serializable {
     public Phase getPhase(){
         return phase;
     }
+
+
+    /**
+     * Saves the game model to a file
+     *
+     * @param filename The name of the file
+     */
+    public void saveGame(String filename){
+        if(filename.isEmpty()){
+            return;
+        }
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename));
+            outputStream.writeObject(this);
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads a game model from a serialized file
+     *
+     * @param filename The name of the serialized file
+     */
+    public void loadGame(String filename){
+        if(filename.isEmpty()){
+            return;
+        }
+        try{
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename));
+            GameModel model = (GameModel) inputStream.readObject();
+
+
+            this.players = model.players;
+            this.currentPlayer = model.currentPlayer;
+            this.numberOfPlayers = model.numberOfPlayers;
+            this.phase = model.phase;
+            this.status = model.status;
+
+            for(GameModelListener ml: model.listeners){
+                 ml.restoreView(this.phase, this.status);
+            }
+             inputStream.close();
+
+
+
+        } catch (ClassNotFoundException | IOException e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
 }
