@@ -1,6 +1,7 @@
 import org.json.simple.parser.ParseException;
 import org.junit.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -49,7 +50,6 @@ public class ModelTest{
     @After
     public void tearDown()
     {
-        //view = null;
         model = null;
     }
 
@@ -320,5 +320,21 @@ public class ModelTest{
         incorrectContinent.addTerritories(t4);
         incorrectMap.addContinents(incorrectContinent);
         assertFalse(incorrectMap.checkValidMap());
+    }
+    /**
+     * Tests to see if load/save feature works
+     */
+    @Test
+    public void testLoadSaveGame()
+    {
+        model.saveGame("test.ser");
+        File file = new File("test.ser");
+        assertTrue(file.exists());
+
+        GameModel newModel = new GameModel();
+        newModel.loadGame("test.ser");
+        assertEquals(model.getPlayer().getName(),newModel.currentPlayer.getName());
+        assertEquals(3,newModel.getNumberOfPlayers());
+        assertEquals("Global",newModel.getTheMap().getName());
     }
 }
