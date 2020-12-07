@@ -35,7 +35,7 @@ public class GameModel implements Serializable {
     private String status;
     private final int MIN_DEPLOY_TROOPS = 3;
     private final int DEPLOY_TERRITORY_DIVISOR = 3;
-    public enum Phase {DEPLOY, ATTACK, FORTIFY};
+    public enum Phase {DEPLOY, ATTACK, FORTIFY}
     private Phase phase;
 
     public GameModel() {
