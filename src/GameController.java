@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -98,13 +99,6 @@ public class GameController implements ActionListener, Serializable {
                 passAttackButtonAction();
             }
 
-            else if (buttonPressed.equals(view.getSaveButton())){
-                saveButtonAction();
-            } //m4
-
-            else if (buttonPressed.equals(view.getLoadButton())){
-                loadButtonAction();
-            } //m4
 
             else if (buttonPressed.equals((view.getCustomMapButton()))){
                 customMapButtonAction();
@@ -115,22 +109,22 @@ public class GameController implements ActionListener, Serializable {
             if(menuItem.equals(view.getSaveMenuItem())){
                 saveMenuItemAction();
             } else if(menuItem.equals(view.getLoadGameMenuItem())){
-                loadButtonAction();
+                loadMenuItemAction();
             }
         } // m4
     }
 
+
     /**
-     * Action for when saveButton is clicked
-     * Saves the state of the game in a file
+     * Action for when save menu item
+     * is clicked
+     * Saves a game to a file
      */
-    private void saveButtonAction() {
-     //   model.saveGame();
-    } //m4
-
     private void saveMenuItemAction(){
-        view.saveGame();
-        view.getLoadGameMenuItem().setEnabled(true);
+
+        String filename = view.saveGame();
+        model.saveGame(filename);
+
 
 
     } //m4
@@ -138,12 +132,20 @@ public class GameController implements ActionListener, Serializable {
 
 
     /**
-     * Action for when loadButton is clicked
+     * Action for when load menu item is clicked
      * Loads a saved game from a file
      */
-    private void loadButtonAction() {
-        view = view.loadGame();
-        view.setVisible(true);
+    private void loadMenuItemAction() {
+
+
+       String filename = view.loadGame();
+       view.setVisible(false);
+       model.loadGame(filename);
+
+
+
+
+
 
     } //m4
 
@@ -399,4 +401,5 @@ public class GameController implements ActionListener, Serializable {
             JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
         }
     }
+
 }

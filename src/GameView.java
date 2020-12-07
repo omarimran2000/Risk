@@ -2,6 +2,8 @@ import org.json.simple.parser.ParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
  *
  * @version October 25 2020
  */
-public class GameView extends JFrame implements GameModelListener {
+public class GameView extends JFrame implements GameModelListener, Serializable {
 
     private GameModel model;
     private JList attackFromList;
@@ -30,8 +32,6 @@ public class GameView extends JFrame implements GameModelListener {
     private JButton quitButton;
     private JButton fortifyButton;
     private JButton passAttackButton;
-    private JButton saveButton; //m4
-    private JButton loadButton; //m4
     private JButton customMapButton; //m4
     private ArrayList<TerritoryButton> territoryButtons;
 
@@ -58,7 +58,7 @@ public class GameView extends JFrame implements GameModelListener {
     private int troopsDeployed;
     private final int frameSizeX = 1200;
     private final int frameSizeY = 750;
-    private ArrayList<TerritoryButton> territoryButtons;
+
     private boolean chosenAttack;
     private boolean chooseDeploy;
     private boolean chosenFortifyTo; // m3
@@ -70,7 +70,7 @@ public class GameView extends JFrame implements GameModelListener {
      * @throws IOException
      * @throws ParseException
      */
-    public GameView() throws IOException, ParseException {
+    public GameView()  {
         super("Risk Game");
         model = new GameModel();
         controller = new GameController(model, this);
@@ -177,7 +177,7 @@ public class GameView extends JFrame implements GameModelListener {
 
         troopsDeployed = 0;
 
-        this.setResizable(false);
+      //  this.setResizable(false);
         this.setSize(frameSizeX,frameSizeY);
     }
 
@@ -301,23 +301,10 @@ public class GameView extends JFrame implements GameModelListener {
         return passAttackButton;
     }
 
-    /**
-     * getter method for saveButton
-     *
-     * @return saveButton
-     */
-    public JButton getSaveButton() {
-        return saveButton;
-    } //m4
 
-    /**
-     * getter method for loadButton
-     *
-     * @return loadButton
-     */
-    public JButton getLoadButton() {
-        return loadButton;
-    } //m4
+
+
+
 
     /**
      * getter method for customMapButton
@@ -539,7 +526,7 @@ public class GameView extends JFrame implements GameModelListener {
 
             continentControl.setText(updateContinent());
         }
-    }
+
 
     /**
      * method invoked when a player is in the deploy phase
@@ -941,25 +928,82 @@ public class GameView extends JFrame implements GameModelListener {
         }
     }
 
-    public void saveGame() {
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("Game.ser"));
-            outputStream.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
+    /**
+     * Generates input dialog to select a filename
+     *
+     * @return The file path
+     */
+    public String saveGame(){
+        boolean approve = false;
+        String filename = "";
+        while(!approve){
+            filename = JOptionPane.showInputDialog(this, "Enter a filename with extension .ser");
+            if(filename.endsWith(".ser")){
+                approve = true;
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid filename");
+            }
+
         }
+        JOptionPane.showMessageDialog(this, "Game saved.");
+        return filename;
+
+
     }
 
-    public GameView loadGame(){
-        try {
-            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("Game.ser"));
-            return (GameView) inputStream.readObject();
-        } catch (ClassNotFoundException | IOException e) {
+    /**
+     * Generates a file chooser for
+     * selecting a file
+     *
+     * @return The chosen filepath
+     */
+    public String loadGame() {
 
-            e.printStackTrace();
-        }
-        return null;
+
+
+        JOptionPane.showMessageDialog(this, "Select a serialized game file");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
+        FileFilter fileFilter = new FileNameExtensionFilter("Text files", "ser"); // only serialized files
+        fileChooser.addChoosableFileFilter(fileFilter);
+        fileChooser.setFileFilter(fileFilter);
+        fileChooser.setMultiSelectionEnabled(false); // only one file
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // no folders
+        fileChooser.setControlButtonsAreShown(false);
+
+
+        fileChooser.showOpenDialog(this);
+        File gameFile = fileChooser.getSelectedFile();
+        return gameFile.getAbsolutePath();
+
     }
+
+    /**
+     * Restores the view from the serialized file
+     *
+     * @param phase The saved phase
+     * @param status The saved status
+     */
+    public void restoreView(GameModel.Phase phase, String status){
+
+
+        if(phase.equals(GameModel.Phase.ATTACK)){
+            attack(status);
+
+
+        } else if(phase.equals(GameModel.Phase.DEPLOY)){
+            deploy(status);
+
+
+        } else if(phase.equals(GameModel.Phase.FORTIFY)){
+            fortify(status);
+
+        }
+        setVisible(true);
+
+    }
+
+
 
 
 
