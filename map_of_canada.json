@@ -1,0 +1,172 @@
+{
+  "continents": {
+    "East": {
+      "territories": {
+        "Ontario": {
+          "adjacent": [
+            "Manitoba",
+            "Quebec",
+            "Nunavut"
+          ],
+          "coordinates": {
+            "x": 636,
+            "y": 554
+          }
+        },
+        "Quebec": {
+          "adjacent": [
+            "Ontario",
+            "New Brunswick",
+            "Nova Scotia",
+            "Prince Edward Island",
+            "Newfoundland and Labrador",
+            "Nunavut"
+          ],
+          "coordinates": {
+            "x": 825,
+            "y": 591
+          }
+        },
+        "New Brunswick": {
+          "adjacent": [
+            "Quebec",
+            "Nova Scotia",
+            "Prince Edward Island"
+          ],
+          "coordinates": {
+            "x": 960,
+            "y": 592
+          }
+        },
+        "Nova Scotia": {
+          "adjacent": [
+            "Prince Edward Island",
+            "New Brunswick",
+            "Newfoundland and Labrador",
+            "Quebec"
+          ],
+          "coordinates": {
+            "x": 1025,
+            "y": 609
+          }
+        },
+        "Prince Edward Island": {
+          "adjacent": [
+            "Nova Scotia",
+            "New Brunswick",
+            "Newfoundland and Labrador",
+            "Quebec"
+          ],
+          "coordinates": {
+            "x": 1004,
+            "y": 566
+          }
+        },
+        "Newfoundland and Labrador": {
+          "adjacent": [
+            "Quebec",
+            "Nunavut",
+            "Prince Edward Island",
+            "Nova Scotia"
+          ],
+          "coordinates": {
+            "x": 948,
+            "y": 443
+          }
+        }
+      },
+      "points": 5
+    },
+      "West": {
+        "territories": {
+          "British Columbia": {
+            "adjacent": [
+              "Alberta",
+              "Yukon",
+              "Northwest Territories"
+            ],
+            "coordinates": {
+              "x": 120,
+              "y": 504
+            }
+          },
+          "Alberta": {
+            "adjacent": [
+              "British Columbia",
+              "Northwest Territories",
+              "Saskatchewan"
+            ],
+            "coordinates": {
+              "x": 238,
+              "y": 526
+            }
+          },
+          "Saskatchewan": {
+            "adjacent": [
+              "Manitoba",
+              "Northwest Territories",
+              "Alberta"
+            ],
+            "coordinates": {
+              "x": 366,
+              "y": 561
+            }
+          },
+          "Manitoba": {
+            "adjacent": [
+              "Ontario",
+              "Nunavut",
+              "Saskatchewan"
+            ],
+            "coordinates": {
+              "x": 461,
+              "y": 563
+            }
+          }
+        },
+        "points": 4
+      },
+      "North": {
+        "territories": {
+          "Yukon": {
+            "adjacent": [
+              "Northwest Territories",
+              "British Columbia"
+            ],
+            "coordinates": {
+              "x": 109,
+              "y": 308
+            }
+          },
+          "Northwest Territories": {
+            "adjacent": [
+              "Yukon",
+              "British Columbia",
+              "Nunavut",
+              "Saskatchewan",
+              "Alberta"
+            ],
+            "coordinates": {
+              "x": 350,
+              "y": 383
+            }
+          },
+          "Nunavut": {
+            "adjacent": [
+              "Manitoba",
+              "Northwest Territories",
+              "Quebec",
+              "Ontario",
+              "Newfoundland and Labrador"
+            ],
+            "coordinates": {
+              "x": 487,
+              "y": 357
+            }
+          }
+        },
+        "points": 3
+      }
+  },
+  "filepath": "map_of_canada.png"
+}
