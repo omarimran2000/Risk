@@ -1,7 +1,7 @@
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-import javax.swing.DefaultListModel;
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,13 @@ import java.util.Random;
  *
  * @version October 25 2020
  */
-public class GameModel {
+public class GameModel implements Serializable {
 
     private final Map theMap;
-    private static List<Player> players;
-    private static int numberOfPlayers;
+    //private static List<Player> players;
+    //private static int numberOfPlayers;
+    private List<Player> players;
+    private int numberOfPlayers;
     private final static int LOSE_TROOP = 1;
     public final static int DEPLOY_SINGLE_TROOP = 1;
     public final static int[] DICE = {1, 2, 3};
@@ -33,7 +35,7 @@ public class GameModel {
     private String status;
     private final int MIN_DEPLOY_TROOPS = 3;
     private final int DEPLOY_TERRITORY_DIVISOR = 3;
-    public enum Phase {DEPLOY, ATTACK, FORTIFY};
+    public enum Phase {DEPLOY, ATTACK, FORTIFY}
     private Phase phase;
 
     public GameModel() {
@@ -47,7 +49,11 @@ public class GameModel {
      *
      * @param player the player to be added
      */
-    public static void addPlayer(Player player) {
+    //public static void addPlayer(Player player) {
+    //    players.add(player);
+    //}
+
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
@@ -302,6 +308,13 @@ public class GameModel {
     public void passTurn()
     {
         int temp = 0;
+        System.out.println("help");
+        System.out.println(players.size());
+        System.out.println(currentPlayer.getArmy().getTroops().size());
+        System.out.println(players.get(0).getArmy().getTroops().size());
+        System.out.println(players.get(0).getArmy().equals(currentPlayer.getArmy()));
+        System.out.println(players.get(0).getName());
+        System.out.println(players.get(0).equals(currentPlayer));
         for (int i=0;i<players.size();i++) //find index of current player
         {
             if(players.get(i).equals(currentPlayer))
@@ -536,7 +549,11 @@ public class GameModel {
      * Getter function for players
      * @return all the players
      */
-    public static List<Player> getPlayers() {
+   // public static List<Player> getPlayers() {
+   //     return players;
+   // }
+
+    public List<Player> getPlayers(){
         return players;
     }
 
@@ -589,4 +606,63 @@ public class GameModel {
     public Phase getPhase(){
         return phase;
     }
+
+
+    /**
+     * Saves the game model to a file
+     *
+     * @param filename The name of the file
+     */
+    public void saveGame(String filename){
+        if(filename.isEmpty()){
+            return;
+        }
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename));
+            outputStream.writeObject(this);
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads a game model from a serialized file
+     *
+     * @param filename The name of the serialized file
+     */
+    public void loadGame(String filename){
+        if(filename.isEmpty()){
+            return;
+        }
+        try{
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename));
+            GameModel model = (GameModel) inputStream.readObject();
+
+
+            this.players = model.players;
+            this.currentPlayer = model.currentPlayer;
+            this.numberOfPlayers = model.numberOfPlayers;
+            this.phase = model.phase;
+            this.status = model.status;
+
+            for(GameModelListener ml: model.listeners){
+                 ml.restoreView(this.phase, this.status);
+            }
+             inputStream.close();
+
+
+
+        } catch (ClassNotFoundException | IOException e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
 }

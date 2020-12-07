@@ -5,9 +5,10 @@
  * @date October 13 2020
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Continent {
+public class Continent implements Serializable {
 
     private String name;
     private ArrayList<Territory> territories;

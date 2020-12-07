@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author Wintana Yosief
  */
-public class Army {
+public class Army implements Serializable {
 
     private List<Troop> troops;
 

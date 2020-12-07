@@ -1,0 +1,41 @@
+{
+  "continents": {
+    "Europe": {
+      "territories": {
+        "Spain": {
+          "adjacent": [
+            "Germany"
+          ]
+        },
+        "France": {
+          "adjacent": [
+          ]
+        },
+        "Germany": {
+          "adjacent": [
+            "Canada",
+            "Spain"
+          ]
+        }
+      },
+      "points": 2
+    },
+    "North America": {
+      "territories": {
+        "Canada": {
+          "adjacent": [
+            "Germany",
+            "USA"
+          ]
+        },
+        "USA": {
+          "adjacent": [
+            "Canada"
+          ]
+        }
+      },
+      "points": 2
+    }
+  },
+  "filepath": "map.png"
+}
