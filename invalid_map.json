@@ -5,17 +5,30 @@
         "Spain": {
           "adjacent": [
             "Germany"
-          ]
+          ],
+          "coordinates": {
+            "x": 862,
+            "y": 505
+          }
         },
         "France": {
           "adjacent": [
-          ]
+            "Germany"
+          ],
+          "coordinates": {
+            "x": 200,
+            "y": 200
+          }
         },
         "Germany": {
           "adjacent": [
             "Canada",
             "Spain"
-          ]
+          ],
+          "coordinates": {
+            "x": 20,
+            "y": 100
+          }
         }
       },
       "points": 2
@@ -26,16 +39,24 @@
           "adjacent": [
             "Germany",
             "USA"
-          ]
+          ],
+          "coordinates": {
+            "x": 862,
+            "y": 505
+          }
         },
         "USA": {
           "adjacent": [
             "Canada"
-          ]
+          ],
+          "coordinates": {
+            "x": 130,
+            "y": 222
+          }
         }
       },
       "points": 2
     }
   },
-  "filepath": "map.png"
+  "filepath": "map.jpg"
 }
