@@ -9,7 +9,7 @@
             "Nunavut"
           ],
           "coordinates": {
-            "x":636,
+            "x": 636,
             "y": 554
           }
         },
@@ -23,8 +23,8 @@
             "Nunavut"
           ],
           "coordinates": {
-            "x":825,
-            "y":591
+            "x": 825,
+            "y": 591
           }
         },
         "New Brunswick": {
@@ -46,8 +46,8 @@
             "Quebec"
           ],
           "coordinates": {
-            "x":1025,
-            "y":609
+            "x": 1025,
+            "y": 609
           }
         },
         "Prince Edward Island": {
@@ -58,8 +58,8 @@
             "Quebec"
           ],
           "coordinates": {
-            "x":1004,
-            "y":566
+            "x": 1004,
+            "y": 566
           }
         },
         "Newfoundland and Labrador": {
@@ -70,12 +70,13 @@
             "Nova Scotia"
           ],
           "coordinates": {
-            "x":948,
-            "y":443
+            "x": 948,
+            "y": 443
           }
-        },
-        "points": 5
+        }
       },
+      "points": 5
+    },
       "West": {
         "territories": {
           "British Columbia": {
@@ -85,8 +86,8 @@
               "Northwest Territories"
             ],
             "coordinates": {
-              "x":120,
-              "y":504
+              "x": 120,
+              "y": 504
             }
           },
           "Alberta": {
@@ -96,8 +97,8 @@
               "Saskatchewan"
             ],
             "coordinates": {
-              "x":238,
-              "y":526
+              "x": 238,
+              "y": 526
             }
           },
           "Saskatchewan": {
@@ -107,8 +108,8 @@
               "Alberta"
             ],
             "coordinates": {
-              "x":366,
-              "y":561
+              "x": 366,
+              "y": 561
             }
           },
           "Manitoba": {
@@ -118,8 +119,8 @@
               "Saskatchewan"
             ],
             "coordinates": {
-              "x":461,
-              "y":563
+              "x": 461,
+              "y": 563
             }
           }
         },
@@ -133,8 +134,8 @@
               "British Columbia"
             ],
             "coordinates": {
-              "x":109,
-              "y":308
+              "x": 109,
+              "y": 308
             }
           },
           "Northwest Territories": {
@@ -146,8 +147,8 @@
               "Alberta"
             ],
             "coordinates": {
-              "x":350,
-              "y":383
+              "x": 350,
+              "y": 383
             }
           },
           "Nunavut": {
@@ -159,14 +160,13 @@
               "Newfoundland and Labrador"
             ],
             "coordinates": {
-              "x":487,
-              "y":357
+              "x": 487,
+              "y": 357
             }
           }
-        }
-      },
-      "points": 3
-    },
-    "filepath": "map_of_canada.png"
-  }
+        },
+        "points": 3
+      }
+  },
+  "filepath": "map_of_canada.png"
 }
