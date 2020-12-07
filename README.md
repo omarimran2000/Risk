@@ -1,4 +1,4 @@
-# *RISK* Milestone 3
+# *RISK* Milestone 4
 ![](Risk_logo.jpg)
 ## Authors
 - Erica Oliver
@@ -6,19 +6,17 @@
 - Santhosh Pradeepan 
 - Wintana Yosief
  ### Description 
-This is the third milestone for the game *RISK*. The rules followed in this game can be found [here.](https://en.wikipedia.org/wiki/Risk_(game))
-This milestone included adding the implementation of fortify and an AI. The group added deploy at the initial milestone 
-so it wasn't required for this one. Fortify is when a player can move troops from one territory to another. It is done 
-by pressing pass attack,selecting two territories,number of troops then pressing fortify. The AI is a type of player that does all the required game moves automatically (i.e. fortify,deploy,attack,move).
-The group also added a ModelListener to implement MVC better. The testing has also been updated to test fortify.
- In the next milestone, the group will look at creating custom maps. Since our current map is in a JSON, the loading the 
-map part is completed. The group will also look at implementing save/load features as well.
+This is the final milestone for the game *RISK*. The rules followed in this game can be found [here.](https://en.wikipedia.org/wiki/Risk_(game))
+The final milestone included adding load/save features for the game. This allows the user to save the game 
+as a serialized file which can then be loaded later. The group also added the ability to load custom maps 
+using a JSON file. This was first implemented in the first milestone using the world map but can now be
+used for custom maps like the Canada map example that is created. The game can also reject invalid maps.
 
 ### Distribution of Work 
-Erica: Implementing GameModel(deploy,pass), JSON File, Unit Testing, Description of Data Structures, Fortify <br>
+Erica: Implementing GameModel(deploy,pass), JSON File, Unit Testing, Description of Data Structures, Fortify, Load/Save <br>
 Omar: Implementing GameController, Territory, Map, Continent, JSON File, Unit Testing, Sequence Diagrams, Fortify, README <br>
 Santhosh: Implementing GameModel(attack,checkWinner), Dice, TerritoryButton, UML Class Diagram, AI <br>
-Wintana: Implementing GameView, Player, Troop, Army, Description of Data Structure, AI, Sequence Diagrams
+Wintana: Implementing GameView, Player, Troop, Army, Description of Data Structure, AI, Sequence Diagrams, Load/Save
 
 ### Known Issues 
 
