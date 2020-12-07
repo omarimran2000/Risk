@@ -177,7 +177,7 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
 
         troopsDeployed = 0;
 
-      //  this.setResizable(false);
+        this.setResizable(false);
         this.setSize(frameSizeX,frameSizeY);
     }
 
