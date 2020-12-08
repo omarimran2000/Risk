@@ -51,58 +51,100 @@ public class GameController implements ActionListener, Serializable {
         if (e.getSource() instanceof TerritoryButton) {
             TerritoryButton territoryButton = (TerritoryButton) e.getSource();
             Territory temp = territoryButton.getTerritory();
+
             if(view.isChooseDeploy() && model.getPhase().equals(GameModel.Phase.DEPLOY)) {
-                deployTerritoryAction(temp);
+                view.deployTerritoryAction(temp);
+                deployTerritory = temp;
             }
             else if(view.isChosenAttack() && model.getPhase().equals(GameModel.Phase.ATTACK)) {
-                attackFromTerritoryAction(temp);
+                view.attackFromTerritoryAction(temp);
+                attackFromTerritory = temp;
             }
             else if(!view.isChosenAttack() && model.getPhase().equals(GameModel.Phase.ATTACK)) {
-                attackToTerritoryAction(temp);
+                view.attackToTerritoryAction(temp, attackFromTerritory);
+                attackToTerritory = temp;
             }
             else if (!view.isChosenFortifyFrom() && model.getPhase().equals(GameModel.Phase.FORTIFY)){
-                fortifyFromTerritoryAction(temp);
+                view.fortifyFromTerritoryAction(fortifyFromTerritory);
+                fortifyFromTerritory = temp;
             }
             else if (!view.isChosenFortifyTo() && model.getPhase().equals(GameModel.Phase.FORTIFY)){
-               fortifyToTerritoryAction(temp);
+                view.fortifyToTerritoryAction(fortifyFromTerritory, fortifyToTerritory);
+                fortifyToTerritory = temp;
             }
         }
         else if (e.getSource() instanceof JButton) {
             JButton buttonPressed = (JButton) e.getSource();
 
             if (buttonPressed.equals(view.getAttackButton())) {
-                attackButtonAction();
+                view.attackButtonAction(attackFromTerritory, attackToTerritory);
             }
 
-            else if (buttonPressed.equals(view.getPassButton()))
-            {
-                passButtonAction();
+            else if (buttonPressed.equals(view.getPassButton())) {
+                //passButtonAction();
+                if(model.playersActive())
+                {
+                    model.passButtonAction();
+                } else //no players active i.e. game is done
+                {
+                    view.passButtonAction();
+                }
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
-                deployButtonAction();
+                //deployButtonAction();
+                try {
+                    view.resetPlayerText();
+                    int numTroops = (int) view.getNumTroops().getValue();
+                    model.deployButtonAction(deployTerritory, numTroops);
+                }
+                catch(Exception ex) {
+                    JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
+                }
 
             } else if (buttonPressed.equals(view.getStartButton())) {
-                startButtonAction();
+                //startButtonAction();
+                try {
+                    model.startButtonAction();
+                    view.setUpMap();
+                } catch (IOException | ParseException ioException) {
+                    ioException.printStackTrace();
+                }
 
             } else if (buttonPressed.equals(view.getMoveButton())) {
-                moveButtonAction();
+                //moveButtonAction();
+                try {
+                    int numTroops = (int) view.getNumTroops().getValue();
+                    model.getPlayer().attackWin(numTroops, attackFromTerritory, attackToTerritory);
+                    view.moveButtonAction(attackToTerritory, numTroops);
+                }catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
+                }
 
             } else if (buttonPressed.equals(view.getQuitButton())) {
                 view.dispatchEvent(new WindowEvent(view, WindowEvent.WINDOW_CLOSING));
             }
 
             else if (buttonPressed.equals(view.getFortifyButton())){
-                fortifyButtonAction();
+                //fortifyButtonAction();
+                try {
+                    int numTroops = (int) view.getNumTroops().getValue();
+                    model.fortifyButtonAction(numTroops, fortifyFromTerritory, fortifyToTerritory);
+                    view.fortifyButtonAction();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);
+                }
             }
 
             else if (buttonPressed.equals(view.getPassAttackButton())){
-                passAttackButtonAction();
+                //passAttackButtonAction();
+                try{
+                    view.passAttackButtonAction();
+                    model.setPhase(GameModel.Phase.FORTIFY);
+                }
+                catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
+                }
             }
-
-
-            else if (buttonPressed.equals((view.getCustomMapButton()))){
-                customMapButtonAction();
-            } //m4
         }
         else if(e.getSource() instanceof JMenuItem){
             JMenuItem menuItem = (JMenuItem) e.getSource();
@@ -121,60 +163,41 @@ public class GameController implements ActionListener, Serializable {
      * Saves a game to a file
      */
     private void saveMenuItemAction(){
-
         String filename = view.saveGame();
         model.saveGame(filename);
-
-
-
     } //m4
-
-
 
     /**
      * Action for when load menu item is clicked
      * Loads a saved game from a file
      */
     private void loadMenuItemAction() {
-
-
        String filename = view.loadGame();
-       view.setVisible(false);
+       //view.setVisible(false); //moved to view.loadGame()
        model.loadGame(filename);
-
-
-
-
-
-
     } //m4
 
-    /**
-     * Action for when customMapButton is clicked
-     * Loads a custom map
-     */
-    private void customMapButtonAction() {
-        //getChosenMap();
-       // model.loadMap(file);
-    } //m4
+
 
     /**
      * Action for when the territory to deploy to is chosen
      * @param temp The territory chosen to deploy to
-     */
+     */ /*
     private void deployTerritoryAction(Territory temp)
     {
-        view.getDeployToList().clearSelection();
+        view.deployTerritoryAction(temp);
+        //view.getDeployToList().clearSelection();
         deployTerritory = temp;
-        view.disableAllButtons();
-        view.getDeployToList().setSelectedValue(temp, true);
-        view.getDeployButton().setEnabled(true);
-    }
+        //view.disableAllButtons();
+        //view.getDeployToList().setSelectedValue(temp, true);
+        //view.getDeployButton().setEnabled(true);
+    }*/
+
 
     /**
      * Action for when the territory to attack from is chosen
      * @param temp The territory chosen to attack from
-     */
+     */ /*
     private void attackFromTerritoryAction(Territory temp)
     {
         view.getAttackFromList().clearSelection();
@@ -183,16 +206,15 @@ public class GameController implements ActionListener, Serializable {
         attackFromTerritory = temp;
         view.setChosenAttack(false);
         view.getAttackFromList().setSelectedValue(temp, true);
-
         view.getAttackToList().setModel(model.defaultListConversion(temp.getAttackNeighbourTerritories(model.getPlayer())));
         view.getAttackScrollPane().setVisible(true);
         view.promptChooseAttackTo();
-    }
+    }*/
 
     /**
      * Action for when the territory to attack is chosen
      * @param temp The territory to attack
-     */
+     */ /*
     private void attackToTerritoryAction(Territory temp)
     {
         view.getAttackToList().clearSelection();
@@ -205,41 +227,41 @@ public class GameController implements ActionListener, Serializable {
         view.getAttackToList().setSelectedValue(temp, true);
         view.getAttackButton().setEnabled(true);
         view.setTextArea("Choose number of dice to roll and \nclick attack button to execute the attack");
-    }
+    }*/
 
     /**
      * Action for when the territory to fortify from is chosen
      * @param temp The territory to fortify from
-     */
+     */ /*
     private void fortifyFromTerritoryAction(Territory temp)
     {
         view.setChosenFortifyFrom(true);
         view.setChosenFortifyTo(false);
-        fortifyFromTerritory = temp;
+        //fortifyFromTerritory = temp;
         view.disableAllButtons();
         view.enableFortifyToButtons(fortifyFromTerritory);
         view.disableTerritory(fortifyFromTerritory);
         view.setTextArea("Choose a territory to fortify");
-    }
+    }*/
 
     /**
      * Action for when the territory to fortify is chosen
      * @param temp The territory to fortify
-     */
+     */ /*
     private void fortifyToTerritoryAction(Territory temp)
     {
-        fortifyToTerritory = temp;
+        //fortifyToTerritory = temp;
         view.getFortifyButton().setEnabled(true);
         view.disableAllButtons();
         view.setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory)-1);
         view.getNumTroops().setEnabled(true);
         view.getNumTroopsPanel().setVisible(true);
         view.setTextArea("Choose a number of troops to send to " + fortifyToTerritory.getName() + " from " + fortifyFromTerritory.getName());
-    }
+    }*/
 
     /**
      * Action for when the attack button is clicked
-     */
+     */ /*
     private void attackButtonAction()
     {
         try {
@@ -267,7 +289,7 @@ public class GameController implements ActionListener, Serializable {
             model.passTurn();
             view.pass();
         }
-    }
+    }*/
 
     /**
      * Action for when the pass button is clicked
@@ -276,13 +298,15 @@ public class GameController implements ActionListener, Serializable {
     {
         if(model.playersActive())
         {
-            model.passTurn();
-            model.setPhase(GameModel.Phase.DEPLOY);
+            //model.passTurn();
+            //model.setPhase(GameModel.Phase.DEPLOY);
+            model.passButtonAction();
         } else //no players active i.e. game is done
         {
-            JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
-            view.setVisible(false);
-            view.dispose();
+            //JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
+            //view.setVisible(false);
+            //view.dispose();
+            view.passButtonAction();
         }
     }
 
@@ -294,8 +318,9 @@ public class GameController implements ActionListener, Serializable {
         try {
             view.resetPlayerText();
             int numTroops = (int) view.getNumTroops().getValue();
-            model.deploy(deployTerritory, numTroops);
-            model.setPhase(GameModel.Phase.ATTACK);
+            model.deployButtonAction(deployTerritory, numTroops);
+            //model.deploy(deployTerritory, numTroops);
+            //model.setPhase(GameModel.Phase.ATTACK);
         }
         catch(Exception ex) {
             JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
@@ -307,6 +332,13 @@ public class GameController implements ActionListener, Serializable {
      */
     private void startButtonAction()
     {
+        try {
+            model.startButtonAction();
+            view.setUpMap();
+        } catch (IOException | ParseException ioException) {
+            ioException.printStackTrace();
+        }
+        /*
         try {
             ArrayList<String> names = new ArrayList<>();
             String name = "";
@@ -331,11 +363,11 @@ public class GameController implements ActionListener, Serializable {
             }
             view.setUpMap();
             model.createPlayers(names);
-            model.setPhase(GameModel.Phase.DEPLOY);
+            //model.setPhase(GameModel.Phase.DEPLOY);
 
         } catch (IOException | ParseException ioException) {
             ioException.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -346,17 +378,18 @@ public class GameController implements ActionListener, Serializable {
         try {
             int numTroops = (int) view.getNumTroops().getValue();
             model.getPlayer().attackWin(numTroops, attackFromTerritory, attackToTerritory);
-            view.getDeployToScrollPane().setVisible(false);
+            view.moveButtonAction(attackToTerritory, numTroops);
+            /*view.getDeployToScrollPane().setVisible(false);
             view.getAttackFromScrollPane().setVisible(true);
-            view.move(numTroops, attackToTerritory);
+            view.move(numTroops, attackToTerritory);*/
         }catch (Exception ex)
         {
             JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
         }
-        view.getNumTroopsPanel().setVisible(false);
+        /*view.getNumTroopsPanel().setVisible(false);
         view.getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
         view.clearAttackFromSelection();
-        view.getAttackButton().setEnabled(false);
+        view.getAttackButton().setEnabled(false);*/
     }
 
     /**
@@ -365,11 +398,13 @@ public class GameController implements ActionListener, Serializable {
     private void fortifyButtonAction()
     {
         try {
-            view.getFortifyButton().setEnabled(false);
+            int numTroops = (int) view.getNumTroops().getValue();
+            model.fortifyButtonAction(numTroops, fortifyFromTerritory, fortifyToTerritory);
+            view.fortifyButtonAction();
+            /*view.getFortifyButton().setEnabled(false);
             int numTroops = (int) view.getNumTroops().getValue();
             model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
-
-            view.getPassButton().doClick();
+            view.getPassButton().doClick();*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Fortify is producing an error. Error: " + ex);
         }
@@ -381,7 +416,9 @@ public class GameController implements ActionListener, Serializable {
     private void passAttackButtonAction()
     {
         try{
-            view.getFortifyButton().setEnabled(false);
+            view.passAttackButtonAction();
+            model.setPhase(GameModel.Phase.FORTIFY);
+            /*view.getFortifyButton().setEnabled(false);
             view.getPassAttackButton().setEnabled(false);
             view.passAttack();
             model.setPhase(GameModel.Phase.FORTIFY);
@@ -395,7 +432,7 @@ public class GameController implements ActionListener, Serializable {
             else
             {
                 view.getPassButton().doClick();
-            }
+            }*/
         }
         catch (Exception ex){
             JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);

@@ -30,6 +30,9 @@ public class GameModel implements Serializable {
     public final static int DEPLOY_SINGLE_TROOP = 1;
     public final static int[] DICE = {1, 2, 3};
     private final static int MAX_PLAYERS = 6;
+    private final static int MIN_PLAYERS = 2; //m4
+    private final static int MIN_TROOPS = 1; //m4
+    private final static int MIN_DICE = 1; //m4
     private ArrayList<GameModelListener> listeners;
     protected Player currentPlayer;
     private String status;
@@ -62,8 +65,7 @@ public class GameModel implements Serializable {
      *
      * @param l the GameModelListener
      */
-    public void addListener(GameModelListener l)
-    {
+    public void addListener(GameModelListener l) {
         listeners.add(l);
     }
 
@@ -71,7 +73,9 @@ public class GameModel implements Serializable {
      * Set the number of players in a game
      * @param num the number of players
      */
-    public void setNumberOfPlayers(int num){ numberOfPlayers = num;}
+    public void setNumberOfPlayers(int num){
+        numberOfPlayers = num;
+    }
 
     /**
      * Getter for number of players
@@ -108,12 +112,10 @@ public class GameModel implements Serializable {
      * @return false if defender survives the attack, true otherwise
      */
     private boolean checkWinner(Player attacker, Player defender, int numOfDice, Territory territory, Territory attackFrom) {
-        int offence = 0;
-        int defence = 0;
         for (int i = 0; i < numOfDice; i++) {
+            int offence = attacker.getDice()[i]; //access the die number saved at position i
+            int defence = defender.getDice()[i];
 
-            offence = attacker.getDice()[i]; //access the die number saved at position i
-            defence = defender.getDice()[i];
             if (offence > defence) {
                 defender.removeTroops(LOSE_TROOP, territory);
                 setStatus(defender.getName() + " lost one troop.");
@@ -124,21 +126,32 @@ public class GameModel implements Serializable {
             attacker.attackPhase(status);
         }
         if (defender.findTroops(territory) == 0) {
-            defender.removeTerritory(territory);
-            territory.setCurrentPlayer(attacker);
-            if(defender.getTerritories().size() == 0){
-                setStatus(defender.getName() + " has no more territories and is now out of the game.");
-              // view.attack(status);
-                for(GameModelListener l:listeners)
-                {
-                    l.attack(status);
-                }
-                defender.setActive(false);
-            }
+            defenderLost(territory, defender, attacker);
             return true;
         }
         return false;
     }
+
+    /**
+     * Actions for when a territory is conquered in an attack
+     *
+     * @param territory The attacked territory
+     * @param defender The player defending the territory
+     * @param attacker The player attacking the territory
+     */
+    private void defenderLost(Territory territory, Player defender, Player attacker){
+        defender.removeTerritory(territory);
+        territory.setCurrentPlayer(attacker);
+        if(defender.getTerritories().size() == 0){
+            setStatus(defender.getName() + " has no more territories and is now out of the game.");
+            // view.attack(status);
+            for(GameModelListener l:listeners)
+            {
+                l.attack(status);
+            }
+            defender.setActive(false);
+        }
+    } //m4
 
     /**
      * Loading a map from a JSON file given the specific keys where structure is
@@ -162,8 +175,8 @@ public class GameModel implements Serializable {
               e = jsonParser.parse(fileReader);
         }
 
-        JSONObject mapObject = new JSONObject();
-        mapObject = (JSONObject) e;
+        //JSONObject mapObject = new JSONObject();
+        JSONObject mapObject = (JSONObject) e;
 
         JSONObject continents = (JSONObject) mapObject.get("continents"); //getting all the continent keys
         theMap.setFilePath((String) mapObject.get("filepath"));
@@ -205,7 +218,6 @@ public class GameModel implements Serializable {
                 JSONObject coordinates = (JSONObject) territoriesKeys.get("coordinates");
                 int x = (int)((long) coordinates.get("x"));
                 int y = (int)((long) coordinates.get("y"));
-                //view.addButtons(temp,x,y);
                 for(GameModelListener l:listeners)
                 {
                     l.addButtons(temp,x,y);
@@ -272,7 +284,7 @@ public class GameModel implements Serializable {
      */
     public void setArmies(int numberOfPlayers) {
         int[] arr_num_Armies = new int[]{50, 35, 30, 25, 20};
-        int num_armies = arr_num_Armies[numberOfPlayers - 2];
+        int num_armies = arr_num_Armies[numberOfPlayers - MIN_PLAYERS];
         Random random = new Random();
 
         for (Player p : players) {
@@ -373,7 +385,6 @@ public class GameModel implements Serializable {
         currentPlayer.deploy(numTroops, territory);
     }
 
-
     /**
      * Attacking phase
      *
@@ -388,7 +399,7 @@ public class GameModel implements Serializable {
         int numDefendDice;
         currentPlayer.rollDice(numDice);
         Player defender = attack.getCurrentPlayer();
-        if (defender.findTroops(attack) == 1 || numDice == 1) {
+        if (defender.findTroops(attack) == MIN_TROOPS || numDice == MIN_DICE) {
             numDefendDice = DICE[0];
         } else {
             numDefendDice = DICE[1];
@@ -437,7 +448,7 @@ public class GameModel implements Serializable {
     public boolean canAttack(Player player) {
         List<Territory> territories = player.getTerritories();
         for (Territory t : territories) {
-            if (player.findTroops(t) > 1){
+            if (player.findTroops(t) > MIN_TROOPS){
                 // iterates through neighbour's of t
                 List<Territory> neighbours = t.getNeighbourTerritories();
                 for(Territory terr: neighbours){
@@ -480,26 +491,35 @@ public class GameModel implements Serializable {
             addPlayer(player);
         }
         if(numberOfPlayers < MAX_PLAYERS) {
-            AIPlayer ai = new AIPlayer("AI X", this);
-            ai.setActive(true);
-            for(GameModelListener l:listeners)
-            {
-                ai.addListener(l);
-            }
-            addPlayer(ai);
-            setNumberOfPlayers(numberOfPlayers + 1);
+            addAIPlayer();
         }
+        gameInit();
+    }
 
+    /**
+     * Adds one AI Player to the game
+     */
+    public void addAIPlayer(){
+        AIPlayer ai = new AIPlayer("AI X", this);
+        ai.setActive(true);
+        for(GameModelListener l:listeners)
+        {
+            ai.addListener(l);
+        }
+        addPlayer(ai);
+        setNumberOfPlayers(numberOfPlayers + 1);
+    } //m4
+
+    public void gameInit(){
         initializeDefaultArmy();
         setArmies(numberOfPlayers);
         currentPlayer = players.get(0);
-        for(GameModelListener l:listeners)
-        {
+        setPhase(Phase.DEPLOY);
+        for(GameModelListener l:listeners) {
             l.start();
             l.turn(currentPlayer, getNumberOfTroops());
         }
-
-    }
+    } //m4
 
     /**
      * Calculates the number of dice given a territory
@@ -507,7 +527,7 @@ public class GameModel implements Serializable {
      * @return number of dice
      */
     public int calculateDice(Territory attackFrom) {
-        int legalArmies = currentPlayer.findTroops(attackFrom) - 1;
+        int legalArmies = currentPlayer.findTroops(attackFrom) - MIN_TROOPS;
         int numDice;
         if (legalArmies == 1) {
             numDice = DICE[0];
@@ -639,7 +659,6 @@ public class GameModel implements Serializable {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename));
             GameModel model = (GameModel) inputStream.readObject();
 
-
             this.players = model.players;
             this.currentPlayer = model.currentPlayer;
             this.numberOfPlayers = model.numberOfPlayers;
@@ -649,20 +668,57 @@ public class GameModel implements Serializable {
             for(GameModelListener ml: model.listeners){
                  ml.restoreView(this.phase, this.status);
             }
-             inputStream.close();
-
-
-
+            inputStream.close();
         } catch (ClassNotFoundException | IOException e) {
-
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Action for when the pass button is clicked
+     */
+    public void passButtonAction(){
+        passTurn();
+        setPhase(GameModel.Phase.DEPLOY);
+    } //m4
 
+    /**
+     * Action for when the deploy button is clicked
+     */
+    public void deployButtonAction(Territory deployTerritory, int numTroops) {
+        deploy(deployTerritory, numTroops);
+        setPhase(GameModel.Phase.ATTACK);
+    } //m4
 
+    /**
+     * Action for when the deploy button is clicked
+     */
+    public void startButtonAction(){
+        ArrayList<String> names = new ArrayList<>();
+        String name = "";
+        int numOfPlayers = 0;
+        SpinnerNumberModel playersModel = new SpinnerNumberModel(2, 2, 6, 1);
+        JSpinner numPlayers = new JSpinner(playersModel);
+        JOptionPane.showMessageDialog(null, numPlayers, "Enter the number of players", JOptionPane.QUESTION_MESSAGE);
+        try {
+            numOfPlayers = (int) numPlayers.getValue();
+            setNumberOfPlayers(numOfPlayers);
+        }
+        catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Spinner is not returning an integer. Error: " + ex);
+        }
 
+        for (int i = 0; i < numOfPlayers; i++) {
+            while(name == null || name.equals("")) {
+                name = JOptionPane.showInputDialog("Player #" + (i+1) + ": What is your name?");
+            }
+            names.add(name);
+            name = "";
+        }
+        createPlayers(names);
+    } //m4
 
-
+    public void fortifyButtonAction(int numTroops, Territory fortifyFromTerritory, Territory fortifyToTerritory){
+        fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
+    } //m4
 }

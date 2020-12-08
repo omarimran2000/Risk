@@ -32,12 +32,10 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
     private JButton quitButton;
     private JButton fortifyButton;
     private JButton passAttackButton;
-    private JButton customMapButton; //m4
     private ArrayList<TerritoryButton> territoryButtons;
 
     private JMenuItem saveGame; //m4
     private JMenuItem loadGame; //m4
-
 
     private JSpinner numDice;
     private JSpinner numTroops;
@@ -311,20 +309,6 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
     public JButton getPassAttackButton(){
         return passAttackButton;
     }
-
-
-
-
-
-
-    /**
-     * getter method for customMapButton
-     *
-     * @return customMapButton
-     */
-    public JButton getCustomMapButton() {
-        return customMapButton;
-    } //m4
 
     public JMenuItem getSaveMenuItem() {
         return saveGame;
@@ -954,12 +938,9 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid filename");
             }
-
         }
         JOptionPane.showMessageDialog(this, "Game saved.");
         return filename;
-
-
     }
 
     /**
@@ -969,9 +950,6 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
      * @return The chosen filepath
      */
     public String loadGame() {
-
-
-
         JOptionPane.showMessageDialog(this, "Select a serialized game file");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
@@ -983,12 +961,10 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         fileChooser.setControlButtonsAreShown(false);
         File currentDir = new File(System.getProperty("user.dir"));
         fileChooser.setCurrentDirectory(currentDir);
-
-
         fileChooser.showOpenDialog(this);
         File gameFile = fileChooser.getSelectedFile();
+        this.setVisible(false);
         return gameFile.getAbsolutePath();
-
     }
 
     /**
@@ -998,29 +974,179 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
      * @param status The saved status
      */
     public void restoreView(GameModel.Phase phase, String status){
-
-
         if(phase.equals(GameModel.Phase.ATTACK)){
             attack(status);
-
-
         } else if(phase.equals(GameModel.Phase.DEPLOY)){
             deploy(status);
-
-
         } else if(phase.equals(GameModel.Phase.FORTIFY)){
             fortify(status);
-
         }
         setVisible(true);
-
     }
 
+    /**
+     * Action for when the territory to deploy to is chosen
+     * @param temp The territory chosen to attack from
+     */
+    public void deployTerritoryAction(Territory temp) {
+        disableAllButtons();
+        deployToList.setSelectedValue(temp, true);
+        deployButton.setEnabled(true);
+    } //m4
 
+    /**
+     * Action for when the territory to attack from is chosen
+     * @param territory The territory chosen to attack from
+     */
+    public void attackFromTerritoryAction(Territory territory) {
+        getAttackFromList().clearSelection();
+        disableAllButtons();
+        setAttackToButtons(territory);
+        setChosenAttack(false);
+        getAttackFromList().setSelectedValue(territory, true);
+        getAttackToList().setModel(model.defaultListConversion(territory.getAttackNeighbourTerritories(model.getPlayer())));
+        getAttackScrollPane().setVisible(true);
+        promptChooseAttackTo();
+    } //m4
 
+    /**
+     * Action for when the territory to attack is chosen
+     * @param territory The territory chosen to attack
+     * @param attackFromTerritory The territory to attack from
+     */
+    public void attackToTerritoryAction(Territory territory, Territory attackFromTerritory) {
+        getAttackToList().clearSelection();
+        getAttackButton().setEnabled(true);
+        disableAllButtons();
+        SpinnerNumberModel numDiceModel = new SpinnerNumberModel(1, 1, model.calculateDice(attackFromTerritory), 1);
+        getNumDice().setModel(numDiceModel);
+        getNumDicePanel().setVisible(true);
+        getAttackToList().setSelectedValue(territory, true);
+        getAttackButton().setEnabled(true);
+        setTextArea("Choose number of dice to roll and \nclick attack button to execute the attack");
+    } //m4
 
+    /**
+     * Action for when the territory to fortify from is chosen
+     * @param fortifyFromTerritory The territory chosen to fortify from
+     */
+    public void fortifyFromTerritoryAction(Territory fortifyFromTerritory) {
+        setChosenFortifyFrom(true);
+        setChosenFortifyTo(false);
+        disableAllButtons();
+        enableFortifyToButtons(fortifyFromTerritory);
+        disableTerritory(fortifyFromTerritory);
+        setTextArea("Choose a territory to fortify");
+    } //m4
 
+    /**
+     * Action for when the territory to fortify is chosen
+     * @param fortifyFromTerritory The territory chosen to fortify from
+     * @param fortifyToTerritory The territory chosen to fortify
+     */
+    public void fortifyToTerritoryAction(Territory fortifyFromTerritory, Territory fortifyToTerritory) {
+        getFortifyButton().setEnabled(true);
+        disableAllButtons();
+        setNumTroops(model.getPlayer().findTroops(fortifyFromTerritory)-1);
+        getNumTroops().setEnabled(true);
+        getNumTroopsPanel().setVisible(true);
+        setTextArea("Choose a number of troops to send to " + fortifyToTerritory.getName() + " from " + fortifyFromTerritory.getName());
+    } //m4
 
+    /**
+     * Action for when the attack button is clicked
+     */
+    public void attackButtonAction(Territory attackFromTerritory, Territory attackToTerritory)
+    {
+        try {
+            resetAttackText();
+            getAttackButton().setEnabled(false);
+            getPassAttackButton().setVisible(true);
+            getPassButton().setVisible(true);
+
+            int numDice = (int) getNumDice().getValue();
+            if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
+                disableAllButtons();
+                clearAttackFromSelection();
+            }
+            getNumDicePanel().setVisible(false);
+            getAttackScrollPane().setVisible(false);
+
+            if (model.checkGameOver()) {
+                gameOver(model.getWinner());
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"Not enough parameters to attack with. Error: " + ex);
+        }
+
+        if (!model.canAttack(model.getPlayer())){
+            model.passTurn();
+            pass();
+        }
+    } //m4
+
+    /**
+     * Action for when the pass button is clicked
+     */
+    public void passButtonAction() {
+        JOptionPane.showMessageDialog(null, "Game is complete. The winner is  " + model.getPlayer().getName());
+        setVisible(false);
+        dispose();
+    } //m4
+
+    /**
+     * Action for when the move button is clicked
+     */
+    public void moveButtonAction(Territory attackToTerritory, int numTroops)
+    {
+        try {
+            getDeployToScrollPane().setVisible(false);
+            getAttackFromScrollPane().setVisible(true);
+            move(numTroops, attackToTerritory);
+        }catch (Exception ex)
+        {
+            JOptionPane.showMessageDialog(null,"Move is producing an error. Error: " + ex);
+        }
+        getNumTroopsPanel().setVisible(false);
+        getAttackFromList().setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
+        clearAttackFromSelection();
+        getAttackButton().setEnabled(false);
+    } //m4
+
+    /**
+     * Action for when the fortify button is clicked
+     */
+    public void fortifyButtonAction() {
+        getFortifyButton().setEnabled(false);
+        getPassButton().doClick();
+    } //m4
+
+    /**
+     * Action for when the passAttack button is clicked
+     */
+    public void passAttackButtonAction()
+    {
+        try{
+            getFortifyButton().setEnabled(false);
+            getPassAttackButton().setEnabled(false);
+            passAttack();
+            //model.setPhase(GameModel.Phase.FORTIFY);
+            setChosenFortifyFrom(false);
+            if(model.canFortify()) {
+                getPassAttackButton().setEnabled(false);
+                passAttack();
+                //model.setPhase(GameModel.Phase.FORTIFY);
+                setChosenFortifyFrom(false);
+            }
+            else
+            {
+                getPassButton().doClick();
+            }
+        }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Pass attack is producing an error. Error: " + ex);
+        }
+    } //m4
 
     /*public GameModel getModel() {
         return model;
