@@ -371,6 +371,7 @@ public class GameModel implements Serializable {
             l.deploy(status);
         }
         currentPlayer.deploy(numTroops, territory);
+
     }
 
 
