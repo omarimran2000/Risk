@@ -152,6 +152,8 @@ public class GameController implements ActionListener, Serializable {
         view.disableAllButtons();
         view.getDeployToList().setSelectedValue(temp, true);
         view.getDeployButton().setEnabled(true);
+        view.getSaveMenuItem().setEnabled(false);
+        view.getLoadGameMenuItem().setEnabled(false);
     }
 
     /**
@@ -162,6 +164,8 @@ public class GameController implements ActionListener, Serializable {
     {
         view.getAttackFromList().clearSelection();
         view.disableAllButtons();
+        view.getLoadGameMenuItem().setEnabled(false);
+        view.getSaveMenuItem().setEnabled(false);
         view.setAttackToButtons(temp);
         attackFromTerritory = temp;
         view.setChosenAttack(false);
@@ -200,6 +204,8 @@ public class GameController implements ActionListener, Serializable {
         view.setChosenFortifyTo(false);
         fortifyFromTerritory = temp;
         view.disableAllButtons();
+        view.getLoadGameMenuItem().setEnabled(false);
+        view.getSaveMenuItem().setEnabled(false);
         view.enableFortifyToButtons(fortifyFromTerritory);
         view.disableTerritory(fortifyFromTerritory);
         view.setTextArea("Choose a territory to fortify");
@@ -230,6 +236,8 @@ public class GameController implements ActionListener, Serializable {
             view.getAttackButton().setEnabled(false);
             view.getPassAttackButton().setVisible(true);
             view.getPassButton().setVisible(true);
+            view.getSaveMenuItem().setEnabled(true);
+            view.getLoadGameMenuItem().setEnabled(true);
 
             int numDice = (int) view.getNumDice().getValue();
             if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
@@ -279,6 +287,10 @@ public class GameController implements ActionListener, Serializable {
             int numTroops = (int) view.getNumTroops().getValue();
             model.deploy(deployTerritory, numTroops);
             model.setPhase(GameModel.Phase.ATTACK);
+            view.getSaveMenuItem().setEnabled(true);
+            view.getLoadGameMenuItem().setEnabled(true);
+
+
         }
         catch(Exception ex) {
             JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
@@ -349,6 +361,8 @@ public class GameController implements ActionListener, Serializable {
     {
         try {
             view.getFortifyButton().setEnabled(false);
+            view.getSaveMenuItem().setEnabled(true);
+            view.getLoadGameMenuItem().setEnabled(true);
             int numTroops = (int) view.getNumTroops().getValue();
             model.fortify(numTroops, fortifyFromTerritory, fortifyToTerritory);
 
