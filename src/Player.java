@@ -15,13 +15,12 @@ public class Player implements Serializable  {
 
     private String name;
     private boolean active;
-     private Dice die;
-     private int [] diceRolls;
+    private Dice die;
+    private int [] diceRolls;
     protected Army army;
     private List<Continent> continents;
     protected List<Territory> territories;
     protected ArrayList<GameModelListener> listeners;
-
 
     /**
      *

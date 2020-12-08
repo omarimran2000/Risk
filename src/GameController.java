@@ -99,10 +99,6 @@ public class GameController implements ActionListener, Serializable {
                 passAttackButtonAction();
             }
 
-
-            else if (buttonPressed.equals((view.getCustomMapButton()))){
-                customMapButtonAction();
-            } //m4
         }
         else if(e.getSource() instanceof JMenuItem){
             JMenuItem menuItem = (JMenuItem) e.getSource();
@@ -111,9 +107,8 @@ public class GameController implements ActionListener, Serializable {
             } else if(menuItem.equals(view.getLoadGameMenuItem())){
                 loadMenuItemAction();
             }
-        } // m4
+        }
     }
-
 
     /**
      * Action for when save menu item
@@ -127,9 +122,7 @@ public class GameController implements ActionListener, Serializable {
 
 
 
-    } //m4
-
-
+    }
 
     /**
      * Action for when load menu item is clicked
@@ -147,17 +140,7 @@ public class GameController implements ActionListener, Serializable {
 
 
 
-    } //m4
-
-    /**
-     * Action for when customMapButton is clicked
-     * Loads a custom map
-     */
-    private void customMapButtonAction() {
-        //getChosenMap();
-       // model.loadMap(file);
-    } //m4
-
+    }
     /**
      * Action for when the territory to deploy to is chosen
      * @param temp The territory chosen to deploy to
