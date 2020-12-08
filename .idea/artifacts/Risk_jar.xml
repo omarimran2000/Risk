@@ -11,6 +11,9 @@
       <element id="file-copy" path="$PROJECT_DIR$/map.json" />
       <element id="file-copy" path="$PROJECT_DIR$/json-simple-1.1.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/example.json" />
+      <element id="file-copy" path="$PROJECT_DIR$/invalid_map.json" />
+      <element id="file-copy" path="$PROJECT_DIR$/map of canada.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/map_of_canada.json" />
     </root>
   </artifact>
 </component>

@@ -32,11 +32,10 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
     private JButton quitButton;
     private JButton fortifyButton;
     private JButton passAttackButton;
-    private JButton customMapButton; //m4
     private ArrayList<TerritoryButton> territoryButtons;
 
-    private JMenuItem saveGame; //m4
-    private JMenuItem loadGame; //m4
+    private JMenuItem saveGame;
+    private JMenuItem loadGame;
 
 
     private JSpinner numDice;
@@ -44,7 +43,7 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
     private Container contentPane;
     private GameController controller;
     private JTextArea textArea;
-    private JTextArea playerTextArea; // m3
+    private JTextArea playerTextArea;
     private JTextArea continentControl;
     private JPanel welcomePanel;
     private JScrollPane deployToScrollPane;
@@ -61,8 +60,8 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
 
     private boolean chosenAttack;
     private boolean chooseDeploy;
-    private boolean chosenFortifyTo; // m3
-    private boolean chosenFortifyFrom; // m3
+    private boolean chosenFortifyTo;
+    private boolean chosenFortifyFrom;
 
     /**
      * Constructor of class GameView
@@ -146,7 +145,6 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         saveGame.addActionListener(controller);
         loadGame.addActionListener(controller);
 
-        //m4
         JMenu menu = new JMenu("Risk");
         menu.add(saveGame);
         menu.add(loadGame);
@@ -301,7 +299,7 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
      */
     public JButton getFortifyButton(){
         return fortifyButton;
-    } // m3
+    }
 
     /**
      * getter method for passFortifyButton
@@ -312,24 +310,18 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         return passAttackButton;
     }
 
-
-
-
-
-
     /**
-     * getter method for customMapButton
-     *
-     * @return customMapButton
+     *  Gets the save menu item
+     * @return save menu item
      */
-    public JButton getCustomMapButton() {
-        return customMapButton;
-    } //m4
-
     public JMenuItem getSaveMenuItem() {
         return saveGame;
     }
 
+    /**
+     * Gets the load menu item
+     * @return load menu item
+     */
     public JMenuItem getLoadGameMenuItem(){
         return loadGame;
     }
@@ -872,7 +864,7 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
      */
     public boolean isChosenFortifyFrom(){
         return chosenFortifyFrom;
-    } // m3
+    }
 
     /**
      * Getter for fortify to chosen
@@ -880,7 +872,7 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
      */
     public boolean isChosenFortifyTo(){
         return chosenFortifyTo;
-    } // m3
+    }
 
     /**
      * Prompts the user to select a territory to attack from via the text area
@@ -970,8 +962,6 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
      */
     public String loadGame() {
 
-
-
         JOptionPane.showMessageDialog(this, "Select a serialized game file");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter());
@@ -1015,16 +1005,6 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         setVisible(true);
 
     }
-
-
-
-
-
-
-
-    /*public GameModel getModel() {
-        return model;
-    }*/
 
     /**
      * Main function
