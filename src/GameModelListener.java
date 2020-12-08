@@ -40,7 +40,9 @@ public interface GameModelListener {
 
     void attackButtonAction(Territory attackFromTerritory, Territory attackToTerritory); //m4
 
-    void passButtonAction(); //m4
+    //void passButtonAction(); //m4
+
+    void deployButtonAction(); //m4
 
     void moveButtonAction(Territory attackToTerritory, int numTroops); //m4
 

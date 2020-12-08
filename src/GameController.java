@@ -87,15 +87,20 @@ public class GameController implements ActionListener, Serializable {
                     model.passButtonAction();
                 } else //no players active i.e. game is done
                 {
-                    view.passButtonAction();
+                    JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
+                    view.setVisible(false);
+                    view.dispose();
                 }
 
             } else if (buttonPressed.equals(view.getDeployButton())) {
                 //deployButtonAction();
                 try {
-                    view.resetPlayerText();
                     int numTroops = (int) view.getNumTroops().getValue();
+                    view.deployButtonAction();
                     model.deployButtonAction(deployTerritory, numTroops);
+                    //view.resetPlayerText();
+                    //view.getSaveMenuItem().setEnabled(true);
+                    //view.getLoadGameMenuItem().setEnabled(true);
                 }
                 catch(Exception ex) {
                     JOptionPane.showMessageDialog(null,"Error with deploy. Error: " + ex);
@@ -193,11 +198,8 @@ public class GameController implements ActionListener, Serializable {
         view.getDeployButton().setEnabled(true);
         view.getSaveMenuItem().setEnabled(false);
         view.getLoadGameMenuItem().setEnabled(false);
-    }
-        //view.disableAllButtons();
-        //view.getDeployToList().setSelectedValue(temp, true);
-        //view.getDeployButton().setEnabled(true);
-    }*/
+
+    } */
 
 
     /**
@@ -315,10 +317,9 @@ public class GameController implements ActionListener, Serializable {
             model.passButtonAction();
         } else //no players active i.e. game is done
         {
-            //JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
-            //view.setVisible(false);
-            //view.dispose();
-            view.passButtonAction();
+            JOptionPane.showMessageDialog(null,"Game is complete. The winner is  "+model.getPlayer().getName());
+            view.setVisible(false);
+            view.dispose();
         }
     }
 
@@ -334,8 +335,6 @@ public class GameController implements ActionListener, Serializable {
             model.setPhase(GameModel.Phase.ATTACK);
             view.getSaveMenuItem().setEnabled(true);
             view.getLoadGameMenuItem().setEnabled(true);
-
-
             model.deployButtonAction(deployTerritory, numTroops);
             //model.deploy(deployTerritory, numTroops);
             //model.setPhase(GameModel.Phase.ATTACK);

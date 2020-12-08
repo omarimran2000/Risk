@@ -996,6 +996,8 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         disableAllButtons();
         deployToList.setSelectedValue(temp, true);
         deployButton.setEnabled(true);
+        getSaveMenuItem().setEnabled(false);
+        getLoadGameMenuItem().setEnabled(false);
     } //m4
 
     /**
@@ -1005,6 +1007,8 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
     public void attackFromTerritoryAction(Territory territory) {
         getAttackFromList().clearSelection();
         disableAllButtons();
+        getLoadGameMenuItem().setEnabled(false);
+        getSaveMenuItem().setEnabled(false);
         setAttackToButtons(territory);
         setChosenAttack(false);
         getAttackFromList().setSelectedValue(territory, true);
@@ -1038,6 +1042,8 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         setChosenFortifyFrom(true);
         setChosenFortifyTo(false);
         disableAllButtons();
+        getLoadGameMenuItem().setEnabled(false);
+        getSaveMenuItem().setEnabled(false);
         enableFortifyToButtons(fortifyFromTerritory);
         disableTerritory(fortifyFromTerritory);
         setTextArea("Choose a territory to fortify");
@@ -1067,7 +1073,8 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
             getAttackButton().setEnabled(false);
             getPassAttackButton().setVisible(true);
             getPassButton().setVisible(true);
-
+            getSaveMenuItem().setEnabled(true);
+            getLoadGameMenuItem().setEnabled(true);
             int numDice = (int) getNumDice().getValue();
             if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
                 disableAllButtons();
@@ -1097,6 +1104,15 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
         setVisible(false);
         dispose();
     } //m4
+
+    /**
+     * Action for when deploy button is clicked
+     */
+    public void deployButtonAction(){
+        resetPlayerText();
+        getSaveMenuItem().setEnabled(true);
+        getLoadGameMenuItem().setEnabled(true);
+    }
 
     /**
      * Action for when the move button is clicked
