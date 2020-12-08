@@ -533,6 +533,7 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
             deployToScrollPane.setVisible(false);
             numTroopsPanel.setVisible(false);
 
+
             // set up attack phase
             resetAttackText();
             promptChooseAttackFrom();
@@ -558,6 +559,9 @@ public class GameView extends JFrame implements GameModelListener, Serializable 
             deployToList.setModel(model.defaultListConversion((ArrayList<Territory>) model.getPlayer().getTerritories()));
             deployToList.setEnabled(false);
             setTextArea("You have " + troopsLeft + " troops left to deploy");
+            saveGame.setEnabled(false);
+            loadGame.setEnabled(false);
+
         }
     }
 

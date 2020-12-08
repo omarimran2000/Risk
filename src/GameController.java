@@ -188,6 +188,12 @@ public class GameController implements ActionListener, Serializable {
         view.deployTerritoryAction(temp);
         //view.getDeployToList().clearSelection();
         deployTerritory = temp;
+        view.disableAllButtons();
+        view.getDeployToList().setSelectedValue(temp, true);
+        view.getDeployButton().setEnabled(true);
+        view.getSaveMenuItem().setEnabled(false);
+        view.getLoadGameMenuItem().setEnabled(false);
+    }
         //view.disableAllButtons();
         //view.getDeployToList().setSelectedValue(temp, true);
         //view.getDeployButton().setEnabled(true);
@@ -202,6 +208,8 @@ public class GameController implements ActionListener, Serializable {
     {
         view.getAttackFromList().clearSelection();
         view.disableAllButtons();
+        view.getLoadGameMenuItem().setEnabled(false);
+        view.getSaveMenuItem().setEnabled(false);
         view.setAttackToButtons(temp);
         attackFromTerritory = temp;
         view.setChosenAttack(false);
@@ -239,6 +247,8 @@ public class GameController implements ActionListener, Serializable {
         view.setChosenFortifyTo(false);
         //fortifyFromTerritory = temp;
         view.disableAllButtons();
+        view.getLoadGameMenuItem().setEnabled(false);
+        view.getSaveMenuItem().setEnabled(false);
         view.enableFortifyToButtons(fortifyFromTerritory);
         view.disableTerritory(fortifyFromTerritory);
         view.setTextArea("Choose a territory to fortify");
@@ -269,6 +279,8 @@ public class GameController implements ActionListener, Serializable {
             view.getAttackButton().setEnabled(false);
             view.getPassAttackButton().setVisible(true);
             view.getPassButton().setVisible(true);
+            view.getSaveMenuItem().setEnabled(true);
+            view.getLoadGameMenuItem().setEnabled(true);
 
             int numDice = (int) view.getNumDice().getValue();
             if (!(model.attack(attackFromTerritory, attackToTerritory, numDice))) {
@@ -318,6 +330,12 @@ public class GameController implements ActionListener, Serializable {
         try {
             view.resetPlayerText();
             int numTroops = (int) view.getNumTroops().getValue();
+            model.deploy(deployTerritory, numTroops);
+            model.setPhase(GameModel.Phase.ATTACK);
+            view.getSaveMenuItem().setEnabled(true);
+            view.getLoadGameMenuItem().setEnabled(true);
+
+
             model.deployButtonAction(deployTerritory, numTroops);
             //model.deploy(deployTerritory, numTroops);
             //model.setPhase(GameModel.Phase.ATTACK);
@@ -398,6 +416,9 @@ public class GameController implements ActionListener, Serializable {
     private void fortifyButtonAction()
     {
         try {
+            view.getFortifyButton().setEnabled(false);
+            view.getSaveMenuItem().setEnabled(true);
+            view.getLoadGameMenuItem().setEnabled(true);
             int numTroops = (int) view.getNumTroops().getValue();
             model.fortifyButtonAction(numTroops, fortifyFromTerritory, fortifyToTerritory);
             view.fortifyButtonAction();
